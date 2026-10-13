@@ -1,103 +1,68 @@
 import { Link } from "react-router-dom";
+import logoImg from "../assets/logo.jpeg";
+import { FaClock, FaChevronRight } from "react-icons/fa";
 
-const FOOTER_NAV = [
-  {
-    heading: "Quick Links",
-    links: [
-      { label: "Home", path: "/" },
-      { label: "About Us", path: "/about" },
-      { label: "Sermons", path: "/sermons" },
-      { label: "Events", path: "/events" },
-      { label: "Gallery", path: "/gallery" },
-      { label: "Contact", path: "/contact" },
-    ],
-  },
-  {
-    heading: "Ministries",
-    links: [
-      { label: "Children's Ministry", path: "/ministries#children" },
-      { label: "Youth Ministry", path: "/ministries#youth" },
-      { label: "Women's Ministry", path: "/ministries#women" },
-      { label: "Men's Ministry", path: "/ministries#men" },
-      { label: "Prayer Ministry", path: "/ministries#prayer" },
-      { label: "Outreach", path: "/ministries#outreach" },
-    ],
-  },
-  {
-    heading: "Resources",
-    links: [
-      { label: "Devotionals", path: "/resources#devotionals" },
-      { label: "Bible Study", path: "/resources#bible-study" },
-      { label: "Sermon Notes", path: "/resources#notes" },
-      { label: "Testimonials", path: "/testimonials" },
-      { label: "Prayer Request", path: "/contact#prayer" },
-      { label: "Give Online", path: "/give" },
-    ],
-  },
+const CURRENT_YEAR = new Date().getFullYear();
+
+const QUICK_LINKS = [
+  { label: "Home", path: "/" },
+  { label: "Our Journey & Story", path: "/about/journey" },
+  { label: "Our Motto & Pillars", path: "/about/motto" },
+  { label: "Our Vision", path: "/about/vision" },
+  { label: "Our Mission", path: "/about/mission" },
+  { label: "Statement of Faith", path: "/about/faith" },
+  { label: "Testimonies", path: "/testimonies" },
+  { label: "Connect & Visit", path: "/contact" },
 ];
 
-const SOCIAL_LINKS = [
-  {
-    id: "footer-youtube",
-    label: "YouTube",
-    href: "https://youtube.com",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
-      </svg>
-    ),
-  },
-  {
-    id: "footer-facebook",
-    label: "Facebook",
-    href: "https://facebook.com",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-        <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.49 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/>
-      </svg>
-    ),
-  },
-  {
-    id: "footer-instagram",
-    label: "Instagram",
-    href: "https://instagram.com",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-        <path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12c0-3.2.01-3.58.07-4.85C2.38 3.86 3.9 2.31 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.7.07 7.05.01 8.33 0 8.74 0 12c0 3.26.01 3.67.07 4.95.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24c3.26 0 3.67-.01 4.95-.07 4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95 0-3.26-.01-3.67-.07-4.95C23.73 2.71 21.31.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32A6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/>
-      </svg>
-    ),
-  },
+const MINISTRIES = [
+  { label: "Sunday Worship Service", path: "/prayers/sunday-services" },
+  { label: "Fasting & Deliverance Prayer", path: "/prayers/fasting" },
+  { label: "Transformation Prayer", path: "/prayers/transformation" },
+  { label: "Discipleship Prayer", path: "/prayers/discipleship" },
+  { label: "Sunday School & Youth", path: "/prayers/sunday-school" },
+  { label: "Prayer & Intercession", path: "/contact" },
+];
+
+const RESOURCES = [
+  { label: "Sunday Sermons Archive", path: "/sermons/sunday" },
+  { label: "Bible Study Notes", path: "/sermons/bible-study" },
+  { label: "Worship Song Lyrics", path: "/songs/lyrics" },
+  { label: "Worship Audio Tracks", path: "/songs/audio" },
+  { label: "Photo Gallery", path: "/media/photos" },
+  { label: "Video Messages", path: "/media/videos" },
 ];
 
 const SERVICE_TIMES = [
-  { day: "Sunday Service", time: "8:15 AM – 11:15 AM" },
-  { day: "Prayer Meeting", time: "New Moon & Full Moon Days" },
-  { day: "Evening Prayer", time: "7:00 PM – 8:30 PM" },
+  { day: "Sunday Worship & Communion", time: "8:15 AM – 11:15 AM" },
+  { day: "Fasting & Deliverance Prayer", time: "New Moon & Full Moon Days" },
+  { day: "Evening Intercessory Prayer", time: "7:00 PM – 8:30 PM" },
 ];
 
 export default function Footer() {
-  const year = new Date().getFullYear();
-
   return (
     <>
       <style>{`
-        :root {
-          --blush:  #E8B7B7;
-          --green:  #184332;
-          --gold:   #D6B66B;
-          --ivory:  #FAF6EE;
-          --font-serif: 'Playfair Display', Georgia, serif;
-          --font-sans:  'Inter', system-ui, sans-serif;
-        }
-
-        /* ── CTA Banner ── */
+        /* ── Pre-Footer CTA Banner ── */
         .ct-footer-cta {
-          background: linear-gradient(135deg, var(--green) 0%, #1a5040 50%, var(--green) 100%);
-          padding: 60px 24px;
+          background: 
+            radial-gradient(ellipse at 50% 0%, rgba(214, 182, 107, 0.2) 0%, transparent 55%),
+            radial-gradient(ellipse at 85% 100%, rgba(50, 132, 100, 0.32) 0%, transparent 50%),
+            linear-gradient(140deg, #0C2419 0%, #133929 18%, #184332 42%, #1E5540 68%, #276D52 88%, #328464 100%);
+          padding: 68px 24px;
           text-align: center;
           position: relative;
           overflow: hidden;
           font-family: var(--font-sans);
+          border-top: 2px solid var(--border-gold);
+          border-bottom: 2px solid var(--border-gold-subtle);
+        }
+        .ct-footer-cta::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse at 50% 0%, rgba(214,182,107,0.12) 0%, transparent 55%);
+          pointer-events: none;
         }
         .ct-footer-cta::before {
           content: '✝';
@@ -105,451 +70,348 @@ export default function Footer() {
           top: -30px;
           left: 50%;
           transform: translateX(-50%);
-          font-size: 120px;
-          color: rgba(232, 183, 183, 0.05);
+          font-size: 140px;
+          color: rgba(214, 182, 107, 0.05);
           pointer-events: none;
+          font-family: var(--font-serif);
         }
         .ct-footer-cta-eyebrow {
           font-size: 0.72rem;
           letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: var(--blush);
+          color: var(--gold-light);
           margin-bottom: 10px;
-          font-weight: 600;
+          font-weight: 700;
         }
         .ct-footer-cta h2 {
           font-family: var(--font-serif);
-          font-size: clamp(1.6rem, 4vw, 2.5rem);
+          font-size: clamp(1.8rem, 4vw, 2.6rem);
           color: var(--ivory);
           margin: 0 0 12px;
           font-weight: 700;
-          line-height: 1.2;
+          line-height: 1.25;
         }
-        .ct-footer-cta h2 span { color: var(--gold); }
+        .ct-footer-cta h2 span { color: var(--gold-bright); }
         .ct-footer-cta p {
-          color: rgba(250, 246, 238, 0.7);
-          font-size: 0.95rem;
-          margin: 0 0 28px;
-          max-width: 520px;
-          margin-left: auto;
-          margin-right: auto;
-          line-height: 1.65;
+          color: rgba(250, 246, 238, 0.78);
+          font-size: 0.98rem;
+          margin: 0 auto 30px;
+          max-width: 580px;
+          line-height: 1.7;
         }
         .ct-footer-cta-actions {
           display: flex;
-          gap: 14px;
           justify-content: center;
+          gap: 14px;
           flex-wrap: wrap;
         }
-        .ct-btn-gold {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          background: var(--gold);
-          color: var(--green);
-          font-weight: 700;
-          font-size: 0.85rem;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          text-decoration: none;
-          padding: 13px 26px;
-          border-radius: 50px;
-          transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-          box-shadow: 0 4px 20px rgba(214, 182, 107, 0.35);
-        }
-        .ct-btn-gold:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 32px rgba(214, 182, 107, 0.45);
-          background: #e5c47e;
-        }
-        .ct-btn-outline {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          background: transparent;
-          color: var(--ivory);
-          font-weight: 600;
-          font-size: 0.85rem;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          text-decoration: none;
-          padding: 13px 26px;
-          border-radius: 50px;
-          border: 2px solid rgba(250, 246, 238, 0.35);
-          transition: border-color 0.25s, background 0.25s, transform 0.25s;
-        }
-        .ct-btn-outline:hover {
-          border-color: var(--blush);
-          background: rgba(232, 183, 183, 0.1);
-          transform: translateY(-3px);
-        }
 
-        /* ── Main Footer ── */
-        .ct-footer {
-          background: #0f2a1f;
-          color: rgba(250, 246, 238, 0.75);
+        /* ── Main Footer Body ── */
+        .ct-footer-body {
+          background: 
+            radial-gradient(circle at 10% 20%, rgba(42, 110, 84, 0.25) 0%, transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(214, 182, 107, 0.15) 0%, transparent 45%),
+            linear-gradient(165deg, #0B2217 0%, #113425 25%, #184332 55%, #1F5741 85%, #133929 100%);
+          color: var(--ivory);
+          padding: 70px 24px 40px;
           font-family: var(--font-sans);
+          border-top: 1px solid rgba(214, 182, 107, 0.25);
         }
-        .ct-footer-main {
-          max-width: 1280px;
+        .ct-footer-inner {
+          max-width: 1200px;
           margin: 0 auto;
-          padding: 64px 24px 40px;
           display: grid;
-          grid-template-columns: 1.6fr repeat(3, 1fr);
+          grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
           gap: 40px;
         }
 
-        /* ── Brand Column ── */
-        .ct-footer-brand {}
-        .ct-footer-logo {
+        /* Col 1: About */
+        .ct-footer-brand-logo {
           display: flex;
           align-items: center;
           gap: 12px;
-          text-decoration: none;
-          margin-bottom: 20px;
+          margin-bottom: 16px;
         }
-        .ct-footer-logo-icon {
-          width: 46px;
-          height: 46px;
-          background: linear-gradient(135deg, var(--green), #1e5c42);
+        .ct-footer-logo-img {
+          width: 50px;
+          height: 50px;
           border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 2px solid rgba(214, 182, 107, 0.4);
+          border: 2px solid var(--gold);
+          box-shadow: 0 0 12px rgba(214, 182, 107, 0.35);
+          object-fit: cover;
+          background: #fff;
         }
-        .ct-footer-logo-icon svg { width: 24px; height: 24px; fill: var(--gold); }
-        .ct-footer-logo-text .name {
+        .ct-footer-brand-title {
           font-family: var(--font-serif);
-          font-size: 1rem;
+          font-size: 1.1rem;
           font-weight: 700;
           color: var(--ivory);
           letter-spacing: 0.04em;
           text-transform: uppercase;
-          display: block;
-          line-height: 1.2;
         }
-        .ct-footer-logo-text .sub {
-          font-size: 0.62rem;
+        .ct-footer-brand-sub {
+          font-size: 0.64rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: var(--gold);
+          color: var(--gold-light);
           display: block;
-          margin-top: 2px;
-        }
-        .ct-footer-tagline {
-          font-style: italic;
-          font-size: 0.9rem;
-          color: var(--blush);
-          margin: 0 0 16px;
-          font-family: var(--font-serif);
-          line-height: 1.5;
         }
         .ct-footer-desc {
-          font-size: 0.83rem;
+          font-size: 0.88rem;
+          color: rgba(250, 246, 238, 0.7);
           line-height: 1.75;
-          color: rgba(250, 246, 238, 0.55);
-          margin: 0 0 24px;
-          max-width: 280px;
+          margin-bottom: 20px;
         }
 
-        /* Service Times Card */
-        .ct-service-card {
-          background: rgba(255,255,255, 0.04);
-          border: 1px solid rgba(214, 182, 107, 0.15);
+        /* Service Times Box */
+        .ct-footer-times-box {
+          background: rgba(9, 28, 19, 0.7);
+          border: 1px solid var(--border-gold-subtle);
           border-radius: 12px;
           padding: 16px 18px;
-          margin-bottom: 22px;
+          margin-top: 18px;
         }
-        .ct-service-card-title {
-          font-size: 0.68rem;
-          letter-spacing: 0.18em;
+        .ct-footer-times-title {
+          font-size: 0.72rem;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--gold);
-          font-weight: 600;
-          margin-bottom: 12px;
+          color: var(--gold-bright);
+          font-weight: 700;
+          margin-bottom: 10px;
           display: flex;
           align-items: center;
           gap: 6px;
         }
-        .ct-service-row {
+        .ct-footer-time-row {
           display: flex;
           justify-content: space-between;
-          align-items: flex-start;
           font-size: 0.8rem;
-          padding: 6px 0;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
-          gap: 10px;
+          padding: 5px 0;
+          border-bottom: 1px dashed rgba(214, 182, 107, 0.15);
+          color: rgba(250, 246, 238, 0.85);
         }
-        .ct-service-row:last-child { border-bottom: none; padding-bottom: 0; }
-        .ct-service-row .day { color: var(--blush); font-weight: 500; }
-        .ct-service-row .time { color: rgba(250,246,238,0.6); text-align: right; font-size: 0.76rem; }
+        .ct-footer-time-row:last-child { border-bottom: none; }
+        .ct-footer-time-val { color: var(--gold-light); font-weight: 600; }
 
-        /* Socials */
-        .ct-socials {
-          display: flex;
-          gap: 10px;
-          flex-wrap: wrap;
-        }
-        .ct-social-btn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 38px;
-          height: 38px;
-          border-radius: 10px;
-          background: rgba(255,255,255,0.06);
-          border: 1px solid rgba(214, 182, 107, 0.15);
-          color: rgba(250,246,238,0.6);
-          text-decoration: none;
-          transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.25s;
-        }
-        .ct-social-btn:hover {
-          background: var(--gold);
-          color: var(--green);
-          border-color: var(--gold);
-          transform: translateY(-3px);
-        }
-
-        /* ── Nav Columns ── */
-        .ct-footer-col h4 {
-          font-size: 0.7rem;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: var(--gold);
-          font-weight: 700;
-          margin: 0 0 16px;
-          padding-bottom: 10px;
-          border-bottom: 1px solid rgba(214, 182, 107, 0.2);
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .ct-footer-col h4::before {
-          content: '';
+        /* Col 2 & 3: Lists */
+        .ct-footer-col h3 {
+          font-family: var(--font-serif);
+          font-size: 1.1rem;
+          color: var(--gold-bright);
+          margin: 0 0 18px;
+          letter-spacing: 0.02em;
+          position: relative;
           display: inline-block;
-          width: 18px;
+        }
+        .ct-footer-col h3::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 0;
+          width: 32px;
           height: 2px;
           background: var(--gold);
-          border-radius: 2px;
-          flex-shrink: 0;
         }
-        .ct-footer-col ul {
+        .ct-footer-list {
           list-style: none;
           padding: 0;
           margin: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 1px;
         }
-        .ct-footer-col ul li a {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 0.84rem;
-          color: rgba(250, 246, 238, 0.55);
+        .ct-footer-list li {
+          margin-bottom: 10px;
+        }
+        .ct-footer-list a {
+          font-size: 0.86rem;
+          color: rgba(250, 246, 238, 0.75);
           text-decoration: none;
-          padding: 6px 0;
-          transition: color 0.2s, padding-left 0.2s;
+          transition: all 0.2s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
         }
-        .ct-footer-col ul li a::before {
-          content: '›';
-          color: var(--blush);
-          font-size: 1.1rem;
-          line-height: 1;
-          opacity: 0;
-          transform: translateX(-4px);
-          transition: opacity 0.2s, transform 0.2s;
-        }
-        .ct-footer-col ul li a:hover {
-          color: var(--ivory);
-          padding-left: 4px;
-        }
-        .ct-footer-col ul li a:hover::before {
-          opacity: 1;
-          transform: translateX(0);
+        .ct-footer-list a:hover {
+          color: var(--gold-bright);
+          transform: translateX(4px);
         }
 
-        /* ── Divider ── */
-        .ct-footer-divider {
-          max-width: 1280px;
-          margin: 0 auto;
-          height: 1px;
-          background: linear-gradient(to right, transparent, rgba(214, 182, 107, 0.25), transparent);
+        /* Col 4: Scripture & Promise */
+        .ct-footer-promise-card {
+          background: rgba(214, 182, 107, 0.08);
+          border: 1px solid var(--border-gold);
+          border-radius: 14px;
+          padding: 20px;
+          margin-top: 16px;
+        }
+        .ct-footer-promise-verse {
+          font-family: var(--font-serif);
+          font-style: italic;
+          font-size: 0.95rem;
+          color: var(--ivory);
+          line-height: 1.65;
+          margin-bottom: 8px;
+        }
+        .ct-footer-promise-ref {
+          font-size: 0.76rem;
+          font-weight: 700;
+          color: var(--gold-light);
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
         }
 
         /* ── Bottom Bar ── */
         .ct-footer-bottom {
-          max-width: 1280px;
-          margin: 0 auto;
+          background: linear-gradient(90deg, #091E15 0%, #113626 50%, #091E15 100%);
+          border-top: 1px solid rgba(214, 182, 107, 0.18);
           padding: 22px 24px;
+          font-size: 0.8rem;
+          color: rgba(250, 246, 238, 0.7);
+        }
+        .ct-footer-bottom-inner {
+          max-width: 1200px;
+          margin: 0 auto;
           display: flex;
-          align-items: center;
           justify-content: space-between;
+          align-items: center;
           flex-wrap: wrap;
-          gap: 12px;
+          gap: 16px;
         }
-        .ct-footer-copy {
-          font-size: 0.78rem;
-          color: rgba(250, 246, 238, 0.35);
-        }
-        .ct-footer-copy a {
-          color: var(--gold);
-          text-decoration: none;
+        .ct-footer-bottom a {
+          color: rgba(250, 246, 238, 0.7);
           transition: color 0.2s;
         }
-        .ct-footer-copy a:hover { color: var(--blush); }
-        .ct-footer-verse {
-          font-style: italic;
-          font-size: 0.75rem;
-          color: rgba(250, 246, 238, 0.3);
-          font-family: var(--font-serif);
-          text-align: right;
+        .ct-footer-bottom a:hover {
+          color: var(--gold-light);
         }
-        .ct-footer-verse span { color: var(--blush); }
 
-        /* ── Responsive ── */
-        @media (max-width: 1024px) {
-          .ct-footer-main {
+        @media (max-width: 992px) {
+          .ct-footer-inner {
             grid-template-columns: 1fr 1fr;
             gap: 36px;
           }
-          .ct-footer-brand { grid-column: 1 / -1; }
-          .ct-footer-desc { max-width: 100%; }
         }
         @media (max-width: 600px) {
-          .ct-footer-main {
+          .ct-footer-inner {
             grid-template-columns: 1fr;
-            padding: 40px 20px 28px;
-            gap: 28px;
           }
-          .ct-footer-cta { padding: 44px 20px; }
-          .ct-footer-bottom {
+          .ct-footer-bottom-inner {
             flex-direction: column;
-            align-items: center;
             text-align: center;
-            padding: 18px 20px;
           }
-          .ct-footer-verse { text-align: center; }
         }
       `}</style>
 
-      {/* ── CTA Pre-Footer ── */}
+      {/* ── Pre-Footer CTA ── */}
       <section className="ct-footer-cta" aria-labelledby="footer-cta-heading">
-        <p className="ct-footer-cta-eyebrow">✝ You Are Welcome Here</p>
-        <h2 id="footer-cta-heading">
-          Join Us in <span>Worship</span> &amp; Community
-        </h2>
-        <p>
-          Be part of a loving church family passionate about prayer, the Word,
-          and reaching our community with the love of God.
-        </p>
-        <div className="ct-footer-cta-actions">
-          <Link to="/contact" className="ct-btn-gold" id="footer-plan-visit-btn">
-            Plan a Visit →
-          </Link>
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ct-btn-outline"
-            id="footer-watch-live-btn"
-          >
-            📡 Watch Live
-          </a>
+        <div className="ct-container">
+          <p className="ct-footer-cta-eyebrow">† A House of Prayer for All Nations</p>
+          <h2 id="footer-cta-heading">
+            Experience the <span>Transforming Presence</span> of God
+          </h2>
+          <p>
+            Whether you are seeking healing, spiritual restoration, or a welcoming church family to worship with, our sanctuary doors are always open to you.
+          </p>
+          <div className="ct-footer-cta-actions">
+            <Link to="/contact" className="ct-btn-gold">
+              Plan Your Visit
+            </Link>
+            <Link to="/prayers/sunday-services" className="ct-btn-outline-gold">
+              Service Schedules
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* ── Main Footer ── */}
-      <footer className="ct-footer" aria-label="Site footer">
-        <div className="ct-footer-main">
-
-          {/* Brand Column */}
-          <div className="ct-footer-brand">
-            <Link to="/" className="ct-footer-logo" aria-label="Christ's Tabernacle Home">
-              <div className="ct-footer-logo-icon">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="14" y="2" width="4" height="28" rx="2"/>
-                  <rect x="6" y="8" width="20" height="4" rx="2"/>
-                </svg>
+      <footer className="ct-footer-body" role="contentinfo">
+        <div className="ct-footer-inner">
+          {/* Col 1: Brand & Service Times */}
+          <div>
+            <div className="ct-footer-brand-logo">
+              <img
+                src={logoImg}
+                alt="Christ's Tabernacle Emblem"
+                className="ct-footer-logo-img"
+              />
+              <div>
+                <span className="ct-footer-brand-title">Christ's Tabernacle</span>
+                <span className="ct-footer-brand-sub">Prayer &amp; Worship Centre</span>
               </div>
-              <div className="ct-footer-logo-text">
-                <span className="name">Christ's Tabernacle</span>
-                <span className="sub">Prayer &amp; Worship Centre</span>
-              </div>
-            </Link>
-
-            <p className="ct-footer-tagline">"Faith · Family · Future"</p>
+            </div>
             <p className="ct-footer-desc">
-              A house of prayer for all nations. We are passionate about exalting
-              Jesus Christ, equipping believers, and reaching our community with
-              the love and power of God.
+              Dedicated to preaching the Full Gospel of Jesus Christ, ministering divine healing, bringing deliverance to the captive, and making disciples of all nations since 1991.
             </p>
 
-            {/* Service Times */}
-            <div className="ct-service-card" role="complementary" aria-label="Service times">
-              <div className="ct-service-card-title">
-                🕐 Service Times
+            <div className="ct-footer-times-box">
+              <div className="ct-footer-times-title">
+                <FaClock style={{ fontSize: "0.8rem" }} /> Service Schedule
               </div>
-              {SERVICE_TIMES.map((s) => (
-                <div className="ct-service-row" key={s.day}>
-                  <span className="day">{s.day}</span>
-                  <span className="time">{s.time}</span>
+              {SERVICE_TIMES.map((st) => (
+                <div key={st.day} className="ct-footer-time-row">
+                  <span>{st.day}</span>
+                  <span className="ct-footer-time-val">{st.time}</span>
                 </div>
               ))}
             </div>
-
-            {/* Social Links */}
-            <nav aria-label="Social media links">
-              <div className="ct-socials">
-                {SOCIAL_LINKS.map((s) => (
-                  <a
-                    key={s.id}
-                    id={s.id}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ct-social-btn"
-                    aria-label={s.label}
-                    title={s.label}
-                  >
-                    {s.icon}
-                  </a>
-                ))}
-              </div>
-            </nav>
           </div>
 
-          {/* Nav Columns */}
-          {FOOTER_NAV.map((col) => (
-            <nav key={col.heading} className="ct-footer-col" aria-label={col.heading}>
-              <h4>{col.heading}</h4>
-              <ul>
-                {col.links.map((l) => (
-                  <li key={l.label}>
-                    <Link to={l.path}>{l.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
-        </div>
+          {/* Col 2: Quick Links */}
+          <div className="ct-footer-col">
+            <h3>Explore</h3>
+            <ul className="ct-footer-list">
+              {QUICK_LINKS.map((item) => (
+                <li key={item.path}>
+                  <Link to={item.path}><FaChevronRight style={{ fontSize: "0.65rem", opacity: 0.6 }} /> {item.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="ct-footer-divider" role="separator" />
+          {/* Col 3: Ministries */}
+          <div className="ct-footer-col">
+            <h3>Ministries</h3>
+            <ul className="ct-footer-list">
+              {MINISTRIES.map((item) => (
+                <li key={item.path}>
+                  <Link to={item.path}><FaChevronRight style={{ fontSize: "0.65rem", opacity: 0.6 }} /> {item.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* Bottom Bar */}
-        <div className="ct-footer-bottom">
-          <p className="ct-footer-copy">
-            © {year} Christ's Tabernacle — Prayer &amp; Worship Centre.{" "}
-            <Link to="/privacy">Privacy Policy</Link> ·{" "}
-            <Link to="/terms">Terms</Link>
-          </p>
-          <p className="ct-footer-verse">
-            <span>"But as for me and my house,</span> we will serve the LORD."
-            <br />— Joshua 24:15
-          </p>
+          {/* Col 4: Resources & Weekly Promise */}
+          <div className="ct-footer-col">
+            <h3>Resources &amp; Media</h3>
+            <ul className="ct-footer-list">
+              {RESOURCES.map((item) => (
+                <li key={item.path}>
+                  <Link to={item.path}><FaChevronRight style={{ fontSize: "0.65rem", opacity: 0.6 }} /> {item.label}</Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="ct-footer-promise-card">
+              <p className="ct-footer-promise-verse">
+                "For where two or three gather in my name, there am I with them."
+              </p>
+              <span className="ct-footer-promise-ref">— Matthew 18:20</span>
+            </div>
+          </div>
         </div>
       </footer>
+
+      {/* ── Bottom Copyright ── */}
+      <div className="ct-footer-bottom">
+        <div className="ct-footer-bottom-inner">
+          <div>
+            © {CURRENT_YEAR} Christ's Tabernacle — Prayer &amp; Worship Centre. All rights reserved.
+          </div>
+          <div>
+            <span style={{ color: "var(--gold-bright)", fontStyle: "italic", fontFamily: "var(--font-serif)" }}>
+              "Faith · Family · Future"
+            </span>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

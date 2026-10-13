@@ -1,117 +1,328 @@
-import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import logoImg from "../assets/logo.jpeg";
+import { FaCross, FaCircle, FaBroadcastTower } from "react-icons/fa";
+import { GiCrossedSwords } from "react-icons/gi";
+import { MdLiveTv } from "react-icons/md";
 
-const NAV_LINKS = [
+/* ── Navigation Structure ── */
+const NAV = [
   { label: "Home", path: "/" },
-  { label: "About", path: "/about" },
-  { label: "Sermons", path: "/sermons" },
-  { label: "Events", path: "/events" },
-  { label: "Ministries", path: "/ministries" },
-  { label: "Gallery", path: "/gallery" },
-  { label: "Resources", path: "/resources" },
-  { label: "Contact", path: "/contact" },
+  {
+    label: "About Us",
+    path: "/about",
+    children: [
+      { label: "Our Journey", path: "/about/journey" },
+      { label: "Our Motto", path: "/about/motto" },
+      { label: "Our Vision", path: "/about/vision" },
+      { label: "Our Mission", path: "/about/mission" },
+      { label: "Statement of Faith", path: "/about/faith" },
+    ],
+  },
+  { label: "Testimonies", path: "/testimonies" },
+  {
+    label: "Media",
+    path: "/media",
+    children: [
+      { label: "Photo Gallery", path: "/media/photos" },
+      { label: "Video Archive", path: "/media/videos" },
+    ],
+  },
+  {
+    label: "Songs",
+    path: "/songs",
+    children: [
+      { label: "Worship Lyrics", path: "/songs/lyrics" },
+      { label: "Audio Recordings", path: "/songs/audio" },
+    ],
+  },
+  {
+    label: "Sermons",
+    path: "/sermons",
+    children: [
+      { label: "Sunday Sermons", path: "/sermons/sunday" },
+      { label: "Bible Study", path: "/sermons/bible-study" },
+    ],
+  },
+  {
+    label: "Prayers & Worship",
+    path: "/prayers",
+    children: [
+      { label: "Sunday Services", path: "/prayers/sunday-services" },
+      { label: "Fasting Prayers", path: "/prayers/fasting" },
+      { label: "Transformation Prayer", path: "/prayers/transformation" },
+      { label: "Discipleship Prayer", path: "/prayers/discipleship" },
+      { label: "Sunday School", path: "/prayers/sunday-school" },
+    ],
+  },
+  { label: "Connect", path: "/contact" },
 ];
 
-const SCRIPTURE_TICKERS = [
-  '"For where two or three gather in my name, there am I with them." — Matthew 18:20',
+const TICKERS = [
+  '"A House of Prayer for All Nations." — Isaiah 56:7',
   '"But as for me and my house, we will serve the LORD." — Joshua 24:15',
-  '"The LORD is my shepherd; I shall not want." — Psalm 23:1',
+  '"The Lord is my shepherd; I shall not want." — Psalm 23:1',
   '"I can do all things through Christ who strengthens me." — Philippians 4:13',
+  '"Sunday Worship: 8:15 AM – 11:15 AM • All Are Welcome in Christ"',
 ];
 
+/* ── Desktop Dropdown Item ── */
+function NavItem({ item }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const location = useLocation();
+
+  const isParentActive =
+    item.children &&
+    (location.pathname === item.path ||
+      item.children.some((c) => location.pathname.startsWith(c.path)));
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  if (!item.children) {
+    return (
+      <li>
+        <NavLink
+          to={item.path}
+          end={item.path === "/"}
+          className={({ isActive }) =>
+            `ct-nav-link${isActive ? " active" : ""}`
+          }
+        >
+          {item.label}
+        </NavLink>
+      </li>
+    );
+  }
+
+  return (
+    <li
+      ref={ref}
+      className="ct-dropdown-wrap"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <Link
+        to={item.path}
+        className={`ct-nav-link ct-nav-parent${isParentActive ? " active" : ""}`}
+        aria-haspopup="true"
+        aria-expanded={open}
+      >
+        {item.label}
+        <svg
+          className={`ct-chevron${open ? " rotated" : ""}`}
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="none"
+        >
+          <path
+            d="M2 3.5L5 6.5L8 3.5"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </Link>
+
+      <ul className={`ct-dropdown${open ? " open" : ""}`} role="menu">
+        {item.children.map((c) => (
+          <li key={c.path} role="none">
+            <NavLink
+              to={c.path}
+              className={({ isActive }) =>
+                `ct-dropdown-item${isActive ? " active" : ""}`
+              }
+              role="menuitem"
+              onClick={() => setOpen(false)}
+            >
+              <span className="ct-dropdown-dot" aria-hidden="true" />
+              {c.label}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </li>
+  );
+}
+
+/* ── Mobile Nav Item ── */
+function MobileNavItem({ item, onClose }) {
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  const isParentActive =
+    item.children &&
+    (location.pathname === item.path ||
+      item.children.some((c) => location.pathname.startsWith(c.path)));
+
+  if (!item.children) {
+    return (
+      <li className="ct-mob-item">
+        <NavLink
+          to={item.path}
+          end={item.path === "/"}
+          className={({ isActive }) =>
+            `ct-mob-link${isActive ? " active" : ""}`
+          }
+          onClick={onClose}
+        >
+          {item.label}
+        </NavLink>
+      </li>
+    );
+  }
+
+  return (
+    <li className="ct-mob-item">
+      <button
+        className={`ct-mob-parent${isParentActive ? " active" : ""}`}
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+      >
+        <span>{item.label}</span>
+        <svg
+          className={`ct-mob-chevron${open ? " rotated" : ""}`}
+          width="12"
+          height="12"
+          viewBox="0 0 10 10"
+          fill="none"
+        >
+          <path
+            d="M2 3.5L5 6.5L8 3.5"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      <div
+        className="ct-mob-sub"
+        style={{ maxHeight: open ? `${item.children.length * 52}px` : "0" }}
+      >
+        {item.children.map((c) => (
+          <NavLink
+            key={c.path}
+            to={c.path}
+            className={({ isActive }) =>
+              `ct-mob-sub-link${isActive ? " active" : ""}`
+            }
+            onClick={onClose}
+          >
+            ›&nbsp;{c.label}
+          </NavLink>
+        ))}
+      </div>
+    </li>
+  );
+}
+
+/* ── Main Header ── */
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [tickerIdx, setTickerIdx] = useState(0);
-  const [tickerVisible, setTickerVisible] = useState(true);
+  const [tickerFade, setTickerFade] = useState(true);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTickerVisible(false);
+    const t = setInterval(() => {
+      setTickerFade(false);
       setTimeout(() => {
-        setTickerIdx((i) => (i + 1) % SCRIPTURE_TICKERS.length);
-        setTickerVisible(true);
-      }, 500);
+        setTickerIdx((i) => (i + 1) % TICKERS.length);
+        setTickerFade(true);
+      }, 400);
     }, 5000);
-    return () => clearInterval(interval);
+    return () => clearInterval(t);
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
       <style>{`
-        /* ── Design Tokens ── */
-        :root {
-          --blush:   #E8B7B7;
-          --green:   #184332;
-          --gold:    #D6B66B;
-          --ivory:   #FAF6EE;
-          --font-serif: 'Playfair Display', Georgia, serif;
-          --font-sans:  'Inter', system-ui, sans-serif;
-        }
-
-        /* ── Scripture Ticker ── */
+        /* ── Scripture & Live Ticker ── */
         .ct-ticker {
-          background: var(--green);
-          color: var(--gold);
+          background: linear-gradient(90deg, #0B2318 0%, #123727 20%, #1E5641 50%, #123727 80%, #0B2318 100%);
+          color: var(--gold-bright);
           font-family: var(--font-sans);
           font-size: 0.78rem;
           letter-spacing: 0.04em;
-          text-align: center;
-          padding: 7px 16px;
+          padding: 8px 24px;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          gap: 14px;
           overflow: hidden;
+          min-height: 34px;
+          border-bottom: 1px solid rgba(214, 182, 107, 0.22);
+          position: relative;
+        }
+        .ct-ticker::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse at 50% 0%, rgba(214,182,107,0.07) 0%, transparent 60%);
+          pointer-events: none;
         }
         .ct-ticker-cross {
-          font-size: 1rem;
-          color: var(--blush);
+          color: var(--gold);
+          font-size: 0.95rem;
           flex-shrink: 0;
         }
         .ct-ticker-text {
-          transition: opacity 0.5s ease;
           font-style: italic;
+          transition: opacity 0.4s ease;
+          text-align: center;
+          font-weight: 500;
         }
-        .ct-ticker-text.hidden { opacity: 0; }
+        .ct-ticker-text.fade { opacity: 0; }
 
-        /* ── Main Header ── */
+        /* ── Header Shell ── */
         .ct-header {
           position: sticky;
           top: 0;
-          z-index: 1000;
-          background: var(--ivory);
-          border-bottom: 1px solid transparent;
-          transition: box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+          z-index: 900;
+          background: rgba(255, 255, 255, 0.96);
+          backdrop-filter: blur(16px);
+          border-bottom: 2px solid var(--border-gold-subtle);
+          transition: box-shadow 0.3s ease, border-color 0.3s ease;
           font-family: var(--font-sans);
         }
         .ct-header.scrolled {
-          background: rgba(250, 246, 238, 0.97);
-          backdrop-filter: blur(12px);
-          box-shadow: 0 4px 32px rgba(24, 67, 50, 0.10);
-          border-color: rgba(214, 182, 107, 0.25);
+          background: rgba(255, 255, 255, 0.98);
+          box-shadow: 0 4px 28px rgba(12, 34, 25, 0.1);
+          border-color: var(--border-gold);
         }
-
         .ct-header-inner {
-          max-width: 1280px;
+          max-width: 1380px;
           margin: 0 auto;
-          padding: 0 24px;
+          padding: 0 28px;
           height: 72px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 20px;
+          gap: 16px;
         }
 
         /* ── Logo ── */
@@ -123,26 +334,29 @@ export default function Header() {
           flex-shrink: 0;
         }
         .ct-logo-icon {
-          width: 48px;
-          height: 48px;
-          background: linear-gradient(135deg, var(--green) 60%, #1e5c42);
+          width: 50px;
+          height: 50px;
+          background: #ffffff;
           border-radius: 50%;
+          border: 2px solid var(--gold);
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 2px 12px rgba(24, 67, 50, 0.25);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: 0 4px 16px rgba(12, 34, 25, 0.15), 0 0 12px rgba(214, 182, 107, 0.25);
+          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+          flex-shrink: 0;
+          overflow: hidden;
         }
         .ct-logo:hover .ct-logo-icon {
-          transform: scale(1.07);
-          box-shadow: 0 4px 20px rgba(24, 67, 50, 0.35);
+          transform: scale(1.06) rotate(2deg);
+          box-shadow: 0 6px 22px rgba(214, 182, 107, 0.45);
         }
-        .ct-logo-icon svg {
-          width: 26px;
-          height: 26px;
-          fill: var(--gold);
+        .ct-logo-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
         }
-        .ct-logo-text { display: flex; flex-direction: column; line-height: 1; }
         .ct-logo-name {
           font-family: var(--font-serif);
           font-size: 1.05rem;
@@ -150,18 +364,21 @@ export default function Header() {
           color: var(--green);
           letter-spacing: 0.04em;
           text-transform: uppercase;
+          display: block;
+          line-height: 1.15;
         }
         .ct-logo-sub {
-          font-size: 0.63rem;
+          font-size: 0.6rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: var(--gold);
-          margin-top: 2px;
-          font-weight: 500;
+          color: var(--gold-dark);
+          display: block;
+          margin-top: 3px;
+          font-weight: 600;
         }
 
         /* ── Desktop Nav ── */
-        .ct-nav {
+        .ct-nav-list {
           display: flex;
           align-items: center;
           gap: 2px;
@@ -169,83 +386,158 @@ export default function Header() {
           margin: 0;
           padding: 0;
         }
-        .ct-nav a {
-          display: block;
-          padding: 8px 12px;
-          font-size: 0.83rem;
-          font-weight: 500;
+
+        .ct-nav-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 9px 12px;
+          font-size: 0.84rem;
+          font-weight: 600;
           color: var(--green);
           text-decoration: none;
-          letter-spacing: 0.02em;
-          border-radius: 6px;
+          border-radius: 8px;
           position: relative;
-          transition: color 0.25s ease, background 0.25s ease;
+          letter-spacing: 0.01em;
+          transition: color 0.2s, background 0.2s;
+          white-space: nowrap;
         }
-        .ct-nav a::after {
+        .ct-nav-link::after {
           content: '';
           position: absolute;
-          bottom: 4px;
+          bottom: 3px;
           left: 12px;
           right: 12px;
           height: 2px;
           background: var(--gold);
           border-radius: 2px;
           transform: scaleX(0);
-          transition: transform 0.25s ease;
+          transition: transform 0.22s ease;
           transform-origin: center;
         }
-        .ct-nav a:hover,
-        .ct-nav a.active {
-          color: var(--green);
-          background: rgba(232, 183, 183, 0.18);
+        .ct-nav-link:hover,
+        .ct-nav-link.active {
+          color: var(--green-deep);
+          background: rgba(214, 182, 107, 0.1);
         }
-        .ct-nav a:hover::after,
-        .ct-nav a.active::after {
-          transform: scaleX(1);
+        .ct-nav-link:hover::after,
+        .ct-nav-link.active::after { transform: scaleX(1); }
+
+        .ct-chevron {
+          transition: transform 0.22s ease;
+          flex-shrink: 0;
+          opacity: 0.7;
+        }
+        .ct-chevron.rotated { transform: rotate(180deg); opacity: 1; }
+
+        /* Dropdown wrapper */
+        .ct-dropdown-wrap { position: relative; }
+        .ct-dropdown {
+          position: absolute;
+          top: calc(100% + 8px);
+          left: 50%;
+          transform: translateX(-50%) translateY(-6px);
+          background: #ffffff;
+          border-radius: 14px;
+          box-shadow: 0 16px 50px rgba(12, 34, 25, 0.16), 0 2px 10px rgba(214, 182, 107, 0.15);
+          border: 1.5px solid var(--border-gold);
+          padding: 8px;
+          min-width: 215px;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+          z-index: 1000;
+          list-style: none;
+        }
+        .ct-dropdown::before {
+          content: '';
+          position: absolute;
+          top: -6px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 12px;
+          height: 6px;
+          background: white;
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .ct-dropdown.open {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateX(-50%) translateY(0);
+        }
+        .ct-dropdown-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 14px;
+          font-size: 0.83rem;
+          font-weight: 500;
+          color: var(--text-main);
+          text-decoration: none;
+          border-radius: 8px;
+          transition: background 0.18s, color 0.18s, padding-left 0.18s;
+          white-space: nowrap;
+        }
+        .ct-dropdown-item:hover,
+        .ct-dropdown-item.active {
+          background: rgba(214, 182, 107, 0.12);
+          color: var(--green);
+          padding-left: 18px;
+        }
+        .ct-dropdown-item.active { font-weight: 700; }
+        .ct-dropdown-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: var(--border-gold);
+          flex-shrink: 0;
+          transition: background 0.18s;
+        }
+        .ct-dropdown-item:hover .ct-dropdown-dot,
+        .ct-dropdown-item.active .ct-dropdown-dot {
+          background: var(--gold);
         }
 
-        /* ── Live Stream Button ── */
+        /* ── Live Stream / CTA Button ── */
         .ct-live-btn {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: var(--gold);
-          color: var(--green);
-          font-size: 0.8rem;
+          background: var(--grad-gold);
+          color: #122D24;
+          font-size: 0.78rem;
           font-weight: 700;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
           text-decoration: none;
-          padding: 10px 18px;
+          padding: 9px 18px;
           border-radius: 50px;
-          border: 2px solid var(--gold);
-          transition: background 0.28s ease, color 0.28s ease, transform 0.25s ease, box-shadow 0.28s ease;
+          border: 1px solid rgba(214, 182, 107, 0.5);
           white-space: nowrap;
           flex-shrink: 0;
-          box-shadow: 0 4px 16px rgba(214, 182, 107, 0.3);
+          box-shadow: 0 4px 18px rgba(214, 182, 107, 0.35);
+          transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
         }
         .ct-live-btn:hover {
-          background: var(--green);
-          color: var(--gold);
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(24, 67, 50, 0.28);
+          box-shadow: 0 8px 24px rgba(214, 182, 107, 0.45);
+          filter: brightness(1.05);
         }
         .ct-live-dot {
           width: 8px;
           height: 8px;
-          background: var(--green);
+          background: var(--crimson);
           border-radius: 50%;
-          animation: ct-pulse 1.4s infinite;
+          animation: pulse-dot 1.4s infinite;
           flex-shrink: 0;
-          transition: background 0.28s ease;
+          box-shadow: 0 0 8px rgba(158, 27, 36, 0.6);
         }
-        .ct-live-btn:hover .ct-live-dot { background: var(--gold); }
-        @keyframes ct-pulse {
+        @keyframes pulse-dot {
           0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.45; transform: scale(0.7); }
+          50% { opacity: 0.35; transform: scale(0.65); }
         }
 
-        /* ── Hamburger ── */
+        /* ── Mobile Hamburger ── */
         .ct-hamburger {
           display: none;
           flex-direction: column;
@@ -259,33 +551,34 @@ export default function Header() {
           cursor: pointer;
           padding: 6px;
           border-radius: 8px;
+          flex-shrink: 0;
           transition: background 0.2s;
         }
-        .ct-hamburger:hover { background: rgba(232, 183, 183, 0.2); }
+        .ct-hamburger:hover { background: rgba(214, 182, 107, 0.12); }
         .ct-hamburger span {
           display: block;
-          width: 24px;
+          width: 22px;
           height: 2px;
-          background: var(--green);
+          background: var(--grad-green-accent);
           border-radius: 2px;
-          transition: transform 0.35s ease, opacity 0.25s ease, width 0.3s ease;
+          transition: transform 0.3s ease, opacity 0.2s ease, width 0.25s ease;
         }
         .ct-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .ct-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
         .ct-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
         /* ── Mobile Drawer ── */
-        .ct-drawer-overlay {
+        .ct-overlay {
           display: none;
           position: fixed;
           inset: 0;
-          background: rgba(24, 67, 50, 0.45);
+          background: rgba(9, 28, 19, 0.65);
           backdrop-filter: blur(4px);
-          z-index: 998;
+          z-index: 995;
           opacity: 0;
-          transition: opacity 0.35s ease;
+          transition: opacity 0.3s ease;
         }
-        .ct-drawer-overlay.open { opacity: 1; }
+        .ct-overlay.show { opacity: 1; }
 
         .ct-drawer {
           position: fixed;
@@ -293,259 +586,240 @@ export default function Header() {
           right: 0;
           height: 100dvh;
           width: min(320px, 88vw);
-          background: var(--ivory);
-          z-index: 999;
+          background: var(--white);
+          z-index: 997;
           transform: translateX(100%);
-          transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
           display: flex;
           flex-direction: column;
-          box-shadow: -8px 0 40px rgba(24, 67, 50, 0.18);
-          padding: 0;
+          box-shadow: -8px 0 40px rgba(9, 28, 19, 0.25);
           overflow-y: auto;
+          border-left: 2px solid var(--border-gold);
         }
         .ct-drawer.open { transform: translateX(0); }
-
         .ct-drawer-head {
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: 18px 20px;
-          border-bottom: 1px solid rgba(214, 182, 107, 0.25);
-          background: var(--green);
-        }
-        .ct-drawer-title {
-          font-family: var(--font-serif);
-          color: var(--gold);
-          font-size: 1rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
+          background: var(--grad-sanctuary);
+          color: var(--ivory);
+          flex-shrink: 0;
+          border-bottom: 2px solid var(--border-gold);
         }
         .ct-drawer-close {
-          background: none;
-          border: none;
-          color: var(--blush);
-          font-size: 1.5rem;
-          cursor: pointer;
-          line-height: 1;
-          padding: 4px;
-          border-radius: 6px;
-          transition: color 0.2s;
-        }
-        .ct-drawer-close:hover { color: var(--gold); }
-
-        .ct-drawer-nav {
-          list-style: none;
-          padding: 12px 0;
-          margin: 0;
-          flex: 1;
-        }
-        .ct-drawer-nav li a {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 14px 24px;
-          font-size: 0.95rem;
-          font-weight: 500;
-          color: var(--green);
-          text-decoration: none;
-          border-left: 3px solid transparent;
-          transition: background 0.2s, border-color 0.2s, color 0.2s;
-          letter-spacing: 0.02em;
-        }
-        .ct-drawer-nav li a:hover,
-        .ct-drawer-nav li a.active {
-          background: rgba(232, 183, 183, 0.2);
-          border-left-color: var(--gold);
-          color: var(--green);
-        }
-        .ct-drawer-nav li a .nav-dot {
-          width: 6px;
-          height: 6px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
-          background: var(--blush);
-          flex-shrink: 0;
-          transition: background 0.2s;
-        }
-        .ct-drawer-nav li a:hover .nav-dot,
-        .ct-drawer-nav li a.active .nav-dot { background: var(--gold); }
-
-        .ct-drawer-footer {
-          padding: 20px 24px;
-          border-top: 1px solid rgba(214, 182, 107, 0.2);
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .ct-drawer-live {
+          background: rgba(255, 255, 255, 0.15);
+          color: var(--ivory);
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
-          background: var(--gold);
+          font-size: 1.1rem;
+          cursor: pointer;
+        }
+
+        .ct-mob-list {
+          list-style: none;
+          padding: 16px 12px;
+          margin: 0;
+          flex-grow: 1;
+        }
+        .ct-mob-item { margin-bottom: 4px; }
+        .ct-mob-link,
+        .ct-mob-parent {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding: 12px 14px;
+          border-radius: 10px;
+          font-size: 0.92rem;
+          font-weight: 600;
+          color: var(--text-main);
+          text-decoration: none;
+          background: none;
+          border: none;
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s;
+          text-align: left;
+        }
+        .ct-mob-link:hover,
+        .ct-mob-parent:hover,
+        .ct-mob-link.active,
+        .ct-mob-parent.active {
+          background: rgba(214, 182, 107, 0.12);
+          color: var(--green);
+        }
+        .ct-mob-sub {
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+          padding-left: 14px;
+        }
+        .ct-mob-sub-link {
+          display: block;
+          padding: 9px 14px;
+          font-size: 0.84rem;
+          color: var(--text-muted);
+          text-decoration: none;
+          border-radius: 8px;
+          transition: color 0.2s, background 0.2s;
+        }
+        .ct-mob-sub-link:hover,
+        .ct-mob-sub-link.active {
           color: var(--green);
           font-weight: 700;
-          font-size: 0.85rem;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          text-decoration: none;
-          padding: 13px;
-          border-radius: 50px;
-          transition: background 0.25s, color 0.25s;
+          background: rgba(214, 182, 107, 0.08);
         }
-        .ct-drawer-live:hover { background: var(--green); color: var(--gold); }
-        .ct-drawer-service-info {
-          font-size: 0.76rem;
-          color: #6b7280;
-          text-align: center;
-          letter-spacing: 0.02em;
-          line-height: 1.6;
+        .ct-mob-chevron {
+          transition: transform 0.25s ease;
+          opacity: 0.7;
         }
-        .ct-drawer-service-info strong { color: var(--green); }
+        .ct-mob-chevron.rotated { transform: rotate(180deg); }
 
-        /* ── Responsive ── */
-        @media (max-width: 1024px) {
-          .ct-nav { display: none; }
-          .ct-hamburger { display: flex; }
-          .ct-drawer, .ct-drawer-overlay { display: flex; }
-          .ct-drawer-overlay { display: block; }
+        .ct-drawer-footer {
+          padding: 20px;
+          background: var(--ivory);
+          border-top: 1px solid var(--border-gold-subtle);
         }
-        @media (max-width: 480px) {
+
+        /* ── Responsive Breakpoints ── */
+        @media (max-width: 1024px) {
+          .ct-nav-list { display: none; }
+          .ct-hamburger { display: flex; }
+          .ct-overlay { display: block; }
+          .ct-header-inner { padding: 0 18px; height: 68px; }
+        }
+        @media (max-width: 768px) {
           .ct-header-inner { padding: 0 16px; height: 64px; }
-          .ct-logo-name { font-size: 0.9rem; }
-          .ct-live-btn { display: none; }
+          .ct-logo-name { font-size: 0.98rem; }
+          .ct-logo-sub { font-size: 0.55rem; }
+          .ct-live-btn { padding: 8px 14px; font-size: 0.74rem; }
+        }
+        @media (max-width: 540px) {
+          .ct-header-inner { padding: 0 12px; height: 60px; gap: 6px; }
+          .ct-logo { gap: 8px; }
+          .ct-logo-icon { width: 38px; height: 38px; }
+          .ct-logo-name { font-size: 0.9rem; letter-spacing: 0.02em; }
+          .ct-logo-sub { display: none; }
+          .ct-live-btn { padding: 6px 10px; font-size: 0.7rem; gap: 5px; }
+          .ct-ticker { font-size: 0.72rem; padding: 6px 12px; min-height: 28px; }
+        }
+        @media (max-width: 380px) {
+          .ct-logo-name { font-size: 0.82rem; }
+          .ct-live-btn span:last-child { display: none; } /* Show pulsing dot only */
+          .ct-live-btn { padding: 6px 8px; }
         }
       `}</style>
 
-      {/* Scripture Ticker */}
-      <div className="ct-ticker">
-        <span className="ct-ticker-cross">✝</span>
-        <span className={`ct-ticker-text${tickerVisible ? "" : " hidden"}`}>
-          {SCRIPTURE_TICKERS[tickerIdx]}
+      {/* ── Top Scripture Ticker ── */}
+      <div className="ct-ticker" role="region" aria-label="Scripture Announcement">
+        <FaCross className="ct-ticker-cross" aria-hidden="true" style={{ fontSize: "0.85rem", flexShrink: 0 }} />
+        <span className={`ct-ticker-text${tickerFade ? "" : " fade"}`}>
+          {TICKERS[tickerIdx]}
         </span>
-        <span className="ct-ticker-cross">✝</span>
       </div>
 
-      {/* Sticky Header */}
-      <header className={`ct-header${scrolled ? " scrolled" : ""}`}>
+      {/* ── Main Sticky Header ── */}
+      <header className={`ct-header${scrolled ? " scrolled" : ""}`} role="banner">
         <div className="ct-header-inner">
-
           {/* Logo */}
           <Link to="/" className="ct-logo" aria-label="Christ's Tabernacle Home">
             <div className="ct-logo-icon">
-              <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                <rect x="14" y="2" width="4" height="28" rx="2"/>
-                <rect x="6" y="8" width="20" height="4" rx="2"/>
-              </svg>
+              <img
+                src={logoImg}
+                alt="Christ's Tabernacle Emblem"
+                className="ct-logo-img"
+              />
             </div>
-            <div className="ct-logo-text">
+            <div>
               <span className="ct-logo-name">Christ's Tabernacle</span>
-              <span className="ct-logo-sub">Prayer &amp; Worship Centre</span>
+              <span className="ct-logo-sub">Prayer &amp; Worship Centre • Est. 1991</span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav aria-label="Main navigation">
-            <ul className="ct-nav">
-              {NAV_LINKS.map((l) => (
-                <li key={l.path}>
-                  <NavLink
-                    to={l.path}
-                    className={({ isActive }) => (isActive ? "active" : "")}
-                    end={l.path === "/"}
-                  >
-                    {l.label}
-                  </NavLink>
-                </li>
+          <nav aria-label="Main Navigation">
+            <ul className="ct-nav-list">
+              {NAV.map((item) => (
+                <NavItem key={item.path} item={item} />
               ))}
             </ul>
           </nav>
 
-          {/* CTA */}
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ct-live-btn"
-            id="header-live-stream-btn"
-            aria-label="Join Live Stream"
-          >
-            <span className="ct-live-dot" aria-hidden="true" />
-            Live Stream
-          </a>
+          {/* Live Stream CTA Button */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <Link to="/prayers/sunday-services" className="ct-live-btn" aria-label="Watch Live Service">
+              <span className="ct-live-dot" aria-hidden="true" />
+              <MdLiveTv style={{ fontSize: "1rem" }} />
+              <span>Live Service</span>
+            </Link>
 
-          {/* Hamburger */}
-          <button
-            className={`ct-hamburger${menuOpen ? " open" : ""}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            id="header-hamburger-btn"
-          >
-            <span />
-            <span />
-            <span />
-          </button>
+            {/* Mobile Hamburger Toggle */}
+            <button
+              className={`ct-hamburger${menuOpen ? " open" : ""}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Mobile Overlay */}
+      {/* ── Mobile Drawer & Backdrop ── */}
       <div
-        className={`ct-drawer-overlay${menuOpen ? " open" : ""}`}
-        onClick={() => setMenuOpen(false)}
+        className={`ct-overlay${menuOpen ? " show" : ""}`}
+        onClick={closeMenu}
         aria-hidden="true"
+        style={{ pointerEvents: menuOpen ? "auto" : "none" }}
       />
-
-      {/* Mobile Drawer */}
-      <nav
+      <div
         className={`ct-drawer${menuOpen ? " open" : ""}`}
-        aria-label="Mobile navigation"
-        aria-hidden={!menuOpen}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation Menu"
       >
         <div className="ct-drawer-head">
-          <span className="ct-drawer-title">✝ Navigation</span>
-          <button
-            className="ct-drawer-close"
-            onClick={() => setMenuOpen(false)}
-            aria-label="Close navigation"
-          >
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <img
+              src={logoImg}
+              alt=""
+              style={{ width: 34, height: 34, borderRadius: "50%", border: "1.5px solid var(--gold)" }}
+            />
+            <span style={{ fontFamily: "var(--font-serif)", fontSize: "0.95rem", fontWeight: 700, color: "var(--ivory)" }}>
+              Christ's Tabernacle
+            </span>
+          </div>
+          <button className="ct-drawer-close" onClick={closeMenu} aria-label="Close menu">
             ✕
           </button>
         </div>
 
-        <ul className="ct-drawer-nav">
-          {NAV_LINKS.map((l) => (
-            <li key={l.path}>
-              <NavLink
-                to={l.path}
-                className={({ isActive }) => (isActive ? "active" : "")}
-                end={l.path === "/"}
-                onClick={() => setMenuOpen(false)}
-              >
-                <span className="nav-dot" aria-hidden="true" />
-                {l.label}
-              </NavLink>
-            </li>
+        <ul className="ct-mob-list">
+          {NAV.map((item) => (
+            <MobileNavItem key={item.path} item={item} onClose={closeMenu} />
           ))}
         </ul>
 
         <div className="ct-drawer-footer">
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ct-drawer-live"
-            id="mobile-live-stream-btn"
+          <Link
+            to="/contact"
+            className="ct-btn-gold"
+            onClick={closeMenu}
+            style={{ width: "100%", textAlign: "center", justifyContent: "center" }}
           >
-            <span style={{ fontSize: "0.9rem" }}>📡</span>
-            Join Live Stream
-          </a>
-          <p className="ct-drawer-service-info">
-            <strong>Sunday Service:</strong> 8:15 AM – 11:15 AM<br />
-            <strong>Prayer Meeting:</strong> New Moon &amp; Full Moon • 7:00–8:30 PM
+            🙏 Submit Prayer Request
+          </Link>
+          <p style={{ fontSize: "0.74rem", color: "var(--text-muted)", textAlign: "center", marginTop: 14 }}>
+            Sunday Worship: 8:15 AM – 11:15 AM
           </p>
         </div>
-      </nav>
+      </div>
     </>
   );
 }
