@@ -405,10 +405,13 @@ export default function Footer() {
           <div>
             © {CURRENT_YEAR} Christ's Tabernacle — Prayer &amp; Worship Centre. All rights reserved.
           </div>
-          <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <span style={{ color: "var(--gold-bright)", fontStyle: "italic", fontFamily: "var(--font-serif)" }}>
               "Faith · Family · Future"
             </span>
+            <Link to="/admin" style={{ color: "rgba(214, 182, 107, 0.7)", textDecoration: "none", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: 4 }}>
+              <span>Admin Portal</span> 🔒
+            </Link>
           </div>
         </div>
       </div>

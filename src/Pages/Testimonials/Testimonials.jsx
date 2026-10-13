@@ -1,4 +1,5 @@
-﻿import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getPublicTestimonials, createTestimonial } from "../../services/api";
 
 const TESTIMONIES = [
   {
@@ -75,6 +76,7 @@ export default function Testimonials() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [modalOpen, setModalOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [testimonies, setTestimonies] = useState(TESTIMONIES);
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -84,13 +86,40 @@ export default function Testimonials() {
     anonymous: false,
   });
 
+  const fetchDynamicTestimonies = async () => {
+    try {
+      const data = await getPublicTestimonials(activeCategory);
+      if (data && data.length > 0) {
+        setTestimonies(data);
+      }
+    } catch (err) {
+      // Fallback to static TESTIMONIES silently
+    }
+  };
+
+  useEffect(() => {
+    fetchDynamicTestimonies();
+  }, [activeCategory]);
+
   const filtered =
     activeCategory === "All"
-      ? TESTIMONIES
-      : TESTIMONIES.filter((t) => t.category === activeCategory);
+      ? testimonies
+      : testimonies.filter((t) => t.category?.toLowerCase() === activeCategory.toLowerCase());
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await createTestimonial({
+        name: formData.anonymous ? "Anonymous Believer" : formData.name,
+        location: formData.location || "Chennai, India",
+        category: formData.category,
+        title: formData.title,
+        story: formData.story,
+        isApproved: false, // Sent for pastoral review
+      });
+    } catch (err) {
+      console.warn("Testimony submission:", err.message);
+    }
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
@@ -293,7 +322,7 @@ export default function Testimonials() {
         {/* Testimonies Grid */}
         <div className="test-grid">
           {filtered.map((t) => (
-            <article key={t.id} className="test-card">
+            <article key={t._id || t.id} className="test-card">
               <div className="test-card-head">
                 <span className="test-cat-tag">{t.category}</span>
                 <span className="test-date">{t.date}</span>

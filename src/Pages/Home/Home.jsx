@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { getPublicHeroSlides } from "../../services/api";
 import logoImg from "../../assets/logo.jpeg";
 import sanctuaryImg from "../../assets/sanctuary.jpg";
 import modernSanctuaryImg from "../../assets/Modern-Sanctuary.png";
@@ -119,26 +120,42 @@ const QUICK_EXPLORE = [
 ];
 
 export default function Home() {
+  const [slides, setSlides] = useState(BANNER_SLIDES);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [activeSanctuaryView, setActiveSanctuaryView] = useState("modern");
   const touchStartXRef = useRef(null);
 
+  // Fetch dynamic hero slides from backend API
+  useEffect(() => {
+    const fetchDynamicHero = async () => {
+      try {
+        const dynamicSlides = await getPublicHeroSlides();
+        if (dynamicSlides && dynamicSlides.length > 0) {
+          setSlides(dynamicSlides);
+        }
+      } catch (err) {
+        // Fallback to static slides silently
+      }
+    };
+    fetchDynamicHero();
+  }, []);
+
   // Auto-play slideshow every 5.5 seconds unless paused
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || slides.length === 0) return;
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % BANNER_SLIDES.length);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5500);
     return () => clearInterval(timer);
-  }, [isPaused]);
+  }, [isPaused, slides.length]);
 
   const handlePrevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + BANNER_SLIDES.length) % BANNER_SLIDES.length);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   const handleNextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % BANNER_SLIDES.length);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const handleTouchStart = (e) => {
@@ -925,18 +942,18 @@ export default function Home() {
             aria-roledescription="carousel"
             aria-label="Hero Banner Slideshow"
           >
-            {BANNER_SLIDES.map((slide, idx) => (
+            {slides.map((slide, idx) => (
               <div
-                key={slide.id}
+                key={slide._id || slide.id || idx}
                 className={`home-banner-slide ${idx === currentSlide ? "active" : ""}`}
                 role="group"
                 aria-roledescription="slide"
-                aria-label={`Slide ${idx + 1} of ${BANNER_SLIDES.length}: ${slide.title}`}
+                aria-label={`Slide ${idx + 1} of ${slides.length}: ${slide.title}`}
                 aria-hidden={idx !== currentSlide}
               >
                 <img
                   src={slide.image}
-                  alt={slide.alt}
+                  alt={slide.alt || slide.title}
                   className="home-banner-img"
                   loading={idx === 0 ? "eager" : "lazy"}
                 />
@@ -947,8 +964,8 @@ export default function Home() {
                     <span className="home-banner-slide-title">{slide.title}</span>
                     <span className="home-banner-slide-sub">{slide.subtitle}</span>
                   </div>
-                  <Link to={slide.actionLink} className="home-banner-cta-btn">
-                    {slide.actionText} →
+                  <Link to={slide.actionLink || '/contact'} className="home-banner-cta-btn">
+                    {slide.actionText || 'Plan a Visit'} →
                   </Link>
                 </div>
               </div>
@@ -975,9 +992,9 @@ export default function Home() {
             {/* Controls: Indicators & Play/Pause */}
             <div className="home-banner-controls">
               <div className="home-banner-dots" role="tablist" aria-label="Slide Selection">
-                {BANNER_SLIDES.map((slide, idx) => (
+                {slides.map((slide, idx) => (
                   <button
-                    key={slide.id}
+                    key={slide._id || slide.id || idx}
                     type="button"
                     role="tab"
                     aria-selected={idx === currentSlide}
@@ -990,7 +1007,7 @@ export default function Home() {
 
               <div className="home-banner-status">
                 <span className="home-banner-counter">
-                  {currentSlide + 1} / {BANNER_SLIDES.length}
+                  {currentSlide + 1} / {slides.length}
                 </span>
                 <button
                   type="button"

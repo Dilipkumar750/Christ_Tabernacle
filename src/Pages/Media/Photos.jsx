@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getPublicPhotos } from "../../services/api";
 import sanctuaryImg from "../../assets/sanctuary.jpg";
 import modernSanctuaryImg from "../../assets/Modern-Sanctuary.png";
 import worshipImg from "../../assets/worship.jpg";
@@ -68,11 +69,26 @@ const CATEGORIES = ["All", "Worship", "Sanctuary", "Prayer", "Scripture", "Youth
 export default function Photos() {
   const [selectedCat, setSelectedCat] = useState("All");
   const [lightboxPhoto, setLightboxPhoto] = useState(null);
+  const [photos, setPhotos] = useState(PHOTO_GALLERY);
+
+  useEffect(() => {
+    const fetchDynamicPhotos = async () => {
+      try {
+        const data = await getPublicPhotos(selectedCat);
+        if (data && data.length > 0) {
+          setPhotos(data);
+        }
+      } catch (err) {
+        // Fallback to static PHOTO_GALLERY silently
+      }
+    };
+    fetchDynamicPhotos();
+  }, [selectedCat]);
 
   const filtered =
     selectedCat === "All"
-      ? PHOTO_GALLERY
-      : PHOTO_GALLERY.filter((p) => p.category === selectedCat);
+      ? photos
+      : photos.filter((p) => p.category?.toLowerCase() === selectedCat.toLowerCase());
 
   return (
     <>
@@ -241,7 +257,7 @@ export default function Photos() {
       <div className="photo-grid">
         {filtered.map((item) => (
           <article
-            key={item.id}
+            key={item._id || item.id}
             className="photo-card"
             onClick={() => setLightboxPhoto(item)}
             role="button"

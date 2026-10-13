@@ -1,4 +1,5 @@
-﻿import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getPublicSongs } from "../../services/api";
 
 const SONGS_DB = [
   {
@@ -173,15 +174,31 @@ He bled and died to take away my sin!`,
 export default function Lyrics() {
   const [search, setSearch] = useState("");
   const [selectedLang, setSelectedLang] = useState("All");
+  const [songs, setSongs] = useState(SONGS_DB);
   const [activeSong, setActiveSong] = useState(SONGS_DB[0]);
   const [copied, setCopied] = useState(false);
 
-  const filtered = SONGS_DB.filter((s) => {
+  useEffect(() => {
+    const fetchDynamicSongs = async () => {
+      try {
+        const data = await getPublicSongs(selectedLang, search);
+        if (data && data.length > 0) {
+          setSongs(data);
+          setActiveSong(data[0]);
+        }
+      } catch (err) {
+        // Fallback to static SONGS_DB silently
+      }
+    };
+    fetchDynamicSongs();
+  }, [selectedLang]);
+
+  const filtered = songs.filter((s) => {
     const matchesLang = selectedLang === "All" || s.language === selectedLang;
     const matchesSearch =
-      s.title.toLowerCase().includes(search.toLowerCase()) ||
-      s.theme.toLowerCase().includes(search.toLowerCase()) ||
-      s.lyrics.toLowerCase().includes(search.toLowerCase());
+      s.title?.toLowerCase().includes(search.toLowerCase()) ||
+      s.theme?.toLowerCase().includes(search.toLowerCase()) ||
+      s.lyrics?.toLowerCase().includes(search.toLowerCase());
     return matchesLang && matchesSearch;
   });
 
@@ -359,19 +376,22 @@ export default function Lyrics() {
           </div>
 
           <ul className="lyrics-list">
-            {filtered.map((song) => (
-              <li
-                key={song.id}
-                className={`lyrics-item${activeSong.id === song.id ? " active" : ""}`}
-                onClick={() => setActiveSong(song)}
-              >
-                <span className="lyrics-item-title">{song.title}</span>
-                <div className="lyrics-item-meta">
-                  <span>{song.theme}</span>
-                  <span>{song.key}</span>
-                </div>
-              </li>
-            ))}
+            {filtered.map((song) => {
+              const isSelected = activeSong && (activeSong._id ? activeSong._id === song._id : activeSong.id === song.id);
+              return (
+                <li
+                  key={song._id || song.id}
+                  className={`lyrics-item${isSelected ? " active" : ""}`}
+                  onClick={() => setActiveSong(song)}
+                >
+                  <span className="lyrics-item-title">{song.title}</span>
+                  <div className="lyrics-item-meta">
+                    <span>{song.theme}</span>
+                    <span>{song.key}</span>
+                  </div>
+                </li>
+              );
+            })}
             {filtered.length === 0 && (
               <li style={{ padding: "20px 10px", textAlign: "center", color: "var(--text-light)" }}>
                 No songs matching your search.
@@ -382,28 +402,36 @@ export default function Lyrics() {
 
         {/* Viewer */}
         <section className="lyrics-viewer" aria-labelledby="song-title">
-          <div className="lyrics-viewer-head">
-            <div>
-              <span className="ct-badge" style={{ marginBottom: 8 }}>
-                {activeSong.language} Praise • {activeSong.theme}
-              </span>
-              <h2 id="song-title" className="lyrics-viewer-title">{activeSong.title}</h2>
-              <div className="lyrics-viewer-badges">
-                <span style={{ fontSize: "0.82rem", color: "var(--gold-dark)", fontWeight: 700 }}>
-                  🎹 Key: {activeSong.key}
-                </span>
-                <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                  ⏱️ Tempo: {activeSong.tempo}
-                </span>
+          {activeSong ? (
+            <>
+              <div className="lyrics-viewer-head">
+                <div>
+                  <span className="ct-badge" style={{ marginBottom: 8 }}>
+                    {activeSong.language} Praise • {activeSong.theme}
+                  </span>
+                  <h2 id="song-title" className="lyrics-viewer-title">{activeSong.title}</h2>
+                  <div className="lyrics-viewer-badges">
+                    <span style={{ fontSize: "0.82rem", color: "var(--gold-dark)", fontWeight: 700 }}>
+                      🎹 Key: {activeSong.key}
+                    </span>
+                    <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
+                      ⏱️ Tempo: {activeSong.tempo}
+                    </span>
+                  </div>
+                </div>
+
+                <button onClick={handleCopy} className="ct-btn-gold" style={{ padding: "9px 18px", fontSize: "0.8rem" }}>
+                  {copied ? "✓ Lyrics Copied!" : "📋 Copy Lyrics"}
+                </button>
               </div>
+
+              <div className="lyrics-pre">{activeSong.lyrics}</div>
+            </>
+          ) : (
+            <div style={{ padding: "40px 20px", textAlign: "center", color: "var(--text-muted)" }}>
+              Select a song from the playlist to display sacred lyrics.
             </div>
-
-            <button onClick={handleCopy} className="ct-btn-gold" style={{ padding: "9px 18px", fontSize: "0.8rem" }}>
-              {copied ? "✓ Lyrics Copied!" : "📋 Copy Lyrics"}
-            </button>
-          </div>
-
-          <div className="lyrics-pre">{activeSong.lyrics}</div>
+          )}
         </section>
       </div>
     </>
