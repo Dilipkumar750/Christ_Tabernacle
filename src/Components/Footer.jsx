@@ -27,8 +27,7 @@ const MINISTRIES = [
 const RESOURCES = [
   { label: "Sunday Sermons Archive", path: "/sermons/sunday" },
   { label: "Bible Study Notes", path: "/sermons/bible-study" },
-  { label: "Worship Song Lyrics", path: "/songs/lyrics" },
-  { label: "Worship Audio Tracks", path: "/songs/audio" },
+  { label: "Worship Videos & Lyrics", path: "/songs/lyrics" },
   { label: "Photo Gallery", path: "/media/photos" },
   { label: "Video Messages", path: "/media/videos" },
 ];

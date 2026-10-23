@@ -134,7 +134,7 @@ export default function Home() {
         if (dynamicSlides && dynamicSlides.length > 0) {
           setSlides(dynamicSlides);
         }
-      } catch (err) {
+      } catch {
         // Fallback to static slides silently
       }
     };

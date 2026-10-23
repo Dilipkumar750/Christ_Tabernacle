@@ -41,6 +41,12 @@ export default function AdminLogin() {
     setError('');
   };
 
+  const fillChurchLogin = () => {
+    setUsername('christtabernacle@gmail.com');
+    setPassword('christ@750');
+    setError('');
+  };
+
   return (
     <div
       style={{
@@ -48,21 +54,21 @@ export default function AdminLogin() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'radial-gradient(ellipse at top, #143627 0%, #0A1C14 70%, #050E0A 100%)',
+        background: '#F8FAF9',
         padding: '24px',
         position: 'relative',
         fontFamily: 'var(--font-sans, sans-serif)',
       }}
     >
-      {/* Background glow & subtle pattern */}
+      {/* Subtle background decoration */}
       <div
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
-          bottom: 0,
-          background: 'radial-gradient(circle at 50% 30%, rgba(214, 182, 107, 0.12) 0%, transparent 60%)',
+          height: 280,
+          background: 'linear-gradient(180deg, #EAF4EF 0%, #F8FAF9 100%)',
           pointerEvents: 'none',
         }}
       />
@@ -72,31 +78,30 @@ export default function AdminLogin() {
         style={{
           width: '100%',
           maxWidth: 460,
-          background: 'linear-gradient(160deg, rgba(24, 67, 50, 0.94) 0%, rgba(12, 34, 25, 0.98) 100%)',
+          background: '#FFFFFF',
           borderRadius: 20,
-          border: '1px solid rgba(214, 182, 107, 0.3)',
-          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(214, 182, 107, 0.1)',
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 20px 45px rgba(18, 45, 36, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)',
           padding: '44px 36px',
           position: 'relative',
           zIndex: 1,
-          backdropFilter: 'blur(16px)',
         }}
       >
         {/* Top Header */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <div
             style={{
-              width: 68,
-              height: 68,
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #E0C47A 0%, #D6B66B 50%, #A88A42 100%)',
+              width: 64,
+              height: 64,
+              borderRadius: 16,
+              background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 16px',
-              boxShadow: '0 8px 24px rgba(214, 182, 107, 0.35)',
-              color: '#0C2219',
-              fontSize: '1.8rem',
+              boxShadow: '0 8px 20px rgba(24, 67, 50, 0.22)',
+              color: '#D6B66B',
+              fontSize: '1.7rem',
             }}
           >
             <FaCross />
@@ -107,26 +112,29 @@ export default function AdminLogin() {
               fontSize: '0.75rem',
               letterSpacing: '2px',
               textTransform: 'uppercase',
-              color: '#D6B66B',
-              fontWeight: 600,
-              marginBottom: 6,
+              color: '#184332',
+              fontWeight: 700,
+              background: '#EAF4EF',
+              padding: '4px 12px',
+              borderRadius: 20,
+              marginBottom: 10,
             }}
           >
-            Pastor & Administrator Portal
+            Sanctuary Administration Portal
           </span>
           <h1
             style={{
               fontFamily: 'var(--font-serif, serif)',
               fontSize: '1.85rem',
-              color: '#FAF6EE',
+              color: '#122D24',
               margin: '0 0 6px',
               fontWeight: 700,
             }}
           >
             Christ's Tabernacle
           </h1>
-          <p style={{ color: '#8BA698', fontSize: '0.9rem', margin: 0 }}>
-            Sign in to manage dynamic banners, testimonies, gallery & lyrics
+          <p style={{ color: '#64748B', fontSize: '0.9rem', margin: 0 }}>
+            Sign in to manage dynamic banners, testimonies, gallery & worship lyrics
           </p>
         </div>
 
@@ -134,9 +142,9 @@ export default function AdminLogin() {
         {error && (
           <div
             style={{
-              background: 'rgba(235, 87, 87, 0.15)',
-              border: '1px solid rgba(235, 87, 87, 0.4)',
-              color: '#FFA2A2',
+              background: '#FEF2F2',
+              border: '1px solid #FCA5A5',
+              color: '#B91C1C',
               padding: '12px 16px',
               borderRadius: 10,
               fontSize: '0.88rem',
@@ -159,8 +167,8 @@ export default function AdminLogin() {
               style={{
                 display: 'block',
                 fontSize: '0.82rem',
-                fontWeight: 600,
-                color: '#D6B66B',
+                fontWeight: 700,
+                color: '#184332',
                 marginBottom: 6,
                 letterSpacing: '0.5px',
                 textTransform: 'uppercase',
@@ -175,7 +183,7 @@ export default function AdminLogin() {
                   left: 14,
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: '#709180',
+                  color: '#94A3B8',
                   fontSize: '0.9rem',
                 }}
               />
@@ -183,25 +191,26 @@ export default function AdminLogin() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="e.g. admin or admin@christtabernacle.org"
+                placeholder="e.g. admin"
                 required
                 style={{
                   width: '100%',
                   padding: '12px 14px 12px 40px',
-                  background: 'rgba(10, 26, 18, 0.8)',
-                  border: '1px solid rgba(214, 182, 107, 0.25)',
+                  background: '#FFFFFF',
+                  border: '1.5px solid #CBD5E1',
                   borderRadius: 10,
-                  color: '#FAF6EE',
+                  color: '#0F172A',
                   fontSize: '0.95rem',
                   outline: 'none',
                   transition: 'border 0.2s, box-shadow 0.2s',
+                  boxSizing: 'border-box',
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#D6B66B';
-                  e.target.style.boxShadow = '0 0 10px rgba(214, 182, 107, 0.3)';
+                  e.target.style.borderColor = '#184332';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(24, 67, 50, 0.12)';
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = 'rgba(214, 182, 107, 0.25)';
+                  e.target.style.borderColor = '#CBD5E1';
                   e.target.style.boxShadow = 'none';
                 }}
               />
@@ -214,8 +223,8 @@ export default function AdminLogin() {
               style={{
                 display: 'block',
                 fontSize: '0.82rem',
-                fontWeight: 600,
-                color: '#D6B66B',
+                fontWeight: 700,
+                color: '#184332',
                 marginBottom: 6,
                 letterSpacing: '0.5px',
                 textTransform: 'uppercase',
@@ -230,7 +239,7 @@ export default function AdminLogin() {
                   left: 14,
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: '#709180',
+                  color: '#94A3B8',
                   fontSize: '0.9rem',
                 }}
               />
@@ -238,25 +247,26 @@ export default function AdminLogin() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter sanctuary key..."
+                placeholder="Enter password..."
                 required
                 style={{
                   width: '100%',
                   padding: '12px 14px 12px 40px',
-                  background: 'rgba(10, 26, 18, 0.8)',
-                  border: '1px solid rgba(214, 182, 107, 0.25)',
+                  background: '#FFFFFF',
+                  border: '1.5px solid #CBD5E1',
                   borderRadius: 10,
-                  color: '#FAF6EE',
+                  color: '#0F172A',
                   fontSize: '0.95rem',
                   outline: 'none',
                   transition: 'border 0.2s, box-shadow 0.2s',
+                  boxSizing: 'border-box',
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#D6B66B';
-                  e.target.style.boxShadow = '0 0 10px rgba(214, 182, 107, 0.3)';
+                  e.target.style.borderColor = '#184332';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(24, 67, 50, 0.12)';
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = 'rgba(214, 182, 107, 0.25)';
+                  e.target.style.borderColor = '#CBD5E1';
                   e.target.style.boxShadow = 'none';
                 }}
               />
@@ -270,23 +280,27 @@ export default function AdminLogin() {
             style={{
               width: '100%',
               padding: '14px',
-              background: 'linear-gradient(135deg, #E0C47A 0%, #D6B66B 50%, #A88A42 100%)',
-              color: '#0C2219',
+              background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
+              color: '#FFFFFF',
               fontWeight: 700,
               fontSize: '1rem',
               letterSpacing: '0.5px',
               border: 'none',
               borderRadius: 10,
               cursor: loading ? 'not-allowed' : 'pointer',
-              boxShadow: '0 6px 20px rgba(214, 182, 107, 0.35)',
-              transition: 'transform 0.15s, opacity 0.2s',
+              boxShadow: '0 6px 18px rgba(24, 67, 50, 0.25)',
+              transition: 'transform 0.15s, opacity 0.2s, box-shadow 0.2s',
               opacity: loading ? 0.7 : 1,
             }}
             onMouseEnter={(e) => {
-              if (!loading) e.currentTarget.style.transform = 'translateY(-2px)';
+              if (!loading) {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(24, 67, 50, 0.35)';
+              }
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 6px 18px rgba(24, 67, 50, 0.25)';
             }}
           >
             {loading ? 'Authenticating...' : 'Sign In to Dashboard →'}
@@ -297,38 +311,59 @@ export default function AdminLogin() {
         <div
           style={{
             marginTop: 20,
-            padding: '12px 16px',
-            background: 'rgba(214, 182, 107, 0.08)',
+            padding: '14px 16px',
+            background: '#F1F5F9',
             borderRadius: 10,
-            border: '1px dashed rgba(214, 182, 107, 0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            border: '1px dashed #CBD5E1',
             fontSize: '0.82rem',
-            color: '#FAF6EE',
+            color: '#334155',
           }}
         >
-          <div>
-            <span style={{ color: '#D6B66B', fontWeight: 600 }}>Default Admin: </span>
-            <code style={{ background: 'rgba(0,0,0,0.3)', padding: '2px 5px', borderRadius: 4 }}>admin</code> /{' '}
-            <code style={{ background: 'rgba(0,0,0,0.3)', padding: '2px 5px', borderRadius: 4 }}>admin123</code>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+            <div>
+              <span style={{ color: '#184332', fontWeight: 700 }}>Church Admin: </span>
+              <code style={{ background: '#E2E8F0', padding: '2px 6px', borderRadius: 4, fontWeight: 600 }}>christtabernacle@gmail.com</code>
+            </div>
+            <button
+              type="button"
+              onClick={fillChurchLogin}
+              style={{
+                background: '#184332',
+                border: 'none',
+                color: '#FFFFFF',
+                fontSize: '0.75rem',
+                padding: '4px 10px',
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontWeight: 700,
+              }}
+            >
+              Fill (.env)
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={fillDemo}
-            style={{
-              background: 'rgba(214, 182, 107, 0.2)',
-              border: '1px solid #D6B66B',
-              color: '#E8CC8F',
-              fontSize: '0.75rem',
-              padding: '4px 10px',
-              borderRadius: 6,
-              cursor: 'pointer',
-              fontWeight: 600,
-            }}
-          >
-            Auto-fill
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div>
+              <span style={{ color: '#184332', fontWeight: 700 }}>Default: </span>
+              <code style={{ background: '#E2E8F0', padding: '2px 6px', borderRadius: 4, fontWeight: 600 }}>admin</code> /{' '}
+              <code style={{ background: '#E2E8F0', padding: '2px 6px', borderRadius: 4, fontWeight: 600 }}>admin123</code>
+            </div>
+            <button
+              type="button"
+              onClick={fillDemo}
+              style={{
+                background: '#FFFFFF',
+                border: '1.5px solid #184332',
+                color: '#184332',
+                fontSize: '0.75rem',
+                padding: '3px 10px',
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontWeight: 700,
+              }}
+            >
+              Fill Default
+            </button>
+          </div>
         </div>
 
         {/* Back to Sanctuary Home */}
@@ -336,16 +371,17 @@ export default function AdminLogin() {
           <Link
             to="/"
             style={{
-              color: '#8BA698',
+              color: '#64748B',
               fontSize: '0.88rem',
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
+              fontWeight: 500,
               transition: 'color 0.2s',
             }}
-            onMouseEnter={(e) => (e.target.style.color = '#D6B66B')}
-            onMouseLeave={(e) => (e.target.style.color = '#8BA698')}
+            onMouseEnter={(e) => (e.target.style.color = '#184332')}
+            onMouseLeave={(e) => (e.target.style.color = '#64748B')}
           >
             <FaArrowLeft style={{ fontSize: '0.8rem' }} /> Return to Sanctuary Website
           </Link>

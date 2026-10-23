@@ -10,8 +10,6 @@ import {
   FaCheck,
   FaTimes,
   FaSync,
-  FaArrowRight,
-  FaCheckCircle,
 } from 'react-icons/fa';
 
 export default function AdminDashboard() {
@@ -53,19 +51,19 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div style={{ padding: '60px 0', textAlign: 'center', color: '#D6B66B' }}>
+      <div style={{ padding: '60px 0', textAlign: 'center', color: '#184332' }}>
         <div
           style={{
             width: 40,
             height: 40,
-            border: '3px solid rgba(214, 182, 107, 0.2)',
-            borderTopColor: '#D6B66B',
+            border: '3px solid #E2E8F0',
+            borderTopColor: '#184332',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
             margin: '0 auto 16px',
           }}
         />
-        <p>Loading Sanctuary Dashboard metrics...</p>
+        <p style={{ fontWeight: 600 }}>Loading Sanctuary Dashboard metrics...</p>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
@@ -86,11 +84,11 @@ export default function AdminDashboard() {
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      {/* Top Banner Greeting */}
+      {/* Top Banner Greeting (White Card, Deep Green Heading) */}
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(24, 67, 50, 0.9) 0%, rgba(12, 34, 25, 0.95) 100%)',
-          border: '1px solid rgba(214, 182, 107, 0.25)',
+          background: '#FFFFFF',
+          border: '1.5px solid #E2E8F0',
           borderRadius: 16,
           padding: '28px 32px',
           display: 'flex',
@@ -99,25 +97,26 @@ export default function AdminDashboard() {
           justifyContent: 'space-between',
           gap: 20,
           marginBottom: 32,
-          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
         }}
       >
         <div>
-          <div style={{ color: '#D6B66B', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '1px' }}>
+          <div style={{ color: '#A88A42', fontSize: '0.84rem', fontWeight: 700, letterSpacing: '1px' }}>
             CHRIST'S TABERNACLE ADMINISTRATION
           </div>
           <h1
             style={{
               fontFamily: 'var(--font-serif, serif)',
               fontSize: '2rem',
-              color: '#FAF6EE',
+              color: '#122D24',
               margin: '6px 0 8px',
+              fontWeight: 700,
             }}
           >
             Welcome, Sanctuary Administrator
           </h1>
-          <p style={{ color: '#8BA698', margin: 0, fontSize: '0.95rem' }}>
-            Control and publish dynamic hero slides, congregation testimonies, gallery archives, and worship lyrics in real time.
+          <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem', maxWidth: 680 }}>
+            Manage and publish dynamic hero slides, congregation testimonies, sanctuary gallery archives, and worship song videos in real time.
           </p>
         </div>
 
@@ -129,14 +128,14 @@ export default function AdminDashboard() {
               alignItems: 'center',
               gap: 8,
               padding: '10px 18px',
-              background: 'rgba(214, 182, 107, 0.15)',
-              border: '1px solid rgba(214, 182, 107, 0.3)',
-              color: '#D6B66B',
+              background: '#EAF3EE',
+              border: '1.5px solid #184332',
+              color: '#184332',
               borderRadius: 8,
               cursor: 'pointer',
-              fontWeight: 600,
+              fontWeight: 700,
               fontSize: '0.88rem',
-              transition: 'background 0.2s',
+              transition: 'all 0.2s',
             }}
           >
             <FaSync style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
@@ -148,19 +147,20 @@ export default function AdminDashboard() {
       {error && (
         <div
           style={{
-            background: 'rgba(235, 87, 87, 0.15)',
-            border: '1px solid rgba(235, 87, 87, 0.4)',
-            color: '#FFA2A2',
+            background: '#FEE2E2',
+            border: '1px solid #FECACA',
+            color: '#B91C1C',
             padding: '14px 18px',
             borderRadius: 10,
             marginBottom: 24,
+            fontWeight: 500,
           }}
         >
           {error}
         </div>
       )}
 
-      {/* 4 Stat Metric Cards */}
+      {/* 4 Stat Metric Cards (White Cards, Deep Green Numbers) */}
       <div
         style={{
           display: 'grid',
@@ -172,23 +172,22 @@ export default function AdminDashboard() {
         {/* Card 1: Hero Banners */}
         <div
           style={{
-            background: 'rgba(12, 34, 25, 0.7)',
-            border: '1px solid rgba(214, 182, 107, 0.2)',
+            background: '#FFFFFF',
+            border: '1.5px solid #E2E8F0',
             borderRadius: 14,
             padding: '22px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            position: 'relative',
-            overflow: 'hidden',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <span style={{ fontSize: '0.8rem', color: '#8BA698', textTransform: 'uppercase', letterSpacing: '1px' }}>
+              <span style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
                 Hero Banners
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 700, color: '#FAF6EE', marginTop: 4 }}>
+              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
                 {stats.hero.total}
               </div>
             </div>
@@ -197,8 +196,8 @@ export default function AdminDashboard() {
                 width: 44,
                 height: 44,
                 borderRadius: 10,
-                background: 'rgba(214, 182, 107, 0.15)',
-                color: '#D6B66B',
+                background: '#EAF3EE',
+                color: '#184332',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -212,15 +211,17 @@ export default function AdminDashboard() {
             style={{
               marginTop: 18,
               paddingTop: 14,
-              borderTop: '1px solid rgba(214, 182, 107, 0.1)',
+              borderTop: '1px solid #F1F5F9',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              fontSize: '0.82rem',
+              flexWrap: 'wrap',
+              gap: 8,
+              fontSize: '0.84rem',
             }}
           >
-            <span style={{ color: '#4ADE80' }}>● {stats.hero.active} Active on Home</span>
-            <Link to="/admin/hero" style={{ color: '#D6B66B', textDecoration: 'none', fontWeight: 600 }}>
+            <span style={{ color: '#15803D', fontWeight: 600 }}>● {stats.hero.active} Active on Home</span>
+            <Link to="/admin/hero" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
               Manage →
             </Link>
           </div>
@@ -229,21 +230,22 @@ export default function AdminDashboard() {
         {/* Card 2: Testimonials */}
         <div
           style={{
-            background: 'rgba(12, 34, 25, 0.7)',
-            border: '1px solid rgba(214, 182, 107, 0.2)',
+            background: '#FFFFFF',
+            border: '1.5px solid #E2E8F0',
             borderRadius: 14,
             padding: '22px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <span style={{ fontSize: '0.8rem', color: '#8BA698', textTransform: 'uppercase', letterSpacing: '1px' }}>
+              <span style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
                 Testimonies
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 700, color: '#FAF6EE', marginTop: 4 }}>
+              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
                 {stats.testimonials.total}
               </div>
             </div>
@@ -252,8 +254,8 @@ export default function AdminDashboard() {
                 width: 44,
                 height: 44,
                 borderRadius: 10,
-                background: 'rgba(232, 183, 183, 0.15)',
-                color: '#E8B7B7',
+                background: '#FDF2F8',
+                color: '#BE185D',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -267,19 +269,21 @@ export default function AdminDashboard() {
             style={{
               marginTop: 18,
               paddingTop: 14,
-              borderTop: '1px solid rgba(214, 182, 107, 0.1)',
+              borderTop: '1px solid #F1F5F9',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              fontSize: '0.82rem',
+              flexWrap: 'wrap',
+              gap: 8,
+              fontSize: '0.84rem',
             }}
           >
-            <span style={{ color: stats.testimonials.pending > 0 ? '#FBBF24' : '#4ADE80' }}>
+            <span style={{ color: stats.testimonials.pending > 0 ? '#B45309' : '#15803D', fontWeight: 600 }}>
               {stats.testimonials.pending > 0
                 ? `● ${stats.testimonials.pending} Pending Review`
                 : `● ${stats.testimonials.approved} Published`}
             </span>
-            <Link to="/admin/testimonials" style={{ color: '#D6B66B', textDecoration: 'none', fontWeight: 600 }}>
+            <Link to="/admin/testimonials" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
               Review →
             </Link>
           </div>
@@ -288,21 +292,22 @@ export default function AdminDashboard() {
         {/* Card 3: Photo Gallery */}
         <div
           style={{
-            background: 'rgba(12, 34, 25, 0.7)',
-            border: '1px solid rgba(214, 182, 107, 0.2)',
+            background: '#FFFFFF',
+            border: '1.5px solid #E2E8F0',
             borderRadius: 14,
             padding: '22px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <span style={{ fontSize: '0.8rem', color: '#8BA698', textTransform: 'uppercase', letterSpacing: '1px' }}>
+              <span style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
                 Photo Gallery
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 700, color: '#FAF6EE', marginTop: 4 }}>
+              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
                 {stats.gallery.total}
               </div>
             </div>
@@ -311,8 +316,8 @@ export default function AdminDashboard() {
                 width: 44,
                 height: 44,
                 borderRadius: 10,
-                background: 'rgba(96, 165, 250, 0.15)',
-                color: '#93C5FD',
+                background: '#EFF6FF',
+                color: '#1D4ED8',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -326,15 +331,17 @@ export default function AdminDashboard() {
             style={{
               marginTop: 18,
               paddingTop: 14,
-              borderTop: '1px solid rgba(214, 182, 107, 0.1)',
+              borderTop: '1px solid #F1F5F9',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              fontSize: '0.82rem',
+              flexWrap: 'wrap',
+              gap: 8,
+              fontSize: '0.84rem',
             }}
           >
-            <span style={{ color: '#4ADE80' }}>● All Albums Active</span>
-            <Link to="/admin/gallery" style={{ color: '#D6B66B', textDecoration: 'none', fontWeight: 600 }}>
+            <span style={{ color: '#15803D', fontWeight: 600 }}>● All Albums Active</span>
+            <Link to="/admin/gallery" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
               Upload →
             </Link>
           </div>
@@ -343,21 +350,22 @@ export default function AdminDashboard() {
         {/* Card 4: Worship Lyrics */}
         <div
           style={{
-            background: 'rgba(12, 34, 25, 0.7)',
-            border: '1px solid rgba(214, 182, 107, 0.2)',
+            background: '#FFFFFF',
+            border: '1.5px solid #E2E8F0',
             borderRadius: 14,
             padding: '22px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <span style={{ fontSize: '0.8rem', color: '#8BA698', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                Worship Songs & Lyrics
+              <span style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+                Worship Songs &amp; Videos
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 700, color: '#FAF6EE', marginTop: 4 }}>
+              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
                 {stats.lyrics.total}
               </div>
             </div>
@@ -366,8 +374,8 @@ export default function AdminDashboard() {
                 width: 44,
                 height: 44,
                 borderRadius: 10,
-                background: 'rgba(167, 139, 250, 0.15)',
-                color: '#C4B5FD',
+                background: '#FAF5FF',
+                color: '#7E22CE',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -381,24 +389,26 @@ export default function AdminDashboard() {
             style={{
               marginTop: 18,
               paddingTop: 14,
-              borderTop: '1px solid rgba(214, 182, 107, 0.1)',
+              borderTop: '1px solid #F1F5F9',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              fontSize: '0.82rem',
+              flexWrap: 'wrap',
+              gap: 8,
+              fontSize: '0.84rem',
             }}
           >
-            <span style={{ color: '#4ADE80' }}>● Tamil & English Praise</span>
-            <Link to="/admin/lyrics" style={{ color: '#D6B66B', textDecoration: 'none', fontWeight: 600 }}>
+            <span style={{ color: '#15803D', fontWeight: 600 }}>● YouTube &amp; Lyrics</span>
+            <Link to="/admin/lyrics" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
               Edit →
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Quick Actions Bar */}
+      {/* Quick Actions Bar (Green Headings, White/Gold Buttons) */}
       <div style={{ marginBottom: 36 }}>
-        <h3 style={{ fontSize: '1.1rem', color: '#D6B66B', marginBottom: 14, fontWeight: 600 }}>
+        <h3 style={{ fontSize: '1.15rem', color: '#122D24', marginBottom: 14, fontWeight: 700, fontFamily: 'var(--font-serif, serif)' }}>
           Quick Management Actions
         </h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
@@ -409,13 +419,13 @@ export default function AdminDashboard() {
               alignItems: 'center',
               gap: 8,
               padding: '12px 20px',
-              background: 'linear-gradient(135deg, #E0C47A 0%, #D6B66B 100%)',
-              color: '#0C2219',
-              borderRadius: 10,
+              background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
+              color: '#FFFFFF',
+              borderRadius: 8,
               fontWeight: 700,
               fontSize: '0.88rem',
               textDecoration: 'none',
-              boxShadow: '0 4px 14px rgba(214, 182, 107, 0.3)',
+              boxShadow: '0 4px 12px rgba(24, 67, 50, 0.2)',
             }}
           >
             <FaPlus /> <span>New Hero Banner</span>
@@ -428,13 +438,14 @@ export default function AdminDashboard() {
               alignItems: 'center',
               gap: 8,
               padding: '12px 20px',
-              background: 'rgba(24, 67, 50, 0.8)',
-              border: '1px solid rgba(214, 182, 107, 0.3)',
-              color: '#FAF6EE',
-              borderRadius: 10,
-              fontWeight: 600,
+              background: '#FFFFFF',
+              border: '1.5px solid #184332',
+              color: '#184332',
+              borderRadius: 8,
+              fontWeight: 700,
               fontSize: '0.88rem',
               textDecoration: 'none',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
             }}
           >
             <FaPlus /> <span>Add Testimony</span>
@@ -447,13 +458,14 @@ export default function AdminDashboard() {
               alignItems: 'center',
               gap: 8,
               padding: '12px 20px',
-              background: 'rgba(24, 67, 50, 0.8)',
-              border: '1px solid rgba(214, 182, 107, 0.3)',
-              color: '#FAF6EE',
-              borderRadius: 10,
-              fontWeight: 600,
+              background: '#FFFFFF',
+              border: '1.5px solid #184332',
+              color: '#184332',
+              borderRadius: 8,
+              fontWeight: 700,
               fontSize: '0.88rem',
               textDecoration: 'none',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
             }}
           >
             <FaPlus /> <span>Upload Gallery Photo</span>
@@ -466,50 +478,52 @@ export default function AdminDashboard() {
               alignItems: 'center',
               gap: 8,
               padding: '12px 20px',
-              background: 'rgba(24, 67, 50, 0.8)',
-              border: '1px solid rgba(214, 182, 107, 0.3)',
-              color: '#FAF6EE',
-              borderRadius: 10,
-              fontWeight: 600,
+              background: '#FFFFFF',
+              border: '1.5px solid #184332',
+              color: '#184332',
+              borderRadius: 8,
+              fontWeight: 700,
               fontSize: '0.88rem',
               textDecoration: 'none',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
             }}
           >
-            <FaPlus /> <span>Add Worship Lyrics</span>
+            <FaPlus /> <span>Add Worship Video &amp; Lyrics</span>
           </Link>
         </div>
       </div>
 
-      {/* Split Section: Recent Testimonials & Recent Photos */}
+      {/* Split Section: Recent Testimonials & Recent Photos (White Cards, Deep Green Headings) */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: 24 }}>
         {/* Left: Recent Testimonies */}
         <div
           style={{
-            background: 'rgba(12, 34, 25, 0.7)',
-            border: '1px solid rgba(214, 182, 107, 0.2)',
+            background: '#FFFFFF',
+            border: '1.5px solid #E2E8F0',
             borderRadius: 14,
             padding: '24px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-            <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#FAF6EE', fontFamily: 'var(--font-serif, serif)' }}>
+            <h3 style={{ margin: 0, fontSize: '1.18rem', color: '#122D24', fontFamily: 'var(--font-serif, serif)', fontWeight: 700 }}>
               Recent Testimonies
             </h3>
-            <Link to="/admin/testimonials" style={{ color: '#D6B66B', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 600 }}>
+            <Link to="/admin/testimonials" style={{ color: '#184332', fontSize: '0.86rem', textDecoration: 'none', fontWeight: 700 }}>
               View All →
             </Link>
           </div>
 
           {recent.testimonials?.length === 0 ? (
-            <p style={{ color: '#8BA698', fontSize: '0.9rem' }}>No testimonies submitted yet.</p>
+            <p style={{ color: '#64748B', fontSize: '0.9rem' }}>No testimonies submitted yet.</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {recent.testimonials.map((t) => (
                 <div
                   key={t._id}
                   style={{
-                    background: 'rgba(5, 16, 11, 0.5)',
-                    border: '1px solid rgba(214, 182, 107, 0.12)',
+                    background: '#F8FAF9',
+                    border: '1px solid #E2E8F0',
                     borderRadius: 10,
                     padding: '14px 16px',
                     display: 'flex',
@@ -518,9 +532,9 @@ export default function AdminDashboard() {
                   }}
                 >
                   <div style={{ maxWidth: '70%' }}>
-                    <div style={{ fontWeight: 600, color: '#FAF6EE', fontSize: '0.92rem' }}>{t.title}</div>
-                    <div style={{ fontSize: '0.78rem', color: '#8BA698', marginTop: 3 }}>
-                      By <strong style={{ color: '#D6B66B' }}>{t.name}</strong> • {t.category} • {t.date}
+                    <div style={{ fontWeight: 700, color: '#122D24', fontSize: '0.94rem' }}>{t.title}</div>
+                    <div style={{ fontSize: '0.78rem', color: '#64748B', marginTop: 3 }}>
+                      By <strong style={{ color: '#184332' }}>{t.name}</strong> • {t.category} • {t.date}
                     </div>
                   </div>
 
@@ -529,14 +543,14 @@ export default function AdminDashboard() {
                       onClick={() => handleQuickToggleTestimonial(t._id)}
                       title={t.isApproved ? 'Click to unpublish' : 'Click to approve & publish'}
                       style={{
-                        background: t.isApproved ? 'rgba(74, 222, 128, 0.15)' : 'rgba(251, 191, 36, 0.15)',
-                        border: `1px solid ${t.isApproved ? '#4ADE80' : '#FBBF24'}`,
-                        color: t.isApproved ? '#4ADE80' : '#FBBF24',
-                        padding: '6px 10px',
+                        background: t.isApproved ? '#DCFCE7' : '#FEF3C7',
+                        border: `1px solid ${t.isApproved ? '#86EFAC' : '#FDE68A'}`,
+                        color: t.isApproved ? '#15803D' : '#B45309',
+                        padding: '6px 12px',
                         borderRadius: 6,
                         cursor: 'pointer',
                         fontSize: '0.78rem',
-                        fontWeight: 600,
+                        fontWeight: 700,
                         display: 'flex',
                         alignItems: 'center',
                         gap: 5,
@@ -555,23 +569,24 @@ export default function AdminDashboard() {
         {/* Right: Recent Photos in Gallery */}
         <div
           style={{
-            background: 'rgba(12, 34, 25, 0.7)',
-            border: '1px solid rgba(214, 182, 107, 0.2)',
+            background: '#FFFFFF',
+            border: '1.5px solid #E2E8F0',
             borderRadius: 14,
             padding: '24px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-            <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#FAF6EE', fontFamily: 'var(--font-serif, serif)' }}>
+            <h3 style={{ margin: 0, fontSize: '1.18rem', color: '#122D24', fontFamily: 'var(--font-serif, serif)', fontWeight: 700 }}>
               Recent Gallery Images
             </h3>
-            <Link to="/admin/gallery" style={{ color: '#D6B66B', fontSize: '0.85rem', textDecoration: 'none', fontWeight: 600 }}>
+            <Link to="/admin/gallery" style={{ color: '#184332', fontSize: '0.86rem', textDecoration: 'none', fontWeight: 700 }}>
               View All →
             </Link>
           </div>
 
           {recent.photos?.length === 0 ? (
-            <p style={{ color: '#8BA698', fontSize: '0.9rem' }}>No gallery photos uploaded yet.</p>
+            <p style={{ color: '#64748B', fontSize: '0.9rem' }}>No gallery photos uploaded yet.</p>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
               {recent.photos.map((p) => (
@@ -582,7 +597,7 @@ export default function AdminDashboard() {
                     borderRadius: 10,
                     overflow: 'hidden',
                     height: 120,
-                    border: '1px solid rgba(214, 182, 107, 0.2)',
+                    border: '1px solid #E2E8F0',
                   }}
                 >
                   <img
@@ -598,17 +613,17 @@ export default function AdminDashboard() {
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)',
+                      background: 'linear-gradient(to top, rgba(18, 45, 36, 0.88) 0%, transparent 60%)',
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'flex-end',
                       padding: 10,
                     }}
                   >
-                    <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#FAF6EE', lineHeight: 1.2 }}>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.2 }}>
                       {p.title}
                     </span>
-                    <span style={{ fontSize: '0.68rem', color: '#D6B66B' }}>{p.category}</span>
+                    <span style={{ fontSize: '0.7rem', color: '#E8CC8F' }}>{p.category}</span>
                   </div>
                 </div>
               ))}

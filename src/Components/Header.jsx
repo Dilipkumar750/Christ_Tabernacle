@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import logoImg from "../assets/logo.jpeg";
-import { FaCross, FaCircle, FaBroadcastTower } from "react-icons/fa";
-import { GiCrossedSwords } from "react-icons/gi";
+import { FaCross } from "react-icons/fa";
 import { MdLiveTv } from "react-icons/md";
 
 /* ── Navigation Structure ── */
@@ -28,14 +27,7 @@ const NAV = [
       { label: "Video Archive", path: "/media/videos" },
     ],
   },
-  {
-    label: "Songs",
-    path: "/songs",
-    children: [
-      { label: "Worship Lyrics", path: "/songs/lyrics" },
-      { label: "Audio Recordings", path: "/songs/audio" },
-    ],
-  },
+  { label: "Songs", path: "/songs/lyrics" },
   {
     label: "Sermons",
     path: "/sermons",

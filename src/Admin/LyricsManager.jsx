@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   getAllSongsAdmin,
-  createSong,
-  updateSong,
   deleteSong,
+  updateSong,
 } from '../services/api';
 import {
   FaPlus,
@@ -14,15 +13,16 @@ import {
   FaSearch,
   FaTimes,
   FaEye,
-  FaFileAlt,
   FaToggleOn,
   FaToggleOff,
+  FaYoutube,
 } from 'react-icons/fa';
 
 const LANGUAGES = ['All', 'Tamil', 'English', 'Telugu', 'Hindi'];
 
 export default function LyricsManager() {
-  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -31,26 +31,9 @@ export default function LyricsManager() {
   // Search & Filter
   const [selectedLanguage, setSelectedLanguage] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Modal State
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingSong, setEditingSong] = useState(null);
   const [previewingSong, setPreviewingSong] = useState(null);
 
-  // Form State
-  const [formData, setFormData] = useState({
-    title: '',
-    language: 'Tamil',
-    theme: 'Adoration & Praise',
-    key: 'C Major',
-    tempo: 'Medium',
-    lyrics: '',
-    audioUrl: '',
-    order: 1,
-    isActive: true,
-  });
-
-  const fetchSongs = async () => {
+  const fetchSongs = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getAllSongsAdmin(selectedLanguage, searchQuery);
@@ -61,85 +44,20 @@ export default function LyricsManager() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedLanguage, searchQuery]);
 
   useEffect(() => {
     fetchSongs();
-    if (searchParams.get('action') === 'new') {
-      openCreateModal();
+    if (location.state?.success) {
+      setSuccess(location.state.success);
+      window.history.replaceState({}, document.title);
+      setTimeout(() => setSuccess(''), 4000);
     }
-  }, [selectedLanguage]);
+  }, [fetchSongs, location.state]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     fetchSongs();
-  };
-
-  const openCreateModal = () => {
-    setEditingSong(null);
-    setFormData({
-      title: '',
-      language: 'Tamil',
-      theme: 'Adoration & Praise',
-      key: 'C Major',
-      tempo: 'Medium',
-      lyrics: '',
-      audioUrl: '',
-      order: (songs?.length || 0) + 1,
-      isActive: true,
-    });
-    setIsModalOpen(true);
-  };
-
-  const openEditModal = (song) => {
-    setEditingSong(song);
-    setFormData({
-      title: song.title || '',
-      language: song.language || 'Tamil',
-      theme: song.theme || 'Adoration & Praise',
-      key: song.key || 'C Major',
-      tempo: song.tempo || 'Medium',
-      lyrics: song.lyrics || '',
-      audioUrl: song.audioUrl || '',
-      order: song.order || 1,
-      isActive: song.isActive !== undefined ? song.isActive : true,
-    });
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setEditingSong(null);
-  };
-
-  const insertSnippet = (snippet) => {
-    setFormData((prev) => ({
-      ...prev,
-      lyrics: prev.lyrics ? `${prev.lyrics}\n\n${snippet}\n` : `${snippet}\n`,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.title || !formData.lyrics) {
-      alert('Please fill in Song Title and multi-line Lyrics');
-      return;
-    }
-
-    try {
-      if (editingSong) {
-        await updateSong(editingSong._id, formData);
-        setSuccess('Worship song updated successfully');
-      } else {
-        await createSong(formData);
-        setSuccess('New worship song and lyrics saved');
-      }
-      closeModal();
-      fetchSongs();
-      setTimeout(() => setSuccess(''), 4000);
-    } catch (err) {
-      alert('Failed to save song: ' + err.message);
-    }
   };
 
   const handleDelete = async (id, title) => {
@@ -165,7 +83,7 @@ export default function LyricsManager() {
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      {/* Header bar */}
+      {/* Header bar (Clean White/Green) */}
       <div
         style={{
           display: 'flex',
@@ -177,52 +95,53 @@ export default function LyricsManager() {
         }}
       >
         <div>
-          <div style={{ color: '#D6B66B', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '1px' }}>
-            PRAISE & SANCTUARY REPERTOIRE
+          <div style={{ color: '#A88A42', fontSize: '0.84rem', fontWeight: 700, letterSpacing: '1px' }}>
+            PRAISE &amp; SANCTUARY REPERTOIRE
           </div>
           <h1
             style={{
               fontFamily: 'var(--font-serif, serif)',
-              fontSize: '1.9rem',
-              color: '#FAF6EE',
+              fontSize: '1.95rem',
+              color: '#122D24',
               margin: '4px 0 0',
+              fontWeight: 700,
             }}
           >
-            Worship Songs & Lyrics Manager
+            Worship Songs, Videos &amp; Lyrics Manager
           </h1>
         </div>
 
         <button
-          onClick={openCreateModal}
+          onClick={() => navigate('/admin/lyrics/new')}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: 8,
             padding: '12px 22px',
-            background: 'linear-gradient(135deg, #E0C47A 0%, #D6B66B 100%)',
-            color: '#0C2219',
-            borderRadius: 10,
+            background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
+            color: '#FFFFFF',
+            borderRadius: 8,
             fontWeight: 700,
             fontSize: '0.9rem',
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0 4px 14px rgba(214, 182, 107, 0.35)',
+            boxShadow: '0 4px 14px rgba(24, 67, 50, 0.25)',
           }}
         >
-          <FaPlus /> <span>Add Worship Song</span>
+          <FaPlus /> <span>Add Worship Video &amp; Lyrics</span>
         </button>
       </div>
 
       {success && (
         <div
           style={{
-            background: 'rgba(74, 222, 128, 0.15)',
-            border: '1px solid #4ADE80',
-            color: '#4ADE80',
+            background: '#DCFCE7',
+            border: '1px solid #86EFAC',
+            color: '#15803D',
             padding: '12px 18px',
-            borderRadius: 10,
+            borderRadius: 8,
             marginBottom: 20,
-            fontWeight: 500,
+            fontWeight: 600,
           }}
         >
           {success}
@@ -232,24 +151,25 @@ export default function LyricsManager() {
       {error && (
         <div
           style={{
-            background: 'rgba(235, 87, 87, 0.15)',
-            border: '1px solid rgba(235, 87, 87, 0.4)',
-            color: '#FFA2A2',
+            background: '#FEE2E2',
+            border: '1px solid #FECACA',
+            color: '#B91C1C',
             padding: '12px 18px',
-            borderRadius: 10,
+            borderRadius: 8,
             marginBottom: 20,
+            fontWeight: 500,
           }}
         >
           {error}
         </div>
       )}
 
-      {/* Filter and Search Bar */}
+      {/* Filter and Search Bar (White Box, Crisp Borders) */}
       <div
         style={{
-          background: 'rgba(12, 34, 25, 0.7)',
-          border: '1px solid rgba(214, 182, 107, 0.2)',
-          borderRadius: 14,
+          background: '#FFFFFF',
+          border: '1.5px solid #E2E8F0',
+          borderRadius: 12,
           padding: '16px 20px',
           marginBottom: 24,
           display: 'flex',
@@ -257,6 +177,7 @@ export default function LyricsManager() {
           gap: 16,
           alignItems: 'center',
           justifyContent: 'space-between',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
         }}
       >
         {/* Language Filter */}
@@ -268,12 +189,13 @@ export default function LyricsManager() {
               style={{
                 padding: '6px 14px',
                 borderRadius: 20,
-                border: selectedLanguage === lang ? '1px solid #D6B66B' : '1px solid rgba(214, 182, 107, 0.15)',
-                background: selectedLanguage === lang ? 'rgba(214, 182, 107, 0.2)' : 'transparent',
-                color: selectedLanguage === lang ? '#FAF6EE' : '#8BA698',
+                border: selectedLanguage === lang ? '1.5px solid #184332' : '1px solid #E2E8F0',
+                background: selectedLanguage === lang ? '#184332' : '#F8FAF9',
+                color: selectedLanguage === lang ? '#FFFFFF' : '#475569',
                 fontSize: '0.82rem',
-                fontWeight: selectedLanguage === lang ? 600 : 400,
+                fontWeight: selectedLanguage === lang ? 700 : 500,
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
             >
               {lang}
@@ -290,7 +212,7 @@ export default function LyricsManager() {
                 left: 10,
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: '#709180',
+                color: '#64748B',
                 fontSize: '0.8rem',
               }}
             />
@@ -301,27 +223,27 @@ export default function LyricsManager() {
               placeholder="Search lyrics or song title..."
               style={{
                 padding: '8px 12px 8px 30px',
-                background: 'rgba(5, 16, 11, 0.8)',
-                border: '1px solid rgba(214, 182, 107, 0.25)',
+                background: '#FFFFFF',
+                border: '1.5px solid #CBD5E1',
                 borderRadius: 8,
-                color: '#FAF6EE',
+                color: '#0F172A',
                 fontSize: '0.85rem',
                 outline: 'none',
-                minWidth: 240,
+                minWidth: 260,
               }}
             />
           </div>
           <button
             type="submit"
             style={{
-              padding: '8px 14px',
-              background: 'rgba(214, 182, 107, 0.2)',
-              border: '1px solid #D6B66B',
-              color: '#E8CC8F',
+              padding: '8px 16px',
+              background: '#EAF3EE',
+              border: '1.5px solid #184332',
+              color: '#184332',
               borderRadius: 8,
               cursor: 'pointer',
               fontSize: '0.85rem',
-              fontWeight: 600,
+              fontWeight: 700,
             }}
           >
             Search
@@ -329,24 +251,24 @@ export default function LyricsManager() {
         </form>
       </div>
 
-      {/* Songs Table / Cards */}
+      {/* Songs Table / Cards (White Cards, Deep Green Headings) */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '60px 0', color: '#D6B66B' }}>
+        <div style={{ textAlign: 'center', padding: '60px 0', color: '#184332', fontWeight: 600 }}>
           Loading worship lyrics...
         </div>
       ) : songs.length === 0 ? (
         <div
           style={{
-            background: 'rgba(12, 34, 25, 0.6)',
-            border: '1px dashed rgba(214, 182, 107, 0.3)',
+            background: '#FFFFFF',
+            border: '1.5px dashed #CBD5E1',
             borderRadius: 14,
             padding: '48px 20px',
             textAlign: 'center',
-            color: '#8BA698',
+            color: '#64748B',
           }}
         >
-          <FaMusic style={{ fontSize: '2.5rem', color: '#D6B66B', marginBottom: 12 }} />
-          <h3>No Songs Found</h3>
+          <FaMusic style={{ fontSize: '2.5rem', color: '#184332', marginBottom: 12 }} />
+          <h3 style={{ color: '#122D24', margin: '0 0 6px' }}>No Songs Found</h3>
           <p>Add praise songs, hymns, and chorus lyrics to make them available in church worship.</p>
         </div>
       ) : (
@@ -355,8 +277,8 @@ export default function LyricsManager() {
             <div
               key={song._id}
               style={{
-                background: 'rgba(12, 34, 25, 0.75)',
-                border: '1px solid rgba(214, 182, 107, 0.2)',
+                background: '#FFFFFF',
+                border: '1.5px solid #E2E8F0',
                 borderRadius: 12,
                 padding: '18px 22px',
                 display: 'flex',
@@ -364,51 +286,70 @@ export default function LyricsManager() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: 16,
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
               }}
             >
               {/* Song Information */}
               <div style={{ flex: 1, minWidth: 280 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
                   <span
                     style={{
-                      fontSize: '0.72rem',
-                      background: 'rgba(214, 182, 107, 0.15)',
-                      color: '#E8CC8F',
+                      fontSize: '0.74rem',
+                      background: '#EAF3EE',
+                      color: '#184332',
                       padding: '2px 8px',
                       borderRadius: 4,
-                      fontWeight: 600,
+                      fontWeight: 700,
                     }}
                   >
                     {song.language}
                   </span>
                   <span
                     style={{
-                      fontSize: '0.72rem',
-                      background: 'rgba(24, 67, 50, 0.6)',
-                      color: '#BACDC4',
+                      fontSize: '0.74rem',
+                      background: '#F1F5F9',
+                      color: '#475569',
                       padding: '2px 8px',
                       borderRadius: 4,
+                      fontWeight: 600,
                     }}
                   >
                     {song.theme}
                   </span>
+                  {song.youtubeUrl && (
+                    <span
+                      style={{
+                        fontSize: '0.72rem',
+                        background: '#FEE2E2',
+                        color: '#DC2626',
+                        padding: '2px 8px',
+                        borderRadius: 4,
+                        fontWeight: 700,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 4,
+                      }}
+                    >
+                      <FaYoutube /> YouTube Linked
+                    </span>
+                  )}
                   {song.key && (
-                    <span style={{ fontSize: '0.75rem', color: '#8BA698' }}>
-                      Key: <strong style={{ color: '#D6B66B' }}>{song.key}</strong>
+                    <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
+                      Key: <strong style={{ color: '#122D24' }}>{song.key}</strong>
                     </span>
                   )}
                   {song.tempo && (
-                    <span style={{ fontSize: '0.75rem', color: '#8BA698' }}>• Tempo: {song.tempo}</span>
+                    <span style={{ fontSize: '0.75rem', color: '#64748B' }}>â€¢ Tempo: {song.tempo}</span>
                   )}
                 </div>
 
                 <h3
                   style={{
                     margin: '0 0 6px',
-                    fontSize: '1.2rem',
-                    color: '#FAF6EE',
+                    fontSize: '1.18rem',
+                    color: '#122D24',
                     fontFamily: 'var(--font-serif, serif)',
+                    fontWeight: 700,
                   }}
                 >
                   {song.title}
@@ -416,8 +357,8 @@ export default function LyricsManager() {
 
                 <p
                   style={{
-                    color: '#8BA698',
-                    fontSize: '0.82rem',
+                    color: '#64748B',
+                    fontSize: '0.84rem',
                     margin: 0,
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
@@ -437,9 +378,9 @@ export default function LyricsManager() {
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: song.isActive ? '#4ADE80' : '#8BA698',
+                    color: song.isActive ? '#15803D' : '#94A3B8',
                     cursor: 'pointer',
-                    fontSize: '1.3rem',
+                    fontSize: '1.4rem',
                     display: 'flex',
                     alignItems: 'center',
                   }}
@@ -451,9 +392,9 @@ export default function LyricsManager() {
                   onClick={() => setPreviewingSong(song)}
                   style={{
                     padding: '7px 14px',
-                    background: 'rgba(214, 182, 107, 0.1)',
-                    border: '1px solid rgba(214, 182, 107, 0.25)',
-                    color: '#E8CC8F',
+                    background: '#F1F5F9',
+                    border: '1px solid #CBD5E1',
+                    color: '#1E293B',
                     borderRadius: 8,
                     cursor: 'pointer',
                     fontSize: '0.82rem',
@@ -467,16 +408,16 @@ export default function LyricsManager() {
                 </button>
 
                 <button
-                  onClick={() => openEditModal(song)}
+                  onClick={() => navigate('/admin/lyrics/edit/' + song._id)}
                   style={{
                     padding: '7px 14px',
-                    background: 'rgba(214, 182, 107, 0.15)',
-                    border: '1px solid rgba(214, 182, 107, 0.3)',
-                    color: '#D6B66B',
+                    background: '#EAF3EE',
+                    border: '1.5px solid #184332',
+                    color: '#184332',
                     borderRadius: 8,
                     cursor: 'pointer',
                     fontSize: '0.82rem',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     display: 'flex',
                     alignItems: 'center',
                     gap: 6,
@@ -489,9 +430,9 @@ export default function LyricsManager() {
                   onClick={() => handleDelete(song._id, song.title)}
                   style={{
                     padding: '7px 14px',
-                    background: 'rgba(235, 87, 87, 0.15)',
-                    border: '1px solid rgba(235, 87, 87, 0.3)',
-                    color: '#FFA2A2',
+                    background: '#FEE2E2',
+                    border: '1px solid #FECACA',
+                    color: '#DC2626',
                     borderRadius: 8,
                     cursor: 'pointer',
                     fontSize: '0.82rem',
@@ -509,14 +450,14 @@ export default function LyricsManager() {
         </div>
       )}
 
-      {/* Preview Modal */}
+      {/* Preview Modal (Clean White Card) */}
       {previewingSong && (
         <div
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(6px)',
+            background: 'rgba(18, 45, 36, 0.45)',
+            backdropFilter: 'blur(4px)',
             zIndex: 110,
             display: 'flex',
             alignItems: 'center',
@@ -528,25 +469,27 @@ export default function LyricsManager() {
             style={{
               width: '100%',
               maxWidth: 580,
-              background: 'linear-gradient(160deg, #0C2318 0%, #07150E 100%)',
-              border: '1px solid rgba(214, 182, 107, 0.35)',
-              borderRadius: 18,
+              background: '#FFFFFF',
+              border: '1.5px solid #E2E8F0',
+              borderRadius: 16,
               padding: '28px 32px',
               maxHeight: '85vh',
               overflowY: 'auto',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.15)',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
               <div>
-                <span style={{ fontSize: '0.75rem', color: '#D6B66B', fontWeight: 600 }}>
-                  {previewingSong.language} • {previewingSong.theme}
+                <span style={{ fontSize: '0.78rem', color: '#A88A42', fontWeight: 700 }}>
+                  {previewingSong.language} â€¢ {previewingSong.theme}
                 </span>
                 <h2
                   style={{
                     margin: '4px 0 0',
-                    color: '#FAF6EE',
+                    color: '#122D24',
                     fontFamily: 'var(--font-serif, serif)',
-                    fontSize: '1.4rem',
+                    fontSize: '1.45rem',
+                    fontWeight: 700,
                   }}
                 >
                   {previewingSong.title}
@@ -554,7 +497,7 @@ export default function LyricsManager() {
               </div>
               <button
                 onClick={() => setPreviewingSong(null)}
-                style={{ background: 'none', border: 'none', color: '#8BA698', fontSize: '1.2rem', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: '#64748B', fontSize: '1.2rem', cursor: 'pointer' }}
               >
                 <FaTimes />
               </button>
@@ -562,12 +505,12 @@ export default function LyricsManager() {
 
             <div
               style={{
-                background: 'rgba(5, 16, 11, 0.7)',
-                border: '1px solid rgba(214, 182, 107, 0.15)',
+                background: '#F8FAF9',
+                border: '1px solid #E2E8F0',
                 borderRadius: 12,
                 padding: '20px 24px',
-                color: '#FAF6EE',
-                fontSize: '0.98rem',
+                color: '#1E293B',
+                fontSize: '0.96rem',
                 lineHeight: 1.8,
                 whiteSpace: 'pre-line',
                 fontFamily: 'inherit',
@@ -581,12 +524,12 @@ export default function LyricsManager() {
                 onClick={() => setPreviewingSong(null)}
                 style={{
                   padding: '8px 20px',
-                  background: 'rgba(214, 182, 107, 0.2)',
-                  border: '1px solid #D6B66B',
-                  color: '#FAF6EE',
+                  background: '#EAF3EE',
+                  border: '1.5px solid #184332',
+                  color: '#184332',
                   borderRadius: 8,
                   cursor: 'pointer',
-                  fontWeight: 600,
+                  fontWeight: 700,
                 }}
               >
                 Close Preview
@@ -596,322 +539,6 @@ export default function LyricsManager() {
         </div>
       )}
 
-      {/* Modal for Create / Edit Song */}
-      {isModalOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.75)',
-            backdropFilter: 'blur(6px)',
-            zIndex: 110,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 20,
-            overflowY: 'auto',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              maxWidth: 680,
-              background: 'linear-gradient(160deg, #0E291D 0%, #081710 100%)',
-              border: '1px solid rgba(214, 182, 107, 0.35)',
-              borderRadius: 18,
-              boxShadow: '0 25px 60px rgba(0, 0, 0, 0.6)',
-              padding: '28px 32px',
-              maxHeight: '90vh',
-              overflowY: 'auto',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-              <h2
-                style={{
-                  margin: 0,
-                  fontFamily: 'var(--font-serif, serif)',
-                  color: '#FAF6EE',
-                  fontSize: '1.4rem',
-                }}
-              >
-                {editingSong ? 'Edit Worship Song' : 'Add New Praise & Worship Song'}
-              </h2>
-              <button
-                onClick={closeModal}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#8BA698',
-                  fontSize: '1.2rem',
-                  cursor: 'pointer',
-                }}
-              >
-                <FaTimes />
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit}>
-              {/* Title & Language */}
-              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 14, marginBottom: 16 }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#D6B66B', fontWeight: 600, marginBottom: 5 }}>
-                    Song Title (Tamil / English) *
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="e.g. En Uyirana Yesuvae (என் உயிரான இயேசுவே)"
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      background: 'rgba(5, 16, 11, 0.8)',
-                      border: '1px solid rgba(214, 182, 107, 0.25)',
-                      borderRadius: 8,
-                      color: '#FAF6EE',
-                      fontSize: '0.92rem',
-                    }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#D6B66B', fontWeight: 600, marginBottom: 5 }}>
-                    Language *
-                  </label>
-                  <select
-                    value={formData.language}
-                    onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      background: 'rgba(5, 16, 11, 0.8)',
-                      border: '1px solid rgba(214, 182, 107, 0.25)',
-                      borderRadius: 8,
-                      color: '#FAF6EE',
-                      fontSize: '0.92rem',
-                    }}
-                  >
-                    {LANGUAGES.filter((l) => l !== 'All').map((l) => (
-                      <option key={l} value={l}>
-                        {l}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Theme, Key & Tempo */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr', gap: 14, marginBottom: 16 }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#D6B66B', fontWeight: 600, marginBottom: 5 }}>
-                    Theme / Focus
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.theme}
-                    onChange={(e) => setFormData({ ...formData, theme: e.target.value })}
-                    placeholder="e.g. Adoration & Surrender"
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      background: 'rgba(5, 16, 11, 0.8)',
-                      border: '1px solid rgba(214, 182, 107, 0.25)',
-                      borderRadius: 8,
-                      color: '#FAF6EE',
-                      fontSize: '0.92rem',
-                    }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#D6B66B', fontWeight: 600, marginBottom: 5 }}>
-                    Musical Key
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.key}
-                    onChange={(e) => setFormData({ ...formData, key: e.target.value })}
-                    placeholder="e.g. D Major"
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      background: 'rgba(5, 16, 11, 0.8)',
-                      border: '1px solid rgba(214, 182, 107, 0.25)',
-                      borderRadius: 8,
-                      color: '#FAF6EE',
-                      fontSize: '0.92rem',
-                    }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#D6B66B', fontWeight: 600, marginBottom: 5 }}>
-                    Tempo / Speed
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.tempo}
-                    onChange={(e) => setFormData({ ...formData, tempo: e.target.value })}
-                    placeholder="e.g. Slow / Reverent"
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      background: 'rgba(5, 16, 11, 0.8)',
-                      border: '1px solid rgba(214, 182, 107, 0.25)',
-                      borderRadius: 8,
-                      color: '#FAF6EE',
-                      fontSize: '0.92rem',
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Lyrics Field with Helpers */}
-              <div style={{ marginBottom: 18 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                  <label style={{ fontSize: '0.82rem', color: '#D6B66B', fontWeight: 600 }}>
-                    Song Lyrics (Verses & Chorus) *
-                  </label>
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    <button
-                      type="button"
-                      onClick={() => insertSnippet('[பல்லவி / Chorus]')}
-                      style={{
-                        padding: '3px 8px',
-                        background: 'rgba(214, 182, 107, 0.15)',
-                        border: '1px solid rgba(214, 182, 107, 0.3)',
-                        color: '#E8CC8F',
-                        borderRadius: 4,
-                        fontSize: '0.72rem',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      + Chorus
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => insertSnippet('[சரணம் 1 / Verse 1]')}
-                      style={{
-                        padding: '3px 8px',
-                        background: 'rgba(214, 182, 107, 0.15)',
-                        border: '1px solid rgba(214, 182, 107, 0.3)',
-                        color: '#E8CC8F',
-                        borderRadius: 4,
-                        fontSize: '0.72rem',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      + Verse 1
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => insertSnippet('[சரணம் 2 / Verse 2]')}
-                      style={{
-                        padding: '3px 8px',
-                        background: 'rgba(214, 182, 107, 0.15)',
-                        border: '1px solid rgba(214, 182, 107, 0.3)',
-                        color: '#E8CC8F',
-                        borderRadius: 4,
-                        fontSize: '0.72rem',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      + Verse 2
-                    </button>
-                  </div>
-                </div>
-
-                <textarea
-                  rows={8}
-                  value={formData.lyrics}
-                  onChange={(e) => setFormData({ ...formData, lyrics: e.target.value })}
-                  placeholder={`[பல்லவி]\nஎன் உயிரான இயேசுவே...\n\n[சரணம் 1]\nஎன்னை தாங்கும் கன்மலையே...`}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    background: 'rgba(5, 16, 11, 0.8)',
-                    border: '1px solid rgba(214, 182, 107, 0.25)',
-                    borderRadius: 8,
-                    color: '#FAF6EE',
-                    fontSize: '0.92rem',
-                    lineHeight: 1.6,
-                    resize: 'vertical',
-                  }}
-                />
-              </div>
-
-              {/* Order & Active toggle */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 24 }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.82rem', color: '#D6B66B', fontWeight: 600, marginBottom: 5 }}>
-                    Display Order
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.order}
-                    onChange={(e) => setFormData({ ...formData, order: Number(e.target.value) })}
-                    min={1}
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      background: 'rgba(5, 16, 11, 0.8)',
-                      border: '1px solid rgba(214, 182, 107, 0.25)',
-                      borderRadius: 8,
-                      color: '#FAF6EE',
-                      fontSize: '0.92rem',
-                    }}
-                  />
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 24 }}>
-                  <input
-                    type="checkbox"
-                    id="isActiveSongCheck"
-                    checked={formData.isActive}
-                    onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    style={{ width: 18, height: 18, accentColor: '#D6B66B', cursor: 'pointer' }}
-                  />
-                  <label htmlFor="isActiveSongCheck" style={{ fontSize: '0.9rem', color: '#FAF6EE', cursor: 'pointer' }}>
-                    Publish on Public Song List
-                  </label>
-                </div>
-              </div>
-
-              {/* Submit Buttons */}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  style={{
-                    padding: '10px 20px',
-                    background: 'transparent',
-                    border: '1px solid #8BA698',
-                    color: '#BACDC4',
-                    borderRadius: 8,
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  style={{
-                    padding: '10px 24px',
-                    background: 'linear-gradient(135deg, #E0C47A 0%, #D6B66B 100%)',
-                    color: '#0C2219',
-                    border: 'none',
-                    borderRadius: 8,
-                    cursor: 'pointer',
-                    fontWeight: 700,
-                    boxShadow: '0 4px 14px rgba(214, 182, 107, 0.35)',
-                  }}
-                >
-                  {editingSong ? 'Save Changes' : 'Save Song & Lyrics'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

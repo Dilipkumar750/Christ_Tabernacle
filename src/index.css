@@ -487,23 +487,278 @@ button {
 }
 .ct-form-textarea { min-height: 120px; resize: vertical; }
 
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .ct-container { padding: 0 16px; }
-  .ct-page-hero { padding: 52px 16px 36px; }
-  .ct-subpage-tabs-bar { top: 64px; }
-  .ct-subpage-tab { padding: 14px 16px; font-size: 0.82rem; }
-  .ct-card, .ct-card-dark, .ct-card-blush { padding: 24px 20px; }
+/* ══════════════════════════════════════════════════
+   GLOBAL RESPONSIVE DESIGN SYSTEM
+   Mobile: 480px  |  Tablet: 768px  |  Laptop: 1024px  |  Desktop: 1280px+
+   ══════════════════════════════════════════════════ */
+
+/* ── Shared Modal Responsive ── */
+.ct-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 28, 19, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.ct-modal-window {
+  position: relative;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 38px 36px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  border: 1.5px solid var(--border-gold);
+}
+.ct-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ivory);
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ct-modal-close:hover {
+  background: var(--blush-soft);
+  color: var(--blush-dark);
 }
 
-@media (max-width: 540px) {
-  .ct-subpage-tabs-bar { top: 60px; }
+/* ── TABLET (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .ct-container { padding: 0 20px; }
+  html { font-size: 15.5px; }
+}
+
+/* ── TABLET/PORTRAIT (≤ 768px) ── */
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+  .ct-container { padding: 0 16px; }
+  .ct-page-hero { padding: 52px 16px 36px; }
+  .ct-page-hero-title { font-size: clamp(1.7rem, 6vw, 2.6rem); }
+  .ct-subpage-tabs-bar { top: 64px; }
+  .ct-subpage-tab { padding: 13px 14px; font-size: 0.82rem; }
+  .ct-card, .ct-card-dark, .ct-card-blush { padding: 24px 20px; }
+  .ct-modal-window { padding: 28px 22px; border-radius: 16px; }
+}
+
+/* ── MOBILE LARGE (≤ 640px) ── */
+@media (max-width: 640px) {
+  html { font-size: 14.5px; }
+  .ct-page-hero { padding: 44px 14px 30px; }
+  .ct-modal-window { padding: 24px 18px; border-radius: 14px; max-height: 88vh; }
+  .ct-scripture-box { padding: 16px 18px; font-size: 0.95rem; }
+  .ct-card, .ct-card-dark, .ct-card-blush { padding: 20px 16px; }
+}
+
+/* ── MOBILE (≤ 480px) ── */
+@media (max-width: 480px) {
+  html { font-size: 14px; }
+  .ct-container { padding: 0 12px; }
+  .ct-page-hero { padding: 36px 12px 28px; }
+  .ct-page-hero-desc { font-size: 0.9rem; }
+  .ct-modal-backdrop { padding: 10px; }
+  .ct-modal-window { padding: 20px 14px; border-radius: 12px; }
+  .ct-subpage-tab { padding: 11px 12px; font-size: 0.78rem; }
   .ct-btn-gold,
   .ct-btn-emerald,
   .ct-btn-blush,
   .ct-btn-outline,
   .ct-btn-outline-gold {
-    padding: 11px 22px;
+    padding: 11px 20px;
     font-size: 0.82rem;
+    letter-spacing: 0.03em;
+  }
+  .ct-card, .ct-card-dark, .ct-card-blush { padding: 18px 14px; border-radius: 14px; }
+  .ct-scripture-box { padding: 14px 16px; font-size: 0.9rem; }
+}
+
+/* ── SMALL PHONE (≤ 380px) ── */
+@media (max-width: 380px) {
+  .ct-btn-gold,
+  .ct-btn-emerald,
+  .ct-btn-blush,
+  .ct-btn-outline,
+  .ct-btn-outline-gold {
+    padding: 10px 16px;
+    font-size: 0.78rem;
+  }
+  .ct-modal-window { padding: 16px 12px; }
+}
+
+/* ══════════ ADMIN PANEL RESPONSIVE ══════════ */
+@media (max-width: 1023px) {
+  .admin-main-wrap {
+    margin-left: 0 !important;
   }
 }
+
+/* Admin Form Grids — stack on mobile */
+@media (max-width: 640px) {
+  .admin-form-grid-2,
+  .admin-form-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+  .admin-main-wrap main {
+    padding: 20px 16px !important;
+  }
+}
+
+/* ══════════ ABOUT PAGE RESPONSIVE ══════════ */
+@media (max-width: 768px) {
+  .about-tabs-bar { top: 64px; padding: 0 8px; }
+  .about-content-wrap { padding: 36px 16px 60px !important; }
+  .about-hero { padding: 52px 16px 36px; }
+}
+@media (max-width: 480px) {
+  .about-tabs-bar { top: 60px; }
+  .about-tab-link { padding: 12px 12px; font-size: 0.78rem; }
+  .about-content-wrap { padding: 28px 12px 50px !important; }
+}
+
+/* ══════════ TESTIMONIALS RESPONSIVE ══════════ */
+@media (max-width: 768px) {
+  .test-grid { grid-template-columns: 1fr !important; gap: 18px !important; }
+  .test-card { padding: 22px 18px; }
+  .test-form-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .test-filter-bar { gap: 8px; }
+  .test-filter-btn { padding: 8px 14px; font-size: 0.78rem; }
+  .test-card { padding: 18px 14px; }
+}
+
+/* ══════════ HOME PAGE RESPONSIVE ══════════ */
+@media (max-width: 1024px) {
+  .home-pillars-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .home-welcome-grid { gap: 28px !important; }
+}
+@media (max-width: 768px) {
+  .home-hero { padding: 56px 14px 44px; }
+  .home-hero-badge { width: 100px !important; height: 100px !important; }
+  .home-hero-actions { gap: 10px; margin-bottom: 36px; }
+  .home-pillars { padding: 56px 14px; }
+  .home-pillars-grid { grid-template-columns: 1fr !important; gap: 18px !important; }
+  .home-welcome { padding: 56px 14px; }
+  .home-welcome-grid { grid-template-columns: 1fr !important; }
+  .home-welcome-img { height: 240px !important; }
+  .home-service-strip { flex-direction: column !important; max-width: 100% !important; border-radius: 12px; }
+  .home-service-item { border-right: none !important; border-bottom: 1px solid var(--border-gold-subtle) !important; padding: 14px 16px !important; }
+  .home-mission { padding: 56px 14px; }
+  .home-explore { padding: 56px 14px; }
+  .home-promise { padding: 44px 14px; }
+  .home-banner-content-strip { padding: 10px 14px !important; gap: 12px !important; }
+  .home-banner-tag { display: none; }
+}
+@media (max-width: 640px) {
+  .home-banner-slider { aspect-ratio: 16/9 !important; }
+  .home-banner-cta-btn { display: none; }
+  .home-banner-btn { width: 36px !important; height: 36px !important; font-size: 0.9rem !important; }
+  .home-banner-prev { left: 10px !important; }
+  .home-banner-next { right: 10px !important; }
+  .home-explore-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .home-hero-actions a,
+  .home-hero-actions button { width: 100%; text-align: center; justify-content: center; }
+  .home-hero-tag { font-size: 0.62rem !important; padding: 5px 12px !important; }
+  .home-mission-tags { gap: 8px; }
+  .home-mission-tag { padding: 8px 14px; font-size: 0.7rem; }
+  .home-welcome-badge { padding: 8px 12px !important; bottom: 10px !important; left: 10px !important; }
+  .home-pillar-card { padding: 28px 20px; }
+}
+
+/* ══════════ CONTACT PAGE RESPONSIVE ══════════ */
+@media (max-width: 920px) {
+  .contact-layout { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 600px) {
+  .contact-form-grid { grid-template-columns: 1fr !important; }
+  .contact-form-card { padding: 24px 16px !important; }
+  .contact-info-card { padding: 22px 16px !important; }
+  .contact-social-row { flex-wrap: wrap; gap: 8px; }
+}
+
+/* ══════════ LYRICS / SONGS PAGE RESPONSIVE ══════════ */
+@media (max-width: 1100px) {
+  .yt-worship-wrap { grid-template-columns: 1fr 340px !important; gap: 20px; }
+}
+@media (max-width: 900px) {
+  .yt-worship-wrap { grid-template-columns: 1fr !important; }
+  .yt-sidebar-col { width: 100% !important; }
+}
+@media (max-width: 768px) {
+  .yt-channel-row { flex-direction: column; align-items: flex-start !important; gap: 12px; }
+  .yt-actions-right { flex-wrap: wrap; gap: 6px; }
+  .yt-pill-btn { padding: 7px 11px; font-size: 0.78rem; }
+}
+@media (max-width: 540px) {
+  .yt-video-title { font-size: 1.1rem !important; }
+  .yt-author-left { flex-wrap: wrap; }
+  .yt-desc-box { padding: 14px 14px; }
+  .yt-desc-header { font-size: 0.82rem; gap: 8px; }
+  .yt-actions-right { gap: 4px; }
+  .yt-pill-btn { padding: 6px 9px; font-size: 0.74rem; }
+}
+@media (max-width: 480px) {
+  .yt-pill-split { flex-wrap: wrap; border-radius: 14px; }
+  .yt-worship-wrap { gap: 16px; }
+}
+
+/* ══════════ MEDIA (PHOTOS / VIDEOS) RESPONSIVE ══════════ */
+@media (max-width: 768px) {
+  .photos-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+}
+@media (max-width: 480px) {
+  .photos-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+}
+
+/* ══════════ EVENTS / SERMONS RESPONSIVE ══════════ */
+@media (max-width: 768px) {
+  .events-grid { grid-template-columns: 1fr !important; }
+  .sermons-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ══════════ PRAYERS / SUBPAGES RESPONSIVE ══════════ */
+@media (max-width: 768px) {
+  .prayers-layout { grid-template-columns: 1fr !important; }
+  .prayers-sidebar { display: none; }
+}
+
+/* ══════════ GENERAL TABLE → CARD PATTERN ══════════ */
+@media (max-width: 640px) {
+  .ct-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* ══════════ SHARE MODAL RESPONSIVE ══════════ */
+@media (max-width: 540px) {
+  .share-modal-inner { padding: 20px 14px !important; border-radius: 16px !important; }
+  .share-platforms-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+  .share-platform-btn { padding: 10px 6px !important; font-size: 0.72rem !important; }
+  .share-tab-btn { padding: 10px 14px !important; font-size: 0.8rem !important; }
+}
+
+/* ══════════ IMAGE SAFE DEFAULTS ══════════ */
+img {
+  max-width: 100%;
+  height: auto;
+}
+iframe {
+  max-width: 100%;
+}
+

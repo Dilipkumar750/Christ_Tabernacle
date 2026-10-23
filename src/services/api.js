@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000/api';
 
 // Helper for authorized headers
 const getAuthHeaders = () => {
@@ -69,7 +69,24 @@ export const uploadImageFile = async (file) => {
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'File upload failed');
-  return data; // { success: true, url: 'http://localhost:5000/uploads/...' }
+  return data; // { success: true, url: 'http://...' }
+};
+
+export const uploadPPTFile = async (file) => {
+  const token = localStorage.getItem('ct_admin_token');
+  const formData = new FormData();
+  formData.append('ppt', file);
+
+  const res = await fetch(`${API_BASE}/upload/ppt`, {
+    method: 'POST',
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'PPT upload failed');
+  return data; // { success: true, url: 'http://...' }
 };
 
 /* ========================================================
@@ -271,6 +288,13 @@ export const getPublicSongs = async (language = '', search = '') => {
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || 'Failed to fetch worship songs');
   return data.data || [];
+};
+
+export const getSongById = async (id) => {
+  const res = await fetch(`${API_BASE}/songs/${id}`);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch song');
+  return data.data;
 };
 
 export const getAllSongsAdmin = async (language = '', search = '') => {

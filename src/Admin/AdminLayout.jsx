@@ -30,7 +30,7 @@ export default function AdminLayout() {
     { name: 'Hero Banners', path: '/admin/hero', icon: <FaImages /> },
     { name: 'Testimonials', path: '/admin/testimonials', icon: <FaComments /> },
     { name: 'Photo Gallery', path: '/admin/gallery', icon: <FaCameraRetro /> },
-    { name: 'Worship Lyrics', path: '/admin/lyrics', icon: <FaMusic /> },
+    { name: 'Worship Lyrics & Video', path: '/admin/lyrics', icon: <FaMusic /> },
   ];
 
   return (
@@ -38,8 +38,8 @@ export default function AdminLayout() {
       style={{
         display: 'flex',
         minHeight: '100vh',
-        background: '#081710',
-        color: '#FAF6EE',
+        background: '#F8FAF9',
+        color: '#1E293B',
         fontFamily: 'var(--font-sans, sans-serif)',
       }}
     >
@@ -50,19 +50,19 @@ export default function AdminLayout() {
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0,0,0,0.6)',
+            background: 'rgba(18, 45, 36, 0.4)',
             zIndex: 90,
-            backdropFilter: 'blur(4px)',
+            backdropFilter: 'blur(3px)',
           }}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar (Clean White Background, Deep Green Headings) */}
       <aside
         style={{
           width: 270,
-          background: 'linear-gradient(180deg, #0C2318 0%, #07150E 100%)',
-          borderRight: '1px solid rgba(214, 182, 107, 0.2)',
+          background: '#FFFFFF',
+          borderRight: '1px solid #E2E8F0',
           display: 'flex',
           flexDirection: 'column',
           position: 'fixed',
@@ -71,15 +71,15 @@ export default function AdminLayout() {
           left: 0,
           zIndex: 100,
           transition: 'transform 0.3s ease',
-          transform: sidebarOpen ? 'translateX(0)' : window.innerWidth < 1024 ? 'translateX(-100%)' : 'translateX(0)',
+          boxShadow: '2px 0 12px rgba(0, 0, 0, 0.03)',
         }}
-        className="admin-sidebar"
+        className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}
       >
         {/* Sidebar Brand Header */}
         <div
           style={{
-            padding: '28px 24px 22px',
-            borderBottom: '1px solid rgba(214, 182, 107, 0.15)',
+            padding: '24px 22px 20px',
+            borderBottom: '1px solid #E2E8F0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -88,16 +88,16 @@ export default function AdminLayout() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div
               style={{
-                width: 40,
-                height: 40,
+                width: 42,
+                height: 42,
                 borderRadius: 10,
-                background: 'linear-gradient(135deg, #E0C47A 0%, #D6B66B 100%)',
-                color: '#0C2219',
+                background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
+                color: '#D6B66B',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '1.2rem',
-                boxShadow: '0 4px 12px rgba(214, 182, 107, 0.3)',
+                fontSize: '1.25rem',
+                boxShadow: '0 4px 10px rgba(24, 67, 50, 0.25)',
               }}
             >
               <FaCross />
@@ -106,10 +106,10 @@ export default function AdminLayout() {
               <h2
                 style={{
                   margin: 0,
-                  fontSize: '1.05rem',
+                  fontSize: '1.08rem',
                   fontWeight: 700,
                   fontFamily: 'var(--font-serif, serif)',
-                  color: '#FAF6EE',
+                  color: '#122D24',
                 }}
               >
                 Christ's Tabernacle
@@ -117,10 +117,10 @@ export default function AdminLayout() {
               <span
                 style={{
                   fontSize: '0.72rem',
-                  color: '#D6B66B',
+                  color: '#A88A42',
                   letterSpacing: '1px',
                   textTransform: 'uppercase',
-                  fontWeight: 600,
+                  fontWeight: 700,
                 }}
               >
                 Admin Sanctuary
@@ -131,14 +131,13 @@ export default function AdminLayout() {
           {/* Close for mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md-hide"
+            className="md-hide-btn"
             style={{
               background: 'none',
               border: 'none',
-              color: '#8BA698',
+              color: '#64748B',
               fontSize: '1.2rem',
               cursor: 'pointer',
-              display: window.innerWidth < 1024 ? 'block' : 'none',
             }}
           >
             <FaTimes />
@@ -149,8 +148,8 @@ export default function AdminLayout() {
         <div style={{ padding: '16px 20px 8px' }}>
           <div
             style={{
-              background: 'rgba(214, 182, 107, 0.08)',
-              border: '1px solid rgba(214, 182, 107, 0.2)',
+              background: '#F0FDF4',
+              border: '1px solid #BBF7D0',
               borderRadius: 8,
               padding: '8px 12px',
               display: 'flex',
@@ -159,7 +158,7 @@ export default function AdminLayout() {
               fontSize: '0.78rem',
             }}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#D6B66B' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#166534', fontWeight: 600 }}>
               <FaServer style={{ fontSize: '0.75rem' }} />
               <span>Backend API</span>
             </span>
@@ -168,8 +167,8 @@ export default function AdminLayout() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 5,
-                color: '#4ADE80',
-                fontWeight: 600,
+                color: '#15803D',
+                fontWeight: 700,
               }}
             >
               <span
@@ -177,8 +176,8 @@ export default function AdminLayout() {
                   width: 7,
                   height: 7,
                   borderRadius: '50%',
-                  background: '#4ADE80',
-                  boxShadow: '0 0 6px #4ADE80',
+                  background: '#16A34A',
+                  boxShadow: '0 0 6px #16A34A',
                 }}
               />
               Active
@@ -187,13 +186,13 @@ export default function AdminLayout() {
         </div>
 
         {/* Nav Links */}
-        <nav style={{ flex: 1, padding: '16px 14px', overflowY: 'auto' }}>
+        <nav style={{ flex: 1, padding: '14px 12px', overflowY: 'auto' }}>
           <div
             style={{
               fontSize: '0.68rem',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
-              color: '#658674',
+              color: '#64748B',
               padding: '0 12px 10px',
               fontWeight: 700,
             }}
@@ -210,21 +209,19 @@ export default function AdminLayout() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 12,
-                padding: '12px 14px',
-                borderRadius: 10,
-                marginBottom: 6,
+                padding: '11px 14px',
+                borderRadius: 8,
+                marginBottom: 4,
                 textDecoration: 'none',
                 fontSize: '0.92rem',
-                fontWeight: isActive ? 600 : 500,
-                color: isActive ? '#0C2219' : '#C2D6CB',
-                background: isActive
-                  ? 'linear-gradient(135deg, #E0C47A 0%, #D6B66B 100%)'
-                  : 'transparent',
-                boxShadow: isActive ? '0 4px 15px rgba(214, 182, 107, 0.3)' : 'none',
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? '#122D24' : '#475569',
+                background: isActive ? '#EAF3EE' : 'transparent',
+                borderLeft: isActive ? '4px solid #184332' : '4px solid transparent',
                 transition: 'all 0.2s ease',
               })}
             >
-              <span style={{ fontSize: '1.05rem' }}>{item.icon}</span>
+              <span style={{ fontSize: '1.05rem', color: '#184332' }}>{item.icon}</span>
               <span>{item.name}</span>
             </NavLink>
           ))}
@@ -234,8 +231,8 @@ export default function AdminLayout() {
         <div
           style={{
             padding: '16px 18px',
-            borderTop: '1px solid rgba(214, 182, 107, 0.15)',
-            background: 'rgba(5, 16, 11, 0.6)',
+            borderTop: '1px solid #E2E8F0',
+            background: '#F8FAF9',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -245,14 +242,14 @@ export default function AdminLayout() {
                   width: 36,
                   height: 36,
                   borderRadius: '50%',
-                  background: 'rgba(214, 182, 107, 0.2)',
-                  border: '1px solid #D6B66B',
+                  background: '#EAF3EE',
+                  border: '1.5px solid #184332',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#D6B66B',
+                  color: '#184332',
                   fontWeight: 700,
-                  fontSize: '0.85rem',
+                  fontSize: '0.88rem',
                 }}
               >
                 {admin?.username ? admin.username.charAt(0).toUpperCase() : 'A'}
@@ -261,15 +258,15 @@ export default function AdminLayout() {
                 <div
                   style={{
                     fontSize: '0.86rem',
-                    fontWeight: 600,
-                    color: '#FAF6EE',
+                    fontWeight: 700,
+                    color: '#122D24',
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
                   }}
                 >
                   {admin?.username || 'Administrator'}
                 </div>
-                <div style={{ fontSize: '0.72rem', color: '#8BA698' }}>{admin?.role || 'Super Admin'}</div>
+                <div style={{ fontSize: '0.72rem', color: '#64748B' }}>{admin?.role || 'Super Admin'}</div>
               </div>
             </div>
 
@@ -277,16 +274,16 @@ export default function AdminLayout() {
               onClick={handleLogout}
               title="Sign Out"
               style={{
-                background: 'rgba(235, 87, 87, 0.15)',
-                border: '1px solid rgba(235, 87, 87, 0.3)',
-                color: '#FFA2A2',
+                background: '#FEE2E2',
+                border: '1px solid #FECACA',
+                color: '#DC2626',
                 padding: '8px 10px',
                 borderRadius: 8,
                 cursor: 'pointer',
                 fontSize: '0.9rem',
                 display: 'flex',
                 alignItems: 'center',
-                transition: 'background 0.2s',
+                transition: 'all 0.2s',
               }}
             >
               <FaSignOutAlt />
@@ -295,30 +292,31 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Main Content Area (White / Light Background) */}
       <div
         style={{
           flex: 1,
-          marginLeft: window.innerWidth >= 1024 ? 270 : 0,
           display: 'flex',
           flexDirection: 'column',
           minWidth: 0,
         }}
+        className="admin-main-wrap"
       >
         {/* Top Navbar */}
         <header
           style={{
-            height: 68,
-            background: 'rgba(12, 34, 25, 0.85)',
-            backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(214, 182, 107, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 24px',
-            position: 'sticky',
-            top: 0,
-            zIndex: 80,
+          minHeight: 60,
+          background: '#FFFFFF',
+          borderBottom: '1px solid #E2E8F0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 20px',
+          position: 'sticky',
+          top: 0,
+          zIndex: 80,
+          boxShadow: '0 1px 4px rgba(0, 0, 0, 0.03)',
+          gap: 8,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -327,24 +325,28 @@ export default function AdminLayout() {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#D6B66B',
+                color: '#184332',
                 fontSize: '1.25rem',
                 cursor: 'pointer',
-                display: 'none',
               }}
               className="mobile-sidebar-toggle"
             >
               <FaBars />
             </button>
             <span
+              className="admin-header-title"
               style={{
-                fontSize: '0.95rem',
-                fontWeight: 600,
-                color: '#FAF6EE',
-                letterSpacing: '0.3px',
+                fontSize: '1rem',
+                fontWeight: 700,
+                color: '#122D24',
+                fontFamily: 'var(--font-serif, serif)',
+                letterSpacing: '0.2px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
-              Christ's Tabernacle Content Management
+              Christ's Tabernacle Management System
             </span>
           </div>
 
@@ -355,37 +357,86 @@ export default function AdminLayout() {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
-                padding: '7px 14px',
-                background: 'rgba(214, 182, 107, 0.12)',
-                border: '1px solid rgba(214, 182, 107, 0.3)',
+                gap: 7,
+                padding: '8px 16px',
+                background: '#FFFFFF',
+                border: '1.5px solid #184332',
                 borderRadius: 8,
-                color: '#D6B66B',
-                fontSize: '0.82rem',
-                fontWeight: 600,
+                color: '#184332',
+                fontSize: '0.84rem',
+                fontWeight: 700,
                 textDecoration: 'none',
                 transition: 'all 0.2s',
+                boxShadow: '0 2px 6px rgba(24, 67, 50, 0.08)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#184332';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#FFFFFF';
+                e.currentTarget.style.color = '#184332';
               }}
             >
-              <span>View Public Sanctuary</span>
+              <span>View Sanctuary Website</span>
               <FaExternalLinkAlt style={{ fontSize: '0.72rem' }} />
             </Link>
           </div>
         </header>
 
         {/* Page Content Body */}
-        <main style={{ flex: 1, padding: '28px', background: '#081710' }}>
+        <main style={{ flex: 1, padding: '28px 32px', background: '#F8FAF9', minWidth: 0 }} className="admin-content-main">
           <Outlet />
         </main>
       </div>
 
       <style>{`
+        .admin-main-wrap {
+          margin-left: 270px;
+        }
+        .md-hide-btn {
+          display: none;
+        }
+        .mobile-sidebar-toggle {
+          display: none;
+        }
+
         @media (max-width: 1023px) {
           .admin-sidebar {
             transform: translateX(-100%);
           }
+          .admin-sidebar.open {
+            transform: translateX(0);
+          }
+          .admin-main-wrap {
+            margin-left: 0 !important;
+          }
+          .md-hide-btn {
+            display: block !important;
+          }
           .mobile-sidebar-toggle {
             display: block !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .admin-content-main {
+            padding: 20px 18px !important;
+          }
+          .admin-header-title {
+            font-size: 0.9rem !important;
+            max-width: 180px;
+            display: inline-block;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .admin-content-main {
+            padding: 16px 12px !important;
+          }
+          .admin-header-title {
+            font-size: 0.82rem !important;
+            max-width: 130px;
           }
         }
       `}</style>

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import ScrollToTop from './Components/ScrollToTop';
@@ -17,7 +17,6 @@ import Photos from './Pages/Media/Photos';
 import Videos from './Pages/Media/Videos';
 import Songs from './Pages/Songs/Songs';
 import Lyrics from './Pages/Songs/Lyrics';
-import Audio from './Pages/Songs/Audio';
 import Sermons from './Pages/Sermons/Sermons';
 import BibleStudy from './Pages/Sermons/BibleStudy';
 import SundaySermons from './Pages/Sermons/SundaySermons';
@@ -36,9 +35,13 @@ import AdminLayout from './Admin/AdminLayout';
 import AdminLogin from './Admin/AdminLogin';
 import AdminDashboard from './Admin/AdminDashboard';
 import HeroManager from './Admin/HeroManager';
+import HeroForm from './Admin/HeroForm';
 import TestimonialManager from './Admin/TestimonialManager';
+import TestimonialForm from './Admin/TestimonialForm';
 import PhotoManager from './Admin/PhotoManager';
+import PhotoForm from './Admin/PhotoForm';
 import LyricsManager from './Admin/LyricsManager';
+import LyricsForm from './Admin/LyricsForm';
 
 function AppContent() {
   const location = useLocation();
@@ -70,10 +73,12 @@ function AppContent() {
             <Route path="videos" element={<Videos />} />
           </Route>
 
-          {/* Songs */}
+          {/* Songs — with /songs/lyrics and /songs/lyrics/:id routing */}
           <Route path="/songs" element={<Songs />}>
+            <Route index element={<Lyrics />} />
             <Route path="lyrics" element={<Lyrics />} />
-            <Route path="audio" element={<Audio />} />
+            <Route path="lyrics/:id" element={<Lyrics />} />
+            <Route path="audio" element={<Navigate to="/songs/lyrics" replace />} />
           </Route>
 
           {/* Sermons */}
@@ -105,9 +110,17 @@ function AppContent() {
           >
             <Route index element={<AdminDashboard />} />
             <Route path="hero" element={<HeroManager />} />
+            <Route path="hero/new" element={<HeroForm />} />
+            <Route path="hero/edit/:id" element={<HeroForm />} />
             <Route path="testimonials" element={<TestimonialManager />} />
+            <Route path="testimonials/new" element={<TestimonialForm />} />
+            <Route path="testimonials/edit/:id" element={<TestimonialForm />} />
             <Route path="gallery" element={<PhotoManager />} />
+            <Route path="gallery/new" element={<PhotoForm />} />
+            <Route path="gallery/edit/:id" element={<PhotoForm />} />
             <Route path="lyrics" element={<LyricsManager />} />
+            <Route path="lyrics/new" element={<LyricsForm />} />
+            <Route path="lyrics/edit/:id" element={<LyricsForm />} />
           </Route>
 
           {/* 404 fallback */}
@@ -162,7 +175,7 @@ function AppContent() {
   );
 }
 
-function App() {
+export default function App() {
   return (
     <Router>
       <AdminAuthProvider>
@@ -171,5 +184,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;
