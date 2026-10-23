@@ -1,4 +1,7 @@
-﻿import { useState } from "react";
+import { useState } from "react";
+import saravanan3Img from "../../assets/saravanan3.jpeg";
+import saravanan2Img from "../../assets/saravanan2.jpeg";
+import saravananImg from "../../assets/saravanan.jpeg";
 
 const SUNDAY_SERMONS = [
   {
@@ -8,6 +11,7 @@ const SUNDAY_SERMONS = [
     speaker: "Pastor Saravanan Immanuel",
     passage: "Ephesians 6:10–18",
     date: "October 4, 2026",
+    image: saravanan3Img,
     keyPoints: [
       "The source of spiritual strength is in the Lord and the power of His might.",
       "The full armor of God is not defensive only; the Sword of the Spirit and prayer wage victorious warfare.",
@@ -38,6 +42,7 @@ const SUNDAY_SERMONS = [
     speaker: "Pastor Saravanan Immanuel",
     passage: "Hebrews 9:11–14; Revelation 12:11",
     date: "September 20, 2026",
+    image: saravanan2Img,
     keyPoints: [
       "The blood of Christ purges our conscience from dead works to serve the Living God.",
       "A higher covenant sealed with eternal redemption rather than temporary sacrifices.",
@@ -53,6 +58,7 @@ const SUNDAY_SERMONS = [
     speaker: "Pastor Saravanan Immanuel",
     passage: "Matthew 15:21–28; Isaiah 53:4–5",
     date: "September 13, 2026",
+    image: saravananImg,
     keyPoints: [
       "Healing was purchased at the whipping post of Calvary just as salvation was on the cross.",
       "Persistent, humble faith that refuses to be turned away from the Master's table.",
@@ -248,6 +254,11 @@ export default function SundaySermons() {
               <span className="sermon-series-badge">{sermon.series}</span>
               <span className="sermon-card-date">{sermon.date}</span>
             </div>
+            {sermon.image && (
+              <div style={{ height: 160, borderRadius: 10, overflow: "hidden", margin: "10px 0 14px", border: "1.5px solid var(--border-gold-subtle)" }}>
+                <img src={sermon.image} alt={sermon.speaker} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+            )}
             <h3 className="sermon-card-title">{sermon.title}</h3>
             <div className="sermon-speaker-line">
               👤 {sermon.speaker} • 📖 {sermon.passage}

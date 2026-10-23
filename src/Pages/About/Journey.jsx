@@ -1,4 +1,9 @@
-﻿const MILESTONES = [
+import jesusSaravananImg from "../../assets/jesus_saravanan.jpeg";
+import saravananImg from "../../assets/saravanan.jpeg";
+import saravanan3Img from "../../assets/saravanan3.jpeg";
+import outdoorFellowshipImg from "../../assets/image1.jpeg";
+
+const MILESTONES = [
   {
     year: "1991",
     icon: "🌱",
@@ -8,26 +13,34 @@
   {
     year: "2007",
     icon: "🌿",
-    title: "Apostolic Gospel Prayer House Established",
-    desc: "The Apostolic Gospel Prayer House was established. The Holy Spirit moved mightily. Pastor Saravanan Immanuel and Eva. Glory Devapiriyam ministered hand in hand. Captives were delivered, physical infirmities were healed, and lives were miraculously renewed.",
+    title: "Apostolic Gospel Prayer House & The Divine Mandate",
+    desc: "The Apostolic Gospel Prayer House was established as the Holy Spirit moved mightily. Pastor Saravanan Immanuel received the heavenly vision and divine mandate from our Lord Jesus Christ, ministering hand in hand to set captives free.",
+    image: jesusSaravananImg,
+    caption: "✝ Pastor Saravanan Immanuel receiving the Lord Jesus' divine calling and apostolic mandate."
   },
   {
     year: "Dec 2007",
     icon: "🕊️",
     title: "Ordination & Ministerial Anointing",
     desc: "Pastor Immanuel Saravanan was officially ordained by Chief Pastor M. K. Sam Sundaram, ACA, and blessed by Pastor M. M. Jebaraj, ACA (Selavoyal Ministries) — marking an enduring milestone of spiritual authority and apostolic mandate.",
+    image: saravananImg,
+    caption: "Pastor Saravanan Immanuel ministering with the apostolic burden and power of the Holy Spirit."
   },
   {
     year: "2016",
     icon: "✨",
     title: "A New Vision — Christ's Tabernacle Church",
     desc: "The Lord revealed a new vision to establish and build a permanent sanctuary for all nations. Apostolic Gospel Prayer House transitioned into Christ's Tabernacle Church, consecrated and dedicated by Rev. I. Christdhas of Hope AG Church, Pallikaranai.",
+    image: saravanan3Img,
+    caption: "Senior Pastor Saravanan Immanuel at the sacred sanctuary pulpit of Christ's Tabernacle."
   },
   {
     year: "Present Day",
     icon: "🔥",
     title: "Continuing the Kingdom Mandate",
     desc: "Today, Christ's Tabernacle ministers each week to families across Chennai, empowering the next generation through Sunday School, fasting intercessions, dynamic worship, and supernatural demonstrations of God's grace.",
+    image: outdoorFellowshipImg,
+    caption: "Joyous gathering of the Christ's Tabernacle congregation praising the Lord in unity."
   },
 ];
 
@@ -243,6 +256,39 @@ export default function Journey() {
             <span className="journey-year">{m.year}</span>
             <h3>{m.title}</h3>
             <p>{m.desc}</p>
+            {m.image && (
+              <div style={{
+                marginTop: 18,
+                borderRadius: 14,
+                overflow: "hidden",
+                border: "1.5px solid var(--border-gold-subtle)",
+                boxShadow: "0 6px 20px rgba(12, 34, 25, 0.08)",
+                maxWidth: 620
+              }}>
+                <img
+                  src={m.image}
+                  alt={m.title}
+                  style={{
+                    width: "100%",
+                    height: 280,
+                    objectFit: "cover",
+                    display: "block"
+                  }}
+                />
+                {m.caption && (
+                  <div style={{
+                    padding: "10px 16px",
+                    background: "#FAF6EE",
+                    fontSize: "0.82rem",
+                    color: "var(--green-dark)",
+                    fontWeight: 600,
+                    borderTop: "1px solid var(--border-gold-subtle)"
+                  }}>
+                    {m.caption}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

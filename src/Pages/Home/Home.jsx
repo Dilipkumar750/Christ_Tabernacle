@@ -7,6 +7,11 @@ import modernSanctuaryImg from "../../assets/Modern-Sanctuary.png";
 import heroBanner1 from "../../assets/hero-banner.png";
 import heroBanner2 from "../../assets/hero-banner2.png";
 import heroBanner3 from "../../assets/hero-banner3.png";
+import jesusSaravananImg from "../../assets/jesus_saravanan.jpeg";
+import saravanan3Img from "../../assets/saravanan3.jpeg";
+import saravananImg from "../../assets/saravanan.jpeg";
+import outdoorFellowshipImg from "../../assets/image1.jpeg";
+import anniversaryPosterImg from "../../assets/popup.jpeg";
 
 const BANNER_SLIDES = [
   {
@@ -1133,7 +1138,7 @@ export default function Home() {
 
             <div className="home-welcome-img-wrap">
               {/* Sanctuary Views Switcher */}
-              <div className="home-sanctuary-views-bar" role="tablist" aria-label="Sanctuary Views">
+              <div className="home-sanctuary-views-bar" role="tablist" aria-label="Sanctuary Views" style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 <button
                   type="button"
                   role="tab"
@@ -1141,38 +1146,79 @@ export default function Home() {
                   className={`home-sanctuary-tab ${activeSanctuaryView === "modern" ? "active" : ""}`}
                   onClick={() => setActiveSanctuaryView("modern")}
                 >
-                  ✨ Modern Sanctuary &amp; Altar
+                  ✨ Sanctuary &amp; Altar
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-selected={activeSanctuaryView === "cathedral"}
-                  className={`home-sanctuary-tab ${activeSanctuaryView === "cathedral" ? "active" : ""}`}
-                  onClick={() => setActiveSanctuaryView("cathedral")}
+                  aria-selected={activeSanctuaryView === "vision"}
+                  className={`home-sanctuary-tab ${activeSanctuaryView === "vision" ? "active" : ""}`}
+                  onClick={() => setActiveSanctuaryView("vision")}
                 >
-                  ⛪ Fellowship Hall
+                  † Divine Calling
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeSanctuaryView === "pastor"}
+                  className={`home-sanctuary-tab ${activeSanctuaryView === "pastor" ? "active" : ""}`}
+                  onClick={() => setActiveSanctuaryView("pastor")}
+                >
+                  🕊️ Pastor Saravanan
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeSanctuaryView === "fellowship"}
+                  className={`home-sanctuary-tab ${activeSanctuaryView === "fellowship" ? "active" : ""}`}
+                  onClick={() => setActiveSanctuaryView("fellowship")}
+                >
+                  🙌 Church Fellowship
                 </button>
               </div>
 
               <div className="home-sanctuary-img-container">
                 <img
-                  src={activeSanctuaryView === "modern" ? modernSanctuaryImg : sanctuaryImg}
+                  src={
+                    activeSanctuaryView === "vision"
+                      ? jesusSaravananImg
+                      : activeSanctuaryView === "pastor"
+                      ? saravanan3Img
+                      : activeSanctuaryView === "fellowship"
+                      ? outdoorFellowshipImg
+                      : modernSanctuaryImg
+                  }
                   alt={
-                    activeSanctuaryView === "modern"
-                      ? "Christ's Tabernacle Modern Sanctuary with Illuminated Cross and Altar"
-                      : "Christ's Tabernacle Sacred Cathedral Sanctuary Interior"
+                    activeSanctuaryView === "vision"
+                      ? "Pastor Saravanan Immanuel receiving the holy calling from Jesus Christ"
+                      : activeSanctuaryView === "pastor"
+                      ? "Senior Pastor Saravanan Immanuel ministering at the altar"
+                      : activeSanctuaryView === "fellowship"
+                      ? "Christ's Tabernacle congregation gathered in praise"
+                      : "Christ's Tabernacle Modern Sanctuary Altar"
                   }
                   className="home-welcome-img"
+                  style={{ objectFit: activeSanctuaryView === "vision" ? "contain" : "cover", background: activeSanctuaryView === "vision" ? "#0C2219" : "transparent" }}
                 />
               </div>
 
               <div className="home-welcome-badge">
                 <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.05rem", fontWeight: 700, color: "var(--gold-bright)" }}>
-                  {activeSanctuaryView === "modern" ? "Sacred Altar of Worship" : "35+ Years of Faithful Ministry"}
+                  {activeSanctuaryView === "vision"
+                    ? "Divine Calling & Apostolic Vision"
+                    : activeSanctuaryView === "pastor"
+                    ? "Pastor Saravanan Immanuel"
+                    : activeSanctuaryView === "fellowship"
+                    ? "Joyful Praise Fellowship"
+                    : "Sacred Altar of Worship"}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: "rgba(250, 246, 238, 0.75)", marginTop: 2 }}>
-                  {activeSanctuaryView === "modern"
-                    ? "Christ's Tabernacle Prayer & Worship Sanctuary"
+                  {activeSanctuaryView === "vision"
+                    ? "Ordained & Sent to Preach the Full Gospel of Jesus Christ"
+                    : activeSanctuaryView === "pastor"
+                    ? "Senior Pastor & Founder • Christ's Tabernacle"
+                    : activeSanctuaryView === "fellowship"
+                    ? "United in Worship, Fasting & Kingdom Prayer"
                     : "Serving Christ & Healing Generations Since 1991"}
                 </div>
               </div>
@@ -1206,6 +1252,151 @@ export default function Home() {
             <Link to="/about/motto" className="ct-btn-outline">
               Faith · Family · Future
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 4B. Pastoral Leadership & Divine Vision Spotlight ── */}
+      <section style={{ padding: "64px 20px", background: "linear-gradient(180deg, #FDFBF7 0%, #FAF6EE 100%)", borderTop: "1px solid #EDE5D8", borderBottom: "1px solid #EDE5D8" }}>
+        <div className="ct-container" style={{ maxWidth: 1180 }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <span className="ct-badge">† Pastoral Leadership &amp; Apostolic Calling †</span>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", color: "#184332", margin: "12px 0 8px" }}>
+              Sent by the Lord to Heal &amp; Restore
+            </h2>
+            <p style={{ color: "#4A6355", fontSize: "0.98rem", maxWidth: 660, margin: "0 auto" }}>
+              "The Spirit of the Lord GOD is upon Me, because the LORD has anointed Me to preach good tidings to the poor..." — Isaiah 61:1
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 28, alignItems: "stretch" }}>
+            {/* Card 1: Divine Vision Mandate */}
+            <div style={{
+              background: "#FFFFFF",
+              borderRadius: 18,
+              overflow: "hidden",
+              border: "1.5px solid #EDE5D8",
+              boxShadow: "0 8px 24px rgba(12, 34, 25, 0.05)",
+              display: "flex",
+              flexDirection: "column"
+            }}>
+              <div style={{ height: 260, overflow: "hidden", background: "#0C2219", position: "relative" }}>
+                <img
+                  src={jesusSaravananImg}
+                  alt="Pastor Saravanan Immanuel receiving the Lord's mandate"
+                  style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                />
+                <span style={{
+                  position: "absolute", top: 14, left: 14,
+                  background: "rgba(12, 34, 25, 0.85)", color: "#E8CC8F",
+                  border: "1px solid #D6B66B", fontSize: "0.72rem",
+                  fontWeight: 800, padding: "4px 12px", borderRadius: 20
+                }}>
+                  † Divine Vision &amp; Calling
+                </span>
+              </div>
+              <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "#184332", margin: "0 0 10px" }}>
+                    The Apostolic Mandate
+                  </h3>
+                  <p style={{ color: "#4A6355", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                    Pastor Saravanan Immanuel answered the divine calling of our Lord Jesus Christ to lead Christ's Tabernacle as a sanctuary of deliverance, supernatural healing, and relentless prayer for all nations.
+                  </p>
+                </div>
+                <div style={{ marginTop: 20 }}>
+                  <Link to="/about/journey" style={{ color: "#A88A42", fontWeight: 800, fontSize: "0.88rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                    Read Pastoral Journey <span>→</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Senior Pastor Saravanan Immanuel */}
+            <div style={{
+              background: "#FFFFFF",
+              borderRadius: 18,
+              overflow: "hidden",
+              border: "1.5px solid #EDE5D8",
+              boxShadow: "0 8px 24px rgba(12, 34, 25, 0.05)",
+              display: "flex",
+              flexDirection: "column"
+            }}>
+              <div style={{ height: 260, overflow: "hidden", position: "relative" }}>
+                <img
+                  src={saravanan3Img}
+                  alt="Pastor Saravanan Immanuel preaching at the pulpit"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+                <span style={{
+                  position: "absolute", top: 14, left: 14,
+                  background: "rgba(24, 67, 50, 0.85)", color: "#FAF6EE",
+                  border: "1px solid rgba(214, 182, 107, 0.4)", fontSize: "0.72rem",
+                  fontWeight: 800, padding: "4px 12px", borderRadius: 20
+                }}>
+                  ✝ Senior Pastor
+                </span>
+              </div>
+              <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "#184332", margin: "0 0 10px" }}>
+                    Pastor Saravanan Immanuel
+                  </h3>
+                  <p style={{ color: "#4A6355", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                    Under his faithful ministry, thousands of believers across Chennai and around the world experience the transformative power of God through Sunday expository preaching, fasting prayer vigils, and pastoral counseling.
+                  </p>
+                </div>
+                <div style={{ marginTop: 20, display: "flex", gap: 12 }}>
+                  <Link to="/sermons/sunday" className="ct-btn-gold" style={{ padding: "8px 18px", fontSize: "0.82rem" }}>
+                    Listen to Sermons
+                  </Link>
+                  <Link to="/contact" className="ct-btn-outline" style={{ padding: "8px 18px", fontSize: "0.82rem" }}>
+                    Request Prayer
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: 10th Anniversary Milestone */}
+            <div style={{
+              background: "#FFFFFF",
+              borderRadius: 18,
+              overflow: "hidden",
+              border: "1.5px solid #EDE5D8",
+              boxShadow: "0 8px 24px rgba(12, 34, 25, 0.05)",
+              display: "flex",
+              flexDirection: "column"
+            }}>
+              <div style={{ height: 260, overflow: "hidden", background: "#FAF6EE", position: "relative" }}>
+                <img
+                  src={anniversaryPosterImg}
+                  alt="Christ's Tabernacle 10th Anniversary Celebration"
+                  style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                />
+                <span style={{
+                  position: "absolute", top: 14, left: 14,
+                  background: "#DC2626", color: "#FFFFFF",
+                  fontSize: "0.72rem", fontWeight: 800, padding: "4px 12px", borderRadius: 20
+                }}>
+                  🎉 Milestone Jubilee
+                </span>
+              </div>
+              <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "#184332", margin: "0 0 10px" }}>
+                    10th Anniversary Celebration
+                  </h3>
+                  <p style={{ color: "#4A6355", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                    Celebrating a decade of supernatural grace, faithful worship, and community transformation in Christ's Tabernacle. Join in thanksgiving for the great things the Lord has done!
+                  </p>
+                </div>
+                <div style={{ marginTop: 20 }}>
+                  <Link to="/media/photos" style={{ color: "#A88A42", fontWeight: 800, fontSize: "0.88rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                    View Celebration Gallery <span>→</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

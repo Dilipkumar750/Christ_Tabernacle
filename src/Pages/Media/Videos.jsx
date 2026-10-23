@@ -1,7 +1,10 @@
-﻿import { useState } from "react";
 import sanctuaryImg from "../../assets/sanctuary.jpg";
 import worshipImg from "../../assets/worship.jpg";
 import bibleImg from "../../assets/bible.jpg";
+import saravanan3Img from "../../assets/saravanan3.jpeg";
+import saravanan2Img from "../../assets/saravanan2.jpeg";
+import saravananImg from "../../assets/saravanan.jpeg";
+import outdoorFellowshipImg from "../../assets/image1.jpeg";
 
 const VIDEOS = [
   {
@@ -12,7 +15,7 @@ const VIDEOS = [
     category: "Sunday Service",
     duration: "1h 18m",
     date: "October 4, 2026",
-    thumbnail: sanctuaryImg,
+    thumbnail: saravanan3Img,
     summary:
       "A profound expository message on exercising the authority given by Christ over every power of the enemy. Learn how to take spiritual ground for your family and future through prevailing prayer.",
   },
@@ -36,7 +39,7 @@ const VIDEOS = [
     category: "Worship",
     duration: "45m",
     date: "September 21, 2026",
-    thumbnail: worshipImg,
+    thumbnail: outdoorFellowshipImg,
     summary:
       "A sacred continuous worship experience featuring classic Tamil and English praise anthems, anointing of the Holy Spirit, and corporate intercession.",
   },
@@ -48,7 +51,7 @@ const VIDEOS = [
     category: "Bible Study",
     duration: "1h 05m",
     date: "September 14, 2026",
-    thumbnail: bibleImg,
+    thumbnail: saravanan2Img,
     summary:
       "Systematic verse-by-verse exploration of spiritual courage in Christ. Conquering anxiety, panic, and doubt with the sword of the Spirit.",
   },
@@ -60,7 +63,7 @@ const VIDEOS = [
     category: "Sunday Service",
     duration: "1h 12m",
     date: "September 7, 2026",
-    thumbnail: sanctuaryImg,
+    thumbnail: saravananImg,
     summary:
       "Understanding the unmatched promises of the New Covenant ratified by the precious blood of Jesus Christ.",
   },
