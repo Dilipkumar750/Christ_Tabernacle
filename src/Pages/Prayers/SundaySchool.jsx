@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AGE_GROUPS = [
   {
@@ -36,22 +36,23 @@ export default function SundaySchool() {
     <>
       <style>{`
         .ss-hero {
-          background: var(--grad-sanctuary);
+          background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
           border-radius: 20px;
           border: 1.5px solid var(--border-gold);
           padding: 40px 36px;
-          color: var(--ivory);
+          color: var(--text-main);
           margin-bottom: 40px;
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 4px 20px rgba(18, 45, 36, 0.05);
         }
         .ss-hero h2 {
           font-family: var(--font-serif);
           font-size: clamp(1.6rem, 3.5vw, 2.3rem);
           margin: 8px 0 12px;
+          color: var(--green-dark);
         }
-        .ss-hero h2 span { color: var(--gold-bright); }
+        .ss-hero h2 span { color: var(--gold-dark); }
         .ss-hero p {
-          color: rgba(250, 246, 238, 0.82);
+          color: #374151;
           font-size: 0.98rem;
           line-height: 1.7;
           margin: 0;
@@ -135,7 +136,7 @@ export default function SundaySchool() {
 
       {/* Hero */}
       <div className="ss-hero">
-        <span className="ct-badge ct-badge-dark">† Nurturing the Next Generation †</span>
+        <span className="ct-badge ct-badge-gold">† Nurturing the Next Generation †</span>
         <h2>
           Sunday School <span>&amp; Youth Ministry</span>
         </h2>

@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SERVICE_ORDER = [
   { step: "1", time: "8:15 AM", title: "Opening Prayer & Thanksgiving", desc: "Consecrating the sanctuary, thanksgiving for the week's mercies, and invoking the presence of the Holy Spirit." },
@@ -15,13 +15,13 @@ export default function SundayServices() {
     <>
       <style>{`
         .service-banner {
-          background: var(--grad-sanctuary);
+          background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
           border-radius: 20px;
           border: 1.5px solid var(--border-gold);
           padding: 40px 36px;
-          color: var(--ivory);
+          color: var(--text-main);
           margin-bottom: 44px;
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 4px 20px rgba(18, 45, 36, 0.05);
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -32,9 +32,9 @@ export default function SundayServices() {
           font-family: var(--font-serif);
           font-size: clamp(1.6rem, 3.5vw, 2.3rem);
           margin: 6px 0;
-          color: var(--ivory);
+          color: var(--green-dark);
         }
-        .service-banner h2 span { color: var(--gold-bright); }
+        .service-banner h2 span { color: var(--gold-dark); }
 
         .service-order-list {
           display: flex;
@@ -128,11 +128,11 @@ export default function SundayServices() {
       {/* Main Banner */}
       <div className="service-banner">
         <div>
-          <span className="ct-badge ct-badge-dark">† Weekly Celebration of the Lord †</span>
+          <span className="ct-badge ct-badge-gold">† Weekly Celebration of the Lord †</span>
           <h2>
             Sunday Morning <span>Worship &amp; Communion</span>
           </h2>
-          <p style={{ color: "rgba(250, 246, 238, 0.8)", fontSize: "0.98rem", margin: 0 }}>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.98rem", margin: 0, fontWeight: 500 }}>
             Every Sunday • 8:15 AM – 11:15 AM IST • Tamil &amp; English Fellowship
           </p>
         </div>

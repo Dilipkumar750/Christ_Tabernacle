@@ -57,14 +57,14 @@ export default function Mission() {
         }
         .ms-reveal.ms-in { opacity: 1; transform: none; }
 
-        /* ── Mission Statement Card (Green Sanctuary Theme) ── */
+        /* ── Mission Statement Card (Light Theme) ── */
         .ms-stmt {
-          background: linear-gradient(145deg, #123425 0%, #0B2218 100%);
-          border: 1.5px solid rgba(214,182,107,0.35);
+          background: #FFFFFF;
+          border: 1.5px solid rgba(214,182,107,0.38);
           border-radius: 22px;
           padding: 40px 44px;
           margin-bottom: 48px;
-          box-shadow: 0 10px 32px rgba(0,0,0,0.3);
+          box-shadow: 0 8px 28px rgba(18,45,36,0.06);
           position: relative;
           overflow: hidden;
         }
@@ -74,7 +74,7 @@ export default function Mission() {
           top: -10px; left: 24px;
           font-family: var(--font-serif);
           font-size: 140px;
-          color: rgba(214,182,107,0.06);
+          color: rgba(214,182,107,0.08);
           line-height: 1;
           pointer-events: none;
         }
@@ -83,7 +83,7 @@ export default function Mission() {
           font-size: 0.72rem;
           letter-spacing: 0.26em;
           text-transform: uppercase;
-          color: var(--gold-bright);
+          color: var(--gold-dark);
           font-weight: 700;
           display: flex;
           align-items: center;
@@ -100,12 +100,12 @@ export default function Mission() {
         .ms-stmt p {
           font-family: var(--font-serif);
           font-size: clamp(1.1rem, 2.5vw, 1.45rem);
-          color: var(--ivory);
+          color: var(--green-deep);
           line-height: 1.75;
           margin: 0;
           font-style: italic;
         }
-        .ms-stmt p strong { color: var(--gold-bright); font-style: normal; }
+        .ms-stmt p strong { color: var(--gold-dark); font-style: normal; }
 
         /* ── Section heading ── */
         .ms-sec-head {
@@ -114,13 +114,13 @@ export default function Mission() {
         .ms-sec-head h3 {
           font-family: var(--font-serif);
           font-size: 1.6rem;
-          color: var(--ivory);
+          color: var(--green-deep);
           margin: 0 0 6px;
           font-weight: 700;
         }
         .ms-sec-head p {
           font-size: 0.96rem;
-          color: rgba(250,246,238,0.8);
+          color: #374151;
           margin: 0;
         }
 
@@ -132,12 +132,12 @@ export default function Mission() {
           margin-bottom: 48px;
         }
         .ms-pillar {
-          background: linear-gradient(145deg, #123425 0%, #0B2218 100%);
-          color: var(--ivory);
+          background: #FFFFFF;
+          color: var(--text-main);
           border-radius: 22px;
           padding: 36px 30px;
           border: 1.5px solid rgba(214,182,107,0.35);
-          box-shadow: 0 10px 32px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 24px rgba(18,45,36,0.06);
           transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s, border-color 0.35s;
           position: relative;
           overflow: hidden;
@@ -153,7 +153,7 @@ export default function Mission() {
         }
         .ms-pillar:hover {
           transform: translateY(-6px);
-          box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 20px rgba(214,182,107,0.15);
+          box-shadow: 0 16px 40px rgba(18,45,36,0.12);
           border-color: var(--gold);
         }
         .ms-pillar-top {
@@ -166,20 +166,20 @@ export default function Mission() {
           width: 52px;
           height: 52px;
           border-radius: 14px;
-          background: linear-gradient(135deg, #184332 0%, #0C2219 100%);
+          background: #FAF6EE;
           border: 2px solid var(--gold);
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 1.5rem;
           flex-shrink: 0;
-          box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+          box-shadow: 0 4px 14px rgba(18,45,36,0.06);
         }
         .ms-pillar-title-wrap {}
         .ms-pillar-word {
           font-family: var(--font-serif);
           font-size: 1.55rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           font-weight: 700;
           display: block;
           line-height: 1;
@@ -187,7 +187,7 @@ export default function Mission() {
         }
         .ms-pillar-verse {
           font-size: 0.74rem;
-          color: #72C3A2;
+          color: var(--green);
           font-style: italic;
           font-weight: 600;
           display: block;
@@ -195,7 +195,7 @@ export default function Mission() {
         }
         .ms-pillar p {
           font-size: 0.95rem;
-          color: rgba(250,246,238,0.85);
+          color: #374151;
           line-height: 1.8;
           margin: 0;
           position: relative;
@@ -208,9 +208,9 @@ export default function Mission() {
           grid-template-columns: 5px 1fr;
           border-radius: 18px;
           overflow: hidden;
-          background: linear-gradient(145deg, #123425 0%, #0A1E15 100%);
+          background: #FFFFFF;
           border: 1.5px solid rgba(214,182,107,0.35);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 20px rgba(18,45,36,0.05);
         }
         .ms-commission-bar { background: var(--grad-gold); }
         .ms-commission-body { padding: 32px 34px; }
@@ -218,7 +218,7 @@ export default function Mission() {
           font-family: var(--font-serif);
           font-style: italic;
           font-size: 1.12rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           line-height: 1.75;
           margin: 0 0 10px;
         }
@@ -227,7 +227,7 @@ export default function Mission() {
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: rgba(250,246,238,0.7);
+          color: var(--gold-dark);
           font-style: normal;
         }
 

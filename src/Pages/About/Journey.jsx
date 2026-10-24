@@ -92,7 +92,7 @@ export default function Journey() {
         }
         .jr-reveal.jr-in { opacity: 1; transform: none; }
 
-        /* ── Page Header (Dark Sanctuary Green) ── */
+        /* ── Page Header (Light Sanctuary Theme) ── */
         .jr-header { margin-bottom: 56px; }
         .jr-eyebrow {
           display: inline-flex;
@@ -101,29 +101,29 @@ export default function Journey() {
           font-size: 0.72rem;
           letter-spacing: 0.26em;
           text-transform: uppercase;
-          color: var(--gold-bright);
+          color: var(--gold-dark);
           font-weight: 700;
           padding: 6px 18px;
           border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 50px;
-          background: rgba(214,182,107,0.1);
+          background: rgba(214,182,107,0.12);
           margin-bottom: 20px;
         }
         .jr-header h2 {
           font-family: var(--font-serif);
           font-size: clamp(2rem, 4.5vw, 2.9rem);
-          color: var(--ivory);
+          color: var(--green-deep);
           margin: 0 0 16px;
           font-weight: 900;
           line-height: 1.15;
         }
         .jr-header h2 em {
           font-style: italic;
-          color: var(--gold-bright);
+          color: var(--gold-dark);
         }
         .jr-header p {
           font-size: 1.02rem;
-          color: rgba(250,246,238,0.85);
+          color: #374151;
           line-height: 1.85;
           max-width: 720px;
           margin: 0;
@@ -136,7 +136,7 @@ export default function Journey() {
           flex-direction: column;
           gap: 46px;
         }
-        /* Vertical glowing green/gold timeline bar */
+        /* Vertical timeline bar */
         .jr-timeline::before {
           content: '';
           position: absolute;
@@ -153,7 +153,7 @@ export default function Journey() {
             #276D52 90%,
             transparent 100%
           );
-          box-shadow: 0 0 10px rgba(214,182,107,0.4);
+          box-shadow: 0 0 8px rgba(214,182,107,0.25);
           z-index: 0;
         }
 
@@ -177,7 +177,7 @@ export default function Journey() {
         .jr-dot {
           width: 50px;
           height: 50px;
-          background: linear-gradient(135deg, #184332 0%, #0C2219 100%);
+          background: #FFFFFF;
           border: 2.5px solid var(--gold);
           border-radius: 50%;
           display: flex;
@@ -186,7 +186,7 @@ export default function Journey() {
           font-size: 1.25rem;
           box-shadow:
             0 0 0 6px rgba(214,182,107,0.18),
-            0 6px 18px rgba(0,0,0,0.4);
+            0 4px 14px rgba(18,45,36,0.1);
           transition: transform 0.35s, box-shadow 0.35s;
           flex-shrink: 0;
         }
@@ -194,8 +194,8 @@ export default function Journey() {
           transform: scale(1.15);
           box-shadow:
             0 0 0 9px rgba(214,182,107,0.28),
-            0 10px 26px rgba(0,0,0,0.5);
-          border-color: var(--gold-bright);
+            0 8px 22px rgba(18,45,36,0.18);
+          border-color: var(--gold-dark);
         }
 
         /* ── LEFT SIDE: Standalone Image ── */
@@ -214,16 +214,16 @@ export default function Journey() {
           max-width: 440px;
           border-radius: 18px;
           overflow: hidden;
-          border: 2px solid rgba(214,182,107,0.4);
-          box-shadow: 0 12px 36px rgba(0,0,0,0.35);
-          background: #0C2219;
+          border: 1.5px solid rgba(214,182,107,0.4);
+          box-shadow: 0 8px 26px rgba(18,45,36,0.08);
+          background: #FFFFFF;
           transition: transform 0.4s cubic-bezier(.22,1,.36,1),
                       box-shadow 0.4s,
                       border-color 0.4s;
         }
         .jr-row:hover .jr-img-box {
           transform: translateY(-5px) scale(1.015);
-          box-shadow: 0 18px 48px rgba(0,0,0,0.45);
+          box-shadow: 0 14px 36px rgba(18,45,36,0.14);
           border-color: var(--gold);
         }
         .jr-img-box img {
@@ -238,34 +238,34 @@ export default function Journey() {
         }
         .jr-img-caption {
           padding: 12px 18px;
-          background: linear-gradient(135deg, #102B20 0%, #0A1C14 100%);
+          background: #FAF6EE;
           font-size: 0.82rem;
           font-weight: 600;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           display: flex;
           align-items: center;
           gap: 10px;
           line-height: 1.45;
-          border-top: 1px solid rgba(214,182,107,0.2);
+          border-top: 1px solid rgba(214,182,107,0.25);
         }
-        .jr-img-caption .cap-cross { color: var(--gold); flex-shrink: 0; }
+        .jr-img-caption .cap-cross { color: var(--gold-dark); flex-shrink: 0; }
 
-        /* No image scripture box (Rich Green) */
+        /* No image scripture box */
         .jr-no-img-block {
           width: 100%;
           max-width: 440px;
           padding: 28px 30px;
-          background: linear-gradient(145deg, #133425 0%, #0C2219 100%);
+          background: #FFFFFF;
           border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 18px;
           text-align: right;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 22px rgba(18,45,36,0.06);
         }
         .jr-no-img-block blockquote {
           font-family: var(--font-serif);
           font-style: italic;
           font-size: 1.05rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           line-height: 1.7;
           margin: 0 0 10px;
         }
@@ -274,25 +274,25 @@ export default function Journey() {
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: rgba(250,246,238,0.7);
+          color: var(--gold-dark);
           font-style: normal;
         }
 
-        /* ── RIGHT SIDE: Content Card (Green Sanctuary Theme) ── */
+        /* ── RIGHT SIDE: Content Card (Light Theme) ── */
         .jr-card-side {
           padding-left: 32px;
         }
         .jr-card {
-          background: linear-gradient(145deg, #123425 0%, #0B2218 100%);
+          background: #FFFFFF;
           border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 20px;
           padding: 32px 32px;
-          box-shadow: 0 10px 32px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 24px rgba(18,45,36,0.06);
           transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
           position: relative;
           overflow: hidden;
         }
-        /* Glowing Gold/Green left accent border */
+        /* Gold left accent border */
         .jr-card::before {
           content: '';
           position: absolute;
@@ -303,7 +303,7 @@ export default function Journey() {
         }
         .jr-row:hover .jr-card {
           border-color: var(--gold);
-          box-shadow: 0 16px 44px rgba(0,0,0,0.45), 0 0 20px rgba(214,182,107,0.15);
+          box-shadow: 0 14px 36px rgba(18,45,36,0.12);
           transform: translateY(-4px);
         }
 
@@ -318,8 +318,8 @@ export default function Journey() {
           font-weight: 800;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: var(--gold-bright);
-          background: rgba(214,182,107,0.16);
+          color: var(--gold-dark);
+          background: rgba(214,182,107,0.14);
           border: 1px solid rgba(214,182,107,0.4);
           padding: 5px 14px;
           border-radius: 50px;
@@ -339,55 +339,55 @@ export default function Journey() {
         .jr-card h3 {
           font-family: var(--font-serif);
           font-size: 1.4rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           margin: 0 0 12px;
           font-weight: 700;
           line-height: 1.3;
         }
         .jr-card p {
           font-size: 0.96rem;
-          color: rgba(250,246,238,0.88);
+          color: #374151;
           line-height: 1.85;
           margin: 0;
         }
 
-        /* ── Calling Quote (Green Banner) ── */
+        /* ── Calling Quote ── */
         .jr-calling {
           margin-top: 60px;
           display: grid;
           grid-template-columns: 5px 1fr;
           border-radius: 18px;
           overflow: hidden;
-          background: linear-gradient(145deg, #123425 0%, #0A1E15 100%);
+          background: #FFFFFF;
           border: 1.5px solid rgba(214,182,107,0.35);
-          box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+          box-shadow: 0 8px 28px rgba(18,45,36,0.06);
         }
         .jr-calling-bar { background: var(--grad-gold); }
         .jr-calling-body { padding: 30px 32px; }
         .jr-calling-body h3 {
           font-family: var(--font-serif);
           font-size: 1.2rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           margin: 0 0 8px;
           font-weight: 700;
         }
         .jr-calling-body p {
           font-size: 0.98rem;
-          color: rgba(250,246,238,0.85);
+          color: #374151;
           line-height: 1.8;
           margin: 0;
           font-style: italic;
         }
 
-        /* ── Outcomes Banner (Dark Sanctuary Green) ── */
+        /* ── Outcomes Banner (Light Sanctuary Theme) ── */
         .jr-outcomes {
           margin-top: 56px;
-          background: linear-gradient(150deg, #113425 0%, #0B2218 60%, #071710 100%);
+          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 100%);
           border-radius: 24px;
           padding: 56px 44px;
           text-align: center;
           border: 1.5px solid rgba(214,182,107,0.38);
-          box-shadow: 0 20px 52px rgba(0,0,0,0.4);
+          box-shadow: 0 10px 32px rgba(18,45,36,0.06);
           position: relative;
           overflow: hidden;
         }
@@ -397,7 +397,7 @@ export default function Journey() {
           top: -30px; left: 50%;
           transform: translateX(-50%);
           font-size: 200px;
-          color: rgba(214,182,107,0.05);
+          color: rgba(214,182,107,0.06);
           font-family: var(--font-serif);
           pointer-events: none;
         }
@@ -405,13 +405,13 @@ export default function Journey() {
         .jr-outcomes h3 {
           font-family: var(--font-serif);
           font-size: clamp(1.6rem, 3.5vw, 2.3rem);
-          color: var(--gold-bright);
+          color: var(--green-deep);
           margin: 0 0 12px;
           font-weight: 700;
         }
         .jr-outcomes-sub {
           font-size: 1rem;
-          color: rgba(250,246,238,0.8);
+          color: #374151;
           line-height: 1.8;
           margin: 0 auto 36px;
           max-width: 600px;
@@ -423,14 +423,15 @@ export default function Journey() {
           margin-bottom: 36px;
         }
         .jr-outcome-card {
-          background: rgba(214,182,107,0.08);
-          border: 1.5px solid rgba(214,182,107,0.28);
+          background: #FFFFFF;
+          border: 1.5px solid rgba(214,182,107,0.3);
           border-radius: 18px;
           padding: 24px 14px;
+          box-shadow: 0 4px 14px rgba(18,45,36,0.04);
           transition: background 0.3s, transform 0.3s, border-color 0.3s;
         }
         .jr-outcome-card:hover {
-          background: rgba(214,182,107,0.18);
+          background: #FAF6EE;
           border-color: var(--gold);
           transform: translateY(-5px);
         }
@@ -440,14 +441,14 @@ export default function Journey() {
           font-weight: 700;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           line-height: 1.5;
         }
         .jr-outcomes-quote {
           font-family: var(--font-serif);
           font-style: italic;
           font-size: 1.05rem;
-          color: rgba(250,246,238,0.7);
+          color: var(--gold-dark);
           margin: 0;
         }
 

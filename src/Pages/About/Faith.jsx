@@ -110,45 +110,45 @@ export default function Faith() {
           font-size: 0.72rem;
           letter-spacing: 0.26em;
           text-transform: uppercase;
-          color: var(--gold-bright);
+          color: var(--gold-dark);
           font-weight: 700;
           padding: 6px 18px;
           border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 50px;
-          background: rgba(214,182,107,0.1);
+          background: rgba(214,182,107,0.12);
           margin-bottom: 16px;
         }
         .faith-title {
           font-family:var(--font-serif);
           font-size:clamp(1.8rem, 4vw, 2.6rem);
-          color:var(--ivory);
+          color:var(--green-deep);
           margin:0 0 10px;
           font-weight:900;
         }
         .faith-subtitle {
           font-size:1rem;
-          color:rgba(250,246,238,0.8);
+          color:#374151;
           margin:0 0 36px;
           line-height:1.75;
           max-width: 720px;
         }
         .faith-intro {
-          background: linear-gradient(145deg, #123425 0%, #0B2218 100%);
-          border: 1.5px solid rgba(214,182,107,0.35);
+          background: #FFFFFF;
+          border: 1.5px solid rgba(214,182,107,0.38);
           border-radius:18px;
           padding:28px 32px;
           margin-bottom:40px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 20px rgba(18,45,36,0.06);
         }
         .faith-intro p {
           font-size:0.98rem;
-          color:rgba(250,246,238,0.88);
+          color:#374151;
           line-height:1.8;
           margin:0;
         }
-        .faith-intro strong { color:var(--gold-bright); }
+        .faith-intro strong { color:var(--green-deep); }
 
-        /* Articles grid (Rich Sanctuary Dark Green) */
+        /* Articles grid (Light Theme) */
         .faith-articles {
           display:flex;
           flex-direction:column;
@@ -156,8 +156,8 @@ export default function Faith() {
           border:1.5px solid rgba(214,182,107,0.35);
           border-radius:20px;
           overflow:hidden;
-          background: #0A1E15;
-          box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+          background: #FFFFFF;
+          box-shadow: 0 8px 28px rgba(18,45,36,0.06);
         }
         .faith-article {
           display:grid;
@@ -167,9 +167,9 @@ export default function Faith() {
           transition:background 0.25s;
         }
         .faith-article:last-child { border-bottom:none; }
-        .faith-article:hover { background:rgba(214,182,107,0.08); }
+        .faith-article:hover { background: #FAF6EE; }
         .faith-article-num {
-          background: linear-gradient(135deg, #184332 0%, #0C2219 100%);
+          background: #FAF6EE;
           display:flex;
           align-items:flex-start;
           justify-content:center;
@@ -177,7 +177,7 @@ export default function Faith() {
           font-family:var(--font-serif);
           font-size:0.95rem;
           font-weight:700;
-          color:var(--gold-bright);
+          color:var(--gold-dark);
           border-right: 1px solid rgba(214,182,107,0.25);
           flex-shrink:0;
         }
@@ -185,19 +185,19 @@ export default function Faith() {
         .faith-article-body h3 {
           font-family:var(--font-serif);
           font-size:1.2rem;
-          color:var(--gold-bright);
+          color:var(--green-deep);
           margin:0 0 8px;
           font-weight:700;
         }
         .faith-article-body p {
           font-size:0.94rem;
-          color:rgba(250,246,238,0.88);
+          color:#374151;
           line-height:1.8;
           margin:0 0 8px;
         }
         .faith-article-refs {
           font-size:0.78rem;
-          color:#72C3A2;
+          color:var(--green);
           font-style:italic;
           margin:0;
           font-weight:600;
@@ -206,17 +206,17 @@ export default function Faith() {
         /* Confession Box */
         .faith-confession {
           margin-top:48px;
-          background: linear-gradient(150deg, #113425 0%, #0B2218 60%, #071710 100%);
+          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 100%);
           border: 1.5px solid rgba(214,182,107,0.38);
           border-radius:24px;
           padding:46px 40px;
           text-align:center;
-          box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+          box-shadow: 0 10px 32px rgba(18,45,36,0.06);
         }
         .faith-confession h3 {
           font-family:var(--font-serif);
           font-size:1.6rem;
-          color:var(--gold-bright);
+          color:var(--green-deep);
           margin:0 0 6px;
           font-weight:700;
         }
@@ -224,7 +224,7 @@ export default function Faith() {
           font-size:0.75rem;
           letter-spacing:0.2em;
           text-transform:uppercase;
-          color:var(--gold);
+          color:var(--gold-dark);
           margin-bottom:30px;
           display:block;
         }
@@ -238,30 +238,33 @@ export default function Faith() {
           display:flex;
           align-items:center;
           gap:14px;
-          background:rgba(214,182,107,0.08);
-          border:1px solid rgba(214,182,107,0.25);
+          background:#FFFFFF;
+          border:1px solid rgba(214,182,107,0.3);
           border-radius:12px;
           padding:14px 20px;
           text-align:left;
-          transition: background 0.25s, transform 0.25s;
+          box-shadow: 0 2px 8px rgba(18,45,36,0.04);
+          transition: background 0.25s, transform 0.25s, border-color 0.25s;
         }
         .faith-confession-item:hover {
-          background: rgba(214,182,107,0.15);
+          background: #FAF6EE;
+          border-color: var(--gold);
           transform: translateX(4px);
         }
         .faith-confession-item-icon {
-          color:var(--gold-bright);
+          color:var(--gold-dark);
           font-size:0.95rem;
           flex-shrink:0;
         }
         .faith-confession-item span {
           font-size:0.92rem;
-          color:rgba(250,246,238,0.92);
+          color:var(--green-deep);
+          font-weight:600;
           line-height:1.5;
         }
         .faith-final {
           font-size:0.85rem;
-          color:rgba(250,246,238,0.65);
+          color:var(--gold-dark);
           letter-spacing:0.08em;
           font-family:var(--font-serif);
           font-style:italic;

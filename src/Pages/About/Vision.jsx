@@ -53,16 +53,16 @@ export default function Vision() {
         }
         .v-reveal.v-in { opacity: 1; transform: none; }
 
-        /* ── Hero Statement (Sanctuary Green) ── */
+        /* ── Hero Statement (Light Sanctuary Theme) ── */
         .vis-hero {
-          background: linear-gradient(150deg, #113425 0%, #0C2219 50%, #071710 100%);
+          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 60%, #F5EFE6 100%);
           border-radius: 24px;
           padding: 56px 44px;
           margin-bottom: 48px;
           position: relative;
           overflow: hidden;
           border: 1.5px solid rgba(214,182,107,0.38);
-          box-shadow: 0 20px 52px rgba(0,0,0,0.4);
+          box-shadow: 0 10px 32px rgba(18,45,36,0.06);
         }
         .vis-hero::before {
           content: '';
@@ -78,7 +78,7 @@ export default function Vision() {
           position: absolute;
           bottom: -24px; left: 32px;
           font-size: 140px;
-          color: rgba(214,182,107,0.05);
+          color: rgba(214,182,107,0.06);
           font-family: var(--font-serif);
           pointer-events: none;
         }
@@ -87,7 +87,7 @@ export default function Vision() {
           font-size: 0.72rem;
           letter-spacing: 0.28em;
           text-transform: uppercase;
-          color: var(--gold-bright);
+          color: var(--gold-dark);
           font-weight: 700;
           display: flex;
           align-items: center;
@@ -103,14 +103,14 @@ export default function Vision() {
         .vis-hero blockquote {
           font-family: var(--font-serif);
           font-size: clamp(1.15rem, 2.8vw, 1.6rem);
-          color: var(--ivory);
+          color: var(--green-deep);
           line-height: 1.7;
           margin: 0 0 24px;
           font-style: italic;
           font-weight: 400;
         }
         .vis-hero blockquote strong {
-          color: var(--gold-bright);
+          color: var(--gold-dark);
           font-style: normal;
           font-weight: 700;
         }
@@ -122,7 +122,7 @@ export default function Vision() {
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           background: rgba(214,182,107,0.14);
           border: 1px solid rgba(214,182,107,0.35);
           padding: 8px 18px;
@@ -136,17 +136,17 @@ export default function Vision() {
         .vis-section-head h3 {
           font-family: var(--font-serif);
           font-size: 1.6rem;
-          color: var(--ivory);
+          color: var(--green-deep);
           margin: 0 0 6px;
           font-weight: 700;
         }
         .vis-section-head p {
           font-size: 0.96rem;
-          color: rgba(250,246,238,0.8);
+          color: #374151;
           margin: 0;
         }
 
-        /* ── Pillars Grid (Dark Emerald Green Cards) ── */
+        /* ── Pillars Grid ── */
         .vis-pillars {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
@@ -154,11 +154,11 @@ export default function Vision() {
         }
 
         .vis-pillar {
-          background: linear-gradient(145deg, #123425 0%, #0B2218 100%);
+          background: #FFFFFF;
           border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 20px;
           padding: 32px 28px;
-          box-shadow: 0 10px 32px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 24px rgba(18,45,36,0.06);
           transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s, border-color 0.3s;
           position: relative;
           overflow: hidden;
@@ -169,12 +169,12 @@ export default function Vision() {
           top: 0; left: 0; right: 0;
           height: 3px;
           background: var(--grad-gold);
-          opacity: 0.7;
+          opacity: 0.8;
           transition: opacity 0.3s;
         }
         .vis-pillar:hover {
           transform: translateY(-6px);
-          box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 20px rgba(214,182,107,0.15);
+          box-shadow: 0 16px 40px rgba(18,45,36,0.12);
           border-color: var(--gold);
         }
         .vis-pillar:hover::before { opacity: 1; }
@@ -183,25 +183,25 @@ export default function Vision() {
           width: 52px;
           height: 52px;
           border-radius: 14px;
-          background: linear-gradient(135deg, #184332 0%, #0C2219 100%);
+          background: #FAF6EE;
           border: 2px solid var(--gold);
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 1.5rem;
           margin-bottom: 18px;
-          box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+          box-shadow: 0 4px 14px rgba(18,45,36,0.06);
         }
         .vis-pillar h4 {
           font-family: var(--font-serif);
           font-size: 1.4rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           margin: 0 0 4px;
           font-weight: 700;
         }
         .vis-pillar-verse {
           font-size: 0.76rem;
-          color: #72C3A2;
+          color: var(--green);
           font-style: italic;
           font-weight: 600;
           letter-spacing: 0.08em;
@@ -210,7 +210,7 @@ export default function Vision() {
         }
         .vis-pillar p {
           font-size: 0.95rem;
-          color: rgba(250,246,238,0.85);
+          color: #374151;
           line-height: 1.8;
           margin: 0;
         }
@@ -218,18 +218,18 @@ export default function Vision() {
         /* ── Scripture Footer ── */
         .vis-footer-verse {
           margin-top: 48px;
-          background: linear-gradient(145deg, #123425 0%, #0A1E15 100%);
+          background: #FFFFFF;
           border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 18px;
           padding: 34px 38px;
           text-align: center;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 20px rgba(18,45,36,0.05);
         }
         .vis-footer-verse blockquote {
           font-family: var(--font-serif);
           font-style: italic;
           font-size: 1.15rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           line-height: 1.75;
           margin: 0 0 10px;
         }
@@ -238,7 +238,7 @@ export default function Vision() {
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: rgba(250,246,238,0.7);
+          color: var(--gold-dark);
           font-style: normal;
         }
 

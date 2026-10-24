@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 
 const DECLARATIONS = [
   {
@@ -72,22 +72,23 @@ export default function Transformation() {
     <>
       <style>{`
         .trans-hero {
-          background: var(--grad-sanctuary);
+          background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
           border-radius: 20px;
           border: 1.5px solid var(--border-gold);
           padding: 40px 36px;
-          color: var(--ivory);
+          color: var(--text-main);
           margin-bottom: 40px;
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 4px 20px rgba(18, 45, 36, 0.05);
         }
         .trans-hero h2 {
           font-family: var(--font-serif);
           font-size: clamp(1.6rem, 3.5vw, 2.3rem);
           margin: 8px 0 12px;
+          color: var(--green-dark);
         }
-        .trans-hero h2 span { color: var(--gold-bright); }
+        .trans-hero h2 span { color: var(--gold-dark); }
         .trans-hero p {
-          color: rgba(250, 246, 238, 0.82);
+          color: #374151;
           font-size: 0.98rem;
           line-height: 1.7;
           margin: 0;
@@ -175,7 +176,7 @@ export default function Transformation() {
 
       {/* Hero */}
       <div className="trans-hero">
-        <span className="ct-badge ct-badge-dark">† Spiritual Renewal &amp; Deliverance †</span>
+        <span className="ct-badge ct-badge-gold">† Spiritual Renewal &amp; Deliverance †</span>
         <h2>
           Transformation Prayer <span>Declarations</span>
         </h2>

@@ -152,14 +152,15 @@ export default function Testimonials() {
           font-weight: 600;
           letter-spacing: 0.04em;
           border: 1.5px solid var(--border-gold-subtle);
-          background: var(--white);
-          color: var(--text-muted);
+          background: #FFFFFF;
+          color: #3D5949;
           transition: all 0.22s ease;
           cursor: pointer;
         }
         .test-filter-btn:hover {
-          color: var(--green);
+          color: var(--green-deep);
           border-color: var(--gold);
+          background: #FAF6EE;
         }
         .test-filter-btn.active {
           background: var(--grad-green-accent);
@@ -175,18 +176,18 @@ export default function Testimonials() {
           gap: 28px;
         }
         .test-card {
-          background: var(--white);
-          border: 1.5px solid var(--border-gold-subtle);
+          background: #FFFFFF;
+          border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 18px;
           padding: 32px 28px;
-          box-shadow: var(--shadow-sm);
+          box-shadow: 0 6px 20px rgba(18,45,36,0.06);
           transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
           display: flex;
           flex-direction: column;
         }
         .test-card:hover {
           transform: translateY(-5px);
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 16px 36px rgba(18,45,36,0.12);
           border-color: var(--gold);
         }
         .test-card-head {
@@ -200,11 +201,11 @@ export default function Testimonials() {
           font-weight: 700;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          background: var(--gold-soft);
+          background: rgba(214,182,107,0.14);
           color: var(--gold-dark);
           padding: 5px 12px;
           border-radius: 50px;
-          border: 1px solid var(--border-gold-subtle);
+          border: 1px solid rgba(214,182,107,0.35);
         }
         .test-date {
           font-size: 0.76rem;
@@ -213,20 +214,20 @@ export default function Testimonials() {
         .test-card-title {
           font-family: var(--font-serif);
           font-size: 1.25rem;
-          color: var(--green-dark);
+          color: var(--green-deep);
           margin: 0 0 12px;
           font-weight: 700;
           line-height: 1.35;
         }
         .test-card-story {
           font-size: 0.92rem;
-          color: var(--text-muted);
+          color: #374151;
           line-height: 1.75;
           margin: 0 0 20px;
           flex-grow: 1;
         }
         .test-verse-box {
-          background: var(--gold-soft);
+          background: #FAF6EE;
           border-left: 3px solid var(--gold);
           padding: 10px 14px;
           border-radius: 0 8px 8px 0;
@@ -241,14 +242,14 @@ export default function Testimonials() {
           display: flex;
           align-items: center;
           gap: 12px;
-          border-top: 1px solid var(--border-gold-subtle);
+          border-top: 1px solid rgba(214,182,107,0.2);
           padding-top: 14px;
         }
         .test-avatar {
           width: 38px;
           height: 38px;
           border-radius: 50%;
-          background: var(--grad-sanctuary);
+          background: linear-gradient(135deg, #184332 0%, #276D52 100%);
           color: var(--gold-bright);
           display: flex;
           align-items: center;
@@ -256,16 +257,17 @@ export default function Testimonials() {
           font-weight: 700;
           font-size: 0.85rem;
           flex-shrink: 0;
+          border: 1.5px solid rgba(214,182,107,0.4);
         }
         .test-author-name {
           font-weight: 700;
           font-size: 0.88rem;
-          color: var(--green-dark);
+          color: var(--green-deep);
           display: block;
         }
         .test-author-loc {
           font-size: 0.74rem;
-          color: var(--text-light);
+          color: var(--text-muted);
           display: block;
         }
 
@@ -302,8 +304,9 @@ export default function Testimonials() {
         </div>
       </section>
 
-      {/* ── Content Container ── */}
-      <div className="ct-container" style={{ padding: "50px 24px 80px" }}>
+      {/* ── Content Container (Light Theme) ── */}
+      <div style={{ background: "var(--ivory)", borderTop: "1px solid rgba(214,182,107,0.2)", paddingBottom: 40 }}>
+        <div className="ct-container" style={{ padding: "50px 24px 80px" }}>
         {/* Category Filters */}
         <div className="test-filter-bar" role="tablist" aria-label="Testimony Categories">
           {CATEGORIES.map((cat) => (
@@ -342,6 +345,7 @@ export default function Testimonials() {
             </article>
           ))}
         </div>
+      </div>
       </div>
 
       {/* ── Share Testimony Modal ── */}

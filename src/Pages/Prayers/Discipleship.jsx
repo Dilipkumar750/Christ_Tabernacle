@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const TRACKS = [
   {
@@ -56,22 +56,23 @@ export default function Discipleship() {
     <>
       <style>{`
         .disc-hero {
-          background: var(--grad-sanctuary);
+          background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
           border-radius: 20px;
           border: 1.5px solid var(--border-gold);
           padding: 40px 36px;
-          color: var(--ivory);
+          color: var(--text-main);
           margin-bottom: 40px;
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 4px 20px rgba(18, 45, 36, 0.05);
         }
         .disc-hero h2 {
           font-family: var(--font-serif);
           font-size: clamp(1.6rem, 3.5vw, 2.3rem);
           margin: 8px 0 12px;
+          color: var(--green-dark);
         }
-        .disc-hero h2 span { color: var(--gold-bright); }
+        .disc-hero h2 span { color: var(--gold-dark); }
         .disc-hero p {
-          color: rgba(250, 246, 238, 0.82);
+          color: #374151;
           font-size: 0.98rem;
           line-height: 1.7;
           margin: 0;
@@ -164,7 +165,7 @@ export default function Discipleship() {
 
       {/* Hero */}
       <div className="disc-hero">
-        <span className="ct-badge ct-badge-dark">† Equipping the Saints †</span>
+        <span className="ct-badge ct-badge-gold">† Equipping the Saints †</span>
         <h2>
           Discipleship <span>Prayer Tracks</span>
         </h2>

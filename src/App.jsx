@@ -98,6 +98,28 @@ function AppContent() {
 
           <Route path="/contact" element={<Contact />} />
 
+          {/* Direct Route Aliases for smooth navigation across all sections */}
+          <Route path="/journey" element={<Navigate to="/about/journey" replace />} />
+          <Route path="/motto" element={<Navigate to="/about/motto" replace />} />
+          <Route path="/vision" element={<Navigate to="/about/vision" replace />} />
+          <Route path="/mission" element={<Navigate to="/about/mission" replace />} />
+          <Route path="/faith" element={<Navigate to="/about/faith" replace />} />
+          <Route path="/testimonials" element={<Navigate to="/testimonies" replace />} />
+          <Route path="/photos" element={<Navigate to="/media/photos" replace />} />
+          <Route path="/videos" element={<Navigate to="/media/videos" replace />} />
+          <Route path="/lyrics" element={<Navigate to="/songs/lyrics" replace />} />
+          <Route path="/biblestudy" element={<Navigate to="/sermons/bible-study" replace />} />
+          <Route path="/sundaysermons" element={<Navigate to="/sermons/sunday" replace />} />
+          <Route path="/sunday-sermons" element={<Navigate to="/sermons/sunday" replace />} />
+          <Route path="/sundayservices" element={<Navigate to="/prayers/sunday-services" replace />} />
+          <Route path="/sunday-services" element={<Navigate to="/prayers/sunday-services" replace />} />
+          <Route path="/fasting" element={<Navigate to="/prayers/fasting" replace />} />
+          <Route path="/transformation" element={<Navigate to="/prayers/transformation" replace />} />
+          <Route path="/discipleship" element={<Navigate to="/prayers/discipleship" replace />} />
+          <Route path="/studyschool" element={<Navigate to="/prayers/sunday-school" replace />} />
+          <Route path="/sundayschool" element={<Navigate to="/prayers/sunday-school" replace />} />
+          <Route path="/sunday-school" element={<Navigate to="/prayers/sunday-school" replace />} />
+
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route

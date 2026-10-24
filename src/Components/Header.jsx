@@ -295,16 +295,16 @@ export default function Header() {
           position: sticky;
           top: 0;
           z-index: 900;
-          background: rgba(255, 255, 255, 0.96);
+          background: rgba(255, 255, 255, 0.98);
           backdrop-filter: blur(16px);
-          border-bottom: 2px solid var(--border-gold-subtle);
-          transition: box-shadow 0.3s ease, border-color 0.3s ease;
+          border-bottom: 1.5px solid rgba(214, 182, 107, 0.3);
+          transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
           font-family: var(--font-sans);
         }
         .ct-header.scrolled {
-          background: rgba(255, 255, 255, 0.98);
-          box-shadow: 0 4px 28px rgba(12, 34, 25, 0.1);
-          border-color: var(--border-gold);
+          background: rgba(255, 255, 255, 0.99);
+          box-shadow: 0 4px 24px rgba(18, 45, 36, 0.08);
+          border-color: rgba(214, 182, 107, 0.45);
         }
         .ct-header-inner {
           max-width: 1380px;
@@ -334,14 +334,14 @@ export default function Header() {
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 16px rgba(12, 34, 25, 0.15), 0 0 12px rgba(214, 182, 107, 0.25);
+          box-shadow: 0 4px 16px rgba(12, 34, 25, 0.1), 0 0 12px rgba(214, 182, 107, 0.2);
           transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
           flex-shrink: 0;
           overflow: hidden;
         }
         .ct-logo:hover .ct-logo-icon {
           transform: scale(1.06) rotate(2deg);
-          box-shadow: 0 6px 22px rgba(214, 182, 107, 0.45);
+          box-shadow: 0 6px 22px rgba(214, 182, 107, 0.35);
         }
         .ct-logo-img {
           width: 100%;
@@ -353,20 +353,20 @@ export default function Header() {
           font-family: var(--font-serif);
           font-size: 1.05rem;
           font-weight: 700;
-          color: var(--green);
-          letter-spacing: 0.04em;
+          color: var(--green-deep);
+          letter-spacing: 0.03em;
           text-transform: uppercase;
           display: block;
           line-height: 1.15;
         }
         .ct-logo-sub {
           font-size: 0.6rem;
-          letter-spacing: 0.18em;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
           color: var(--gold-dark);
           display: block;
           margin-top: 3px;
-          font-weight: 600;
+          font-weight: 700;
         }
 
         /* ── Desktop Nav ── */
@@ -386,7 +386,7 @@ export default function Header() {
           padding: 9px 12px;
           font-size: 0.84rem;
           font-weight: 600;
-          color: var(--green);
+          color: #184332;
           text-decoration: none;
           border-radius: 8px;
           position: relative;
@@ -410,7 +410,7 @@ export default function Header() {
         .ct-nav-link:hover,
         .ct-nav-link.active {
           color: var(--green-deep);
-          background: rgba(214, 182, 107, 0.1);
+          background: rgba(214, 182, 107, 0.15);
         }
         .ct-nav-link:hover::after,
         .ct-nav-link.active::after { transform: scaleX(1); }
@@ -429,10 +429,10 @@ export default function Header() {
           top: calc(100% + 8px);
           left: 50%;
           transform: translateX(-50%) translateY(-6px);
-          background: #ffffff;
+          background: #FFFFFF;
           border-radius: 14px;
-          box-shadow: 0 16px 50px rgba(12, 34, 25, 0.16), 0 2px 10px rgba(214, 182, 107, 0.15);
-          border: 1.5px solid var(--border-gold);
+          box-shadow: 0 14px 40px rgba(18, 45, 36, 0.12), 0 2px 10px rgba(214, 182, 107, 0.15);
+          border: 1.5px solid rgba(214, 182, 107, 0.35);
           padding: 8px;
           min-width: 215px;
           opacity: 0;
@@ -449,7 +449,7 @@ export default function Header() {
           transform: translateX(-50%);
           width: 12px;
           height: 6px;
-          background: white;
+          background: #FFFFFF;
           clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
         .ct-dropdown.open {
@@ -463,8 +463,8 @@ export default function Header() {
           gap: 10px;
           padding: 10px 14px;
           font-size: 0.83rem;
-          font-weight: 500;
-          color: var(--text-main);
+          font-weight: 600;
+          color: #184332;
           text-decoration: none;
           border-radius: 8px;
           transition: background 0.18s, color 0.18s, padding-left 0.18s;
@@ -472,22 +472,22 @@ export default function Header() {
         }
         .ct-dropdown-item:hover,
         .ct-dropdown-item.active {
-          background: rgba(214, 182, 107, 0.12);
-          color: var(--green);
+          background: #FAF6EE;
+          color: var(--green-deep);
           padding-left: 18px;
         }
-        .ct-dropdown-item.active { font-weight: 700; }
+        .ct-dropdown-item.active { font-weight: 700; color: var(--green-deep); }
         .ct-dropdown-dot {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: var(--border-gold);
+          background: rgba(214, 182, 107, 0.5);
           flex-shrink: 0;
           transition: background 0.18s;
         }
         .ct-dropdown-item:hover .ct-dropdown-dot,
         .ct-dropdown-item.active .ct-dropdown-dot {
-          background: var(--gold);
+          background: var(--gold-dark);
         }
 
         /* ── Live Stream / CTA Button ── */
@@ -546,25 +546,25 @@ export default function Header() {
           flex-shrink: 0;
           transition: background 0.2s;
         }
-        .ct-hamburger:hover { background: rgba(214, 182, 107, 0.12); }
+        .ct-hamburger:hover { background: rgba(214, 182, 107, 0.15); }
         .ct-hamburger span {
           display: block;
           width: 22px;
-          height: 2px;
-          background: var(--grad-green-accent);
+          height: 2.5px;
+          background: var(--green-deep);
           border-radius: 2px;
           transition: transform 0.3s ease, opacity 0.2s ease, width 0.25s ease;
         }
-        .ct-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .ct-hamburger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
         .ct-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
-        .ct-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .ct-hamburger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
         /* ── Mobile Drawer ── */
         .ct-overlay {
           display: none;
           position: fixed;
           inset: 0;
-          background: rgba(9, 28, 19, 0.65);
+          background: rgba(12, 34, 25, 0.55);
           backdrop-filter: blur(4px);
           z-index: 995;
           opacity: 0;
@@ -578,15 +578,15 @@ export default function Header() {
           right: 0;
           height: 100dvh;
           width: min(320px, 88vw);
-          background: var(--white);
+          background: #FFFFFF;
           z-index: 997;
           transform: translateX(100%);
           transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
           display: flex;
           flex-direction: column;
-          box-shadow: -8px 0 40px rgba(9, 28, 19, 0.25);
+          box-shadow: -8px 0 36px rgba(18, 45, 36, 0.18);
           overflow-y: auto;
-          border-left: 2px solid var(--border-gold);
+          border-left: 1.5px solid rgba(214, 182, 107, 0.3);
         }
         .ct-drawer.open { transform: translateX(0); }
         .ct-drawer-head {
@@ -629,7 +629,7 @@ export default function Header() {
           border-radius: 10px;
           font-size: 0.92rem;
           font-weight: 600;
-          color: var(--text-main);
+          color: #184332;
           text-decoration: none;
           background: none;
           border: none;
@@ -641,8 +641,8 @@ export default function Header() {
         .ct-mob-parent:hover,
         .ct-mob-link.active,
         .ct-mob-parent.active {
-          background: rgba(214, 182, 107, 0.12);
-          color: var(--green);
+          background: #FAF6EE;
+          color: var(--green-deep);
         }
         .ct-mob-sub {
           overflow: hidden;
@@ -653,16 +653,16 @@ export default function Header() {
           display: block;
           padding: 9px 14px;
           font-size: 0.84rem;
-          color: var(--text-muted);
+          color: #3D5949;
           text-decoration: none;
           border-radius: 8px;
           transition: color 0.2s, background 0.2s;
         }
         .ct-mob-sub-link:hover,
         .ct-mob-sub-link.active {
-          color: var(--green);
+          color: var(--green-deep);
           font-weight: 700;
-          background: rgba(214, 182, 107, 0.08);
+          background: #FAF6EE;
         }
         .ct-mob-chevron {
           transition: transform 0.25s ease;
@@ -672,8 +672,8 @@ export default function Header() {
 
         .ct-drawer-footer {
           padding: 20px;
-          background: var(--ivory);
-          border-top: 1px solid var(--border-gold-subtle);
+          background: #FAF6EE;
+          border-top: 1px solid rgba(214, 182, 107, 0.25);
         }
 
         /* ── Responsive Breakpoints ── */

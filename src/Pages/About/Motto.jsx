@@ -55,20 +55,18 @@ export default function Motto() {
           transition: opacity 0.65s cubic-bezier(.22,1,.36,1),
                       transform 0.65s cubic-bezier(.22,1,.36,1);
         }
-        .mo-reveal.mo-in { opacity: 1; transform: none; }
-
-        /* ── Hero Banner (Sanctuary Dark Green) ── */
+        .mo-reveal.mo-in { opacity: 1; transform        /* ── Hero Banner (Light Sanctuary Theme) ── */
         .mo-banner {
-          background: linear-gradient(150deg, #113425 0%, #0C2219 50%, #071710 100%);
+          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 60%, #F5EFE6 100%);
           border-radius: 24px;
           padding: 60px 44px;
           text-align: center;
           position: relative;
           overflow: hidden;
           margin-bottom: 52px;
-          color: var(--ivory);
+          color: var(--green-deep);
           border: 1.5px solid rgba(214,182,107,0.38);
-          box-shadow: 0 20px 52px rgba(0,0,0,0.4);
+          box-shadow: 0 10px 32px rgba(18,45,36,0.06);
         }
         .mo-banner::before {
           content: '✝';
@@ -76,7 +74,7 @@ export default function Motto() {
           top: -30px; left: 50%;
           transform: translateX(-50%);
           font-size: 200px;
-          color: rgba(214,182,107,0.05);
+          color: rgba(214,182,107,0.06);
           font-family: var(--font-serif);
           pointer-events: none;
         }
@@ -85,7 +83,7 @@ export default function Motto() {
           font-size: 0.72rem;
           letter-spacing: 0.28em;
           text-transform: uppercase;
-          color: var(--gold-bright);
+          color: var(--gold-dark);
           font-weight: 700;
           display: flex;
           align-items: center;
@@ -113,14 +111,14 @@ export default function Motto() {
           font-family: var(--font-serif);
           font-size: clamp(2rem, 5.5vw, 3.8rem);
           font-weight: 900;
-          color: var(--ivory);
+          color: var(--green-deep);
           line-height: 1;
           padding: 0 12px;
           position: relative;
           transition: color 0.3s;
           cursor: default;
         }
-        .mo-fff-word:hover { color: var(--gold-bright); }
+        .mo-fff-word:hover { color: var(--gold-dark); }
         .mo-fff-sep {
           font-family: var(--font-serif);
           font-size: clamp(1.4rem, 3vw, 2.4rem);
@@ -134,7 +132,7 @@ export default function Motto() {
           font-family: var(--font-serif);
           font-style: italic;
           font-size: 1.05rem;
-          color: rgba(250,246,238,0.85);
+          color: #374151;
           max-width: 580px;
           margin: 0 auto;
           line-height: 1.75;
@@ -148,11 +146,11 @@ export default function Motto() {
           margin-bottom: 48px;
         }
         .mo-card {
-          background: linear-gradient(145deg, #123425 0%, #0B2218 100%);
+          background: #FFFFFF;
           border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 22px;
           padding: 36px 28px;
-          box-shadow: 0 10px 32px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 24px rgba(18,45,36,0.06);
           display: flex;
           flex-direction: column;
           position: relative;
@@ -172,7 +170,7 @@ export default function Motto() {
         }
         .mo-card:hover {
           transform: translateY(-8px);
-          box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 20px rgba(214,182,107,0.15);
+          box-shadow: 0 16px 40px rgba(18,45,36,0.12);
           border-color: var(--gold);
         }
         .mo-card:hover::before { opacity: 1; }
@@ -181,7 +179,7 @@ export default function Motto() {
           font-family: var(--font-serif);
           font-size: 4rem;
           font-weight: 900;
-          color: rgba(214,182,107,0.08);
+          color: rgba(214,182,107,0.12);
           position: absolute;
           top: 16px; right: 20px;
           line-height: 1;
@@ -189,13 +187,13 @@ export default function Motto() {
           transition: color 0.3s;
         }
         .mo-card:hover .mo-card-letter {
-          color: rgba(214,182,107,0.18);
+          color: rgba(214,182,107,0.22);
         }
 
         .mo-card-icon {
           width: 54px;
           height: 54px;
-          background: linear-gradient(135deg, #184332 0%, #0C2219 100%);
+          background: #FAF6EE;
           border: 2px solid var(--gold);
           border-radius: 14px;
           display: flex;
@@ -203,13 +201,13 @@ export default function Motto() {
           justify-content: center;
           font-size: 1.5rem;
           margin-bottom: 20px;
-          box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+          box-shadow: 0 4px 14px rgba(18,45,36,0.06);
           flex-shrink: 0;
         }
         .mo-card h3 {
           font-family: var(--font-serif);
           font-size: 1.6rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           margin: 0 0 4px;
           font-weight: 700;
         }
@@ -217,14 +215,14 @@ export default function Motto() {
           font-size: 0.74rem;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--gold);
+          color: var(--gold-dark);
           font-weight: 700;
           margin-bottom: 8px;
           display: block;
         }
         .mo-card-verse {
           font-size: 0.8rem;
-          color: #72C3A2;
+          color: var(--green);
           font-weight: 600;
           margin-bottom: 16px;
           display: block;
@@ -232,7 +230,7 @@ export default function Motto() {
         }
         .mo-card p {
           font-size: 0.96rem;
-          color: rgba(250,246,238,0.88);
+          color: #374151;
           line-height: 1.8;
           margin: 0;
           flex: 1;
@@ -240,27 +238,27 @@ export default function Motto() {
 
         /* ── Footer verse ── */
         .mo-footer {
-          background: linear-gradient(145deg, #123425 0%, #0A1E15 100%);
+          background: #FFFFFF;
           border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 18px;
           padding: 34px 38px;
           text-align: center;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+          box-shadow: 0 6px 20px rgba(18,45,36,0.05);
         }
         .mo-footer blockquote {
           font-family: var(--font-serif);
           font-style: italic;
           font-size: 1.15rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           line-height: 1.75;
           margin: 0 0 10px;
         }
         .mo-footer cite {
           font-size: 0.78rem;
           font-weight: 700;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: rgba(250,246,238,0.7);
+          color: var(--gold-dark);
           font-style: normal;
         }
 

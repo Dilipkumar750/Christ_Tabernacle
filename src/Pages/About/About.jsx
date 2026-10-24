@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useLocation, Navigate } from "react-router-dom";
-import logoImg from "../../assets/logo.png";
+import logoImg from "../../assets/logo.jpeg";
 import ParticleCross from "../../Components/ParticleCross";
 
 const TABS = [
@@ -174,15 +174,15 @@ export default function About() {
 
         /* ── Sticky Green Tabs Bar ── */
         .about-tabs-bar {
-          background: #091E15;
-          border-bottom: 1.5px solid rgba(214,182,107,0.28);
-          border-top: 1px solid rgba(214,182,107,0.15);
+          background: #FFFFFF;
+          border-bottom: 2px solid rgba(214,182,107,0.35);
+          border-top: 1px solid rgba(214,182,107,0.2);
           padding: 0 24px;
           position: sticky;
-          top: 68px;
+          top: 70px;
           z-index: 90;
           font-family: var(--font-sans);
-          box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+          box-shadow: 0 4px 16px rgba(18,45,36,0.05);
         }
         .about-tabs {
           max-width: 1100px;
@@ -201,7 +201,7 @@ export default function About() {
           padding: 16px 22px;
           font-size: 0.85rem;
           font-weight: 600;
-          color: rgba(250,246,238,0.75);
+          color: #3D5949;
           text-decoration: none;
           white-space: nowrap;
           border-bottom: 3px solid transparent;
@@ -212,33 +212,33 @@ export default function About() {
         }
         .about-tab-link .tab-icon {
           font-size: 0.95rem;
-          opacity: 0.8;
+          opacity: 0.85;
           transition: opacity 0.2s;
         }
         .about-tab-link:hover {
-          color: var(--gold-bright);
+          color: var(--green-deep);
           background: rgba(214,182,107,0.08);
         }
         .about-tab-link:hover .tab-icon { opacity: 1; }
         .about-tab-link.active {
-          color: var(--gold-bright);
+          color: var(--green-deep);
           font-weight: 700;
           border-bottom-color: var(--gold);
           background: rgba(214,182,107,0.15);
         }
         .about-tab-link.active .tab-icon { opacity: 1; }
 
-        /* ── Content Wrapper (Rich Sanctuary Deep Green Canvas) ── */
+        /* ── Content Wrapper (Light Warm Ivory Canvas) ── */
         .about-content-wrap {
           max-width: 1100px;
           margin: 0 auto;
           padding: 56px 24px 96px;
           font-family: var(--font-sans);
-          background: #0A1F16;
+          background: var(--ivory);
           min-height: 60vh;
         }
         .about-outer-wrap {
-          background: #0A1F16;
+          background: var(--ivory);
           width: 100%;
           min-height: 100vh;
         }

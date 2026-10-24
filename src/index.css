@@ -299,27 +299,26 @@ button {
   transform: translateY(-2px);
 }
 
-/* ── Page Hero Banner ── */
+/* ── Page Hero Banner (Luminous Light Theme) ── */
 .ct-page-hero {
   background:
-    radial-gradient(ellipse at 85% -10%, rgba(214, 182, 107, 0.22) 0%, transparent 48%),
-    radial-gradient(ellipse at 12% 105%, rgba(50, 132, 100, 0.32) 0%, transparent 50%),
-    linear-gradient(140deg, #0C251A 0%, #133929 20%, #184332 45%, #1F5540 70%, #2A7256 90%, #358B6A 100%);
+    radial-gradient(ellipse at 85% -10%, rgba(214, 182, 107, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 12% 105%, rgba(24, 67, 50, 0.08) 0%, transparent 50%),
+    linear-gradient(145deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
   padding: 68px 24px 50px;
   text-align: center;
   position: relative;
   overflow: hidden;
-  color: var(--ivory);
-  border-bottom: 2px solid var(--border-gold);
+  color: var(--text-main);
+  border-bottom: 2px solid var(--border-gold-subtle);
+  box-shadow: 0 4px 20px rgba(18, 45, 36, 0.04);
 }
 
 .ct-page-hero::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% -10%, rgba(214, 182, 107, 0.1) 0%, transparent 55%),
-    radial-gradient(ellipse at 0% 110%, rgba(42, 110, 84, 0.2) 0%, transparent 45%),
-    radial-gradient(ellipse at 100% 110%, rgba(6, 14, 9, 0.4) 0%, transparent 45%);
+  background: radial-gradient(ellipse at 50% -10%, rgba(214, 182, 107, 0.12) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -332,45 +331,49 @@ button {
 .ct-page-hero::before {
   content: '\271D';
   position: absolute;
-  top: -50px;
+  top: -40px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 220px;
-  color: rgba(214, 182, 107, 0.05);
+  color: rgba(214, 182, 107, 0.08);
   pointer-events: none;
   font-family: var(--font-serif);
   line-height: 1;
-  z-index: 1;
+  z-index: 0;
 }
 
 .ct-page-hero-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold-light);
+  color: var(--green);
+  background: rgba(214, 182, 107, 0.16);
+  border: 1px solid var(--border-gold);
+  padding: 5px 16px;
+  border-radius: 999px;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .ct-page-hero-title {
   font-family: var(--font-serif);
   font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 700;
-  color: var(--ivory);
+  color: var(--green-dark);
   margin: 0 0 14px;
   line-height: 1.2;
 }
 
 .ct-page-hero-title span {
-  color: var(--gold-bright);
+  color: var(--gold-dark);
 }
 
 .ct-page-hero-desc {
   font-size: 1rem;
-  color: rgba(250, 246, 238, 0.8);
+  color: #374151;
   max-width: 640px;
   margin: 0 auto;
   line-height: 1.7;
@@ -378,12 +381,12 @@ button {
 
 /* ── Subpage Tabs Bar ── */
 .ct-subpage-tabs-bar {
-  background: var(--white);
-  border-bottom: 2px solid var(--border-gold-subtle);
+  background: #FFFFFF;
+  border-bottom: 2px solid rgba(214, 182, 107, 0.35);
   position: sticky;
   top: 70px;
   z-index: 100;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 16px rgba(18, 45, 36, 0.05);
 }
 
 .ct-subpage-tabs {
@@ -406,7 +409,7 @@ button {
   padding: 16px 20px;
   font-size: 0.86rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: #3D5949;
   text-decoration: none;
   white-space: nowrap;
   border-bottom: 3px solid transparent;
@@ -416,13 +419,15 @@ button {
 }
 
 .ct-subpage-tab:hover {
-  color: var(--green);
+  color: var(--green-deep);
+  background: rgba(214, 182, 107, 0.08);
 }
 
 .ct-subpage-tab.active {
-  color: var(--green);
+  color: var(--green-deep);
   font-weight: 700;
   border-bottom-color: var(--gold);
+  background: rgba(214, 182, 107, 0.12);
 }
 
 /* ── Cards ── */

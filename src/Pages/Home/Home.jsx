@@ -347,26 +347,16 @@ export default function Home() {
           font-weight: 600;
         }
 
-        /* ── Pillars Section ── */
+        /* ── Pillars Section (Light Sanctuary Theme) ── */
         .home-pillars {
-          background: 
-            radial-gradient(circle at 85% 15%, rgba(214, 182, 107, 0.22) 0%, transparent 45%),
-            radial-gradient(circle at 12% 85%, rgba(50, 132, 100, 0.3) 0%, transparent 50%),
-            linear-gradient(140deg, #0C2419 0%, #133929 18%, #184332 42%, #1E5540 68%, #276D52 88%, #328464 100%);
+          background: linear-gradient(180deg, #FAF7F2 0%, #FFFFFF 100%);
           padding: 85px 24px;
           font-family: var(--font-sans);
-          color: var(--ivory);
+          color: var(--text-main);
           position: relative;
           overflow: hidden;
-          border-top: 2px solid var(--border-gold);
-          border-bottom: 2px solid var(--border-gold);
-        }
-        .home-pillars::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.14) 0%, transparent 60%);
-          pointer-events: none;
+          border-top: 1.5px solid var(--border-gold);
+          border-bottom: 1.5px solid var(--border-gold-subtle);
         }
         .home-pillars-grid {
           display: grid;
@@ -375,21 +365,20 @@ export default function Home() {
           margin-top: 48px;
         }
         .home-pillar-card {
-          background: linear-gradient(155deg, rgba(255, 255, 255, 0.12) 0%, rgba(138, 37, 82, 0.45) 50%, rgba(61, 10, 30, 0.85) 100%);
-          border: 1.5px solid rgba(212, 175, 55, 0.35);
+          background: #FFFFFF;
+          border: 1.5px solid rgba(214,182,107,0.35);
           border-radius: 18px;
           padding: 38px 30px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-          backdrop-filter: blur(10px);
+          box-shadow: 0 6px 20px rgba(18, 45, 36, 0.06);
           transition: transform 0.28s ease, background 0.28s, border-color 0.28s, box-shadow 0.28s;
           display: flex;
           flex-direction: column;
         }
         .home-pillar-card:hover {
           transform: translateY(-6px);
-          background: linear-gradient(155deg, rgba(255, 255, 255, 0.2) 0%, rgba(186, 61, 103, 0.55) 50%, rgba(61, 10, 30, 0.9) 100%);
+          background: #FAF6EE;
           border-color: var(--gold);
-          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38), 0 0 20px rgba(212, 175, 55, 0.25);
+          box-shadow: 0 14px 36px rgba(18, 45, 36, 0.12);
         }
         .home-pillar-icon {
           font-size: 2.5rem;
@@ -399,7 +388,7 @@ export default function Home() {
         .home-pillar-card h3 {
           font-family: var(--font-serif);
           font-size: 1.35rem;
-          color: var(--gold-bright);
+          color: var(--green-deep);
           margin: 0 0 8px;
           font-weight: 700;
         }
@@ -407,13 +396,13 @@ export default function Home() {
           font-size: 0.75rem;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: var(--gold-light);
+          color: var(--gold-dark);
           font-weight: 700;
           margin-bottom: 14px;
         }
         .home-pillar-card p {
           font-size: 0.92rem;
-          color: rgba(250, 246, 238, 0.78);
+          color: #374151;
           line-height: 1.75;
           margin: 0 0 20px;
           flex-grow: 1;
@@ -421,23 +410,23 @@ export default function Home() {
         .home-pillar-link {
           font-size: 0.82rem;
           font-weight: 700;
-          color: var(--gold-light);
+          color: var(--green);
           text-transform: uppercase;
           letter-spacing: 0.06em;
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          transition: transform 0.2s;
+          transition: transform 0.2s, color 0.2s;
         }
         .home-pillar-link:hover {
           transform: translateX(4px);
-          color: var(--white);
+          color: var(--green-deep);
         }
 
-        /* ── Welcome & Story Section (Sanctuary Green) ── */
+        /* ── Welcome & Story Section (Light Warm Theme) ── */
         .home-welcome {
           padding: 95px 24px;
-          background: linear-gradient(180deg, #091E15 0%, #0F2E20 50%, #091E15 100%);
+          background: linear-gradient(180deg, #FAF6EE 0%, #F5EFE6 100%);
           border-top: 1px solid rgba(214,182,107,0.25);
           border-bottom: 1px solid rgba(214,182,107,0.25);
         }
@@ -451,8 +440,9 @@ export default function Home() {
           position: relative;
           border-radius: 20px;
           overflow: hidden;
-          box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+          box-shadow: 0 12px 36px rgba(18,45,36,0.1);
           border: 2px solid rgba(214,182,107,0.4);
+          background: #FFFFFF;
         }
         .home-welcome-img {
           width: 100%;
@@ -468,17 +458,17 @@ export default function Home() {
           position: absolute;
           bottom: 20px;
           left: 20px;
-          background: linear-gradient(135deg, #123425 0%, #091E15 100%);
-          color: var(--ivory);
+          background: #FFFFFF;
+          color: var(--green-deep);
           border: 1.5px solid var(--gold);
           border-radius: 12px;
           padding: 12px 20px;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+          box-shadow: 0 6px 20px rgba(18,45,36,0.12);
         }
 
-        /* ── Mission Purpose Strip (Sanctuary Green) ── */
+        /* ── Mission Purpose Strip (Light Theme) ── */
         .home-mission {
-          background: linear-gradient(160deg, #0B2218 0%, #113425 50%, #0A1E15 100%);
+          background: linear-gradient(180deg, #FFFFFF 0%, #FAF6EE 100%);
           padding: 85px 24px;
           text-align: center;
           border-top: 1px solid rgba(214,182,107,0.25);
@@ -492,31 +482,29 @@ export default function Home() {
           margin: 30px 0 40px;
         }
         .home-mission-tag {
-          background: rgba(214,182,107,0.1);
-          color: var(--gold-bright);
+          background: #FFFFFF;
+          color: var(--green-deep);
           font-size: 0.8rem;
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
           padding: 10px 24px;
           border-radius: 50px;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+          border: 1.5px solid rgba(214,182,107,0.4);
+          box-shadow: 0 2px 10px rgba(18,45,36,0.05);
           transition: all 0.22s ease;
         }
         .home-mission-tag:hover {
-          background: rgba(214,182,107,0.2);
+          background: #FAF6EE;
           border-color: var(--gold);
           transform: translateY(-2px);
-        }
-          background: var(--grad-green-accent);
-          color: var(--gold-bright);
         }
 
         /* ── Quick Explore Grid ── */
         .home-explore {
           padding: 85px 24px;
-          background: var(--ivory-warm);
+          background: linear-gradient(180deg, #FAF6EE 0%, #F2E9DC 100%);
+          border-top: 2px solid var(--border-gold-subtle);
         }
         .home-explore-grid {
           display: grid;
@@ -533,6 +521,8 @@ export default function Home() {
           transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
           display: flex;
           flex-direction: column;
+          text-decoration: none;
+          color: inherit;
         }
         .home-explore-card:hover {
           transform: translateY(-5px);
@@ -584,25 +574,26 @@ export default function Home() {
           gap: 6px;
         }
 
-        /* ── Weekly Promise Banner ── */
+        /* ── Weekly Promise Banner (Light Sanctuary Theme) ── */
         .home-promise {
-          background: 
-            radial-gradient(ellipse at 50% 0%, rgba(214, 182, 107, 0.25) 0%, transparent 60%),
-            radial-gradient(ellipse at 85% 100%, rgba(50, 132, 100, 0.3) 0%, transparent 50%),
-            linear-gradient(145deg, #0C2419 0%, #133929 22%, #184332 48%, #1E5540 75%, #0C2419 100%);
+          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 50%, #F5EFE6 100%);
           padding: 68px 24px;
-          color: var(--ivory);
+          color: var(--green-deep);
           text-align: center;
           position: relative;
           overflow: hidden;
-          border-top: 2px solid var(--gold);
-          border-bottom: 2px solid var(--border-gold-subtle);
+          border-top: 1.5px solid var(--border-gold);
+          border-bottom: 1.5px solid var(--border-gold-subtle);
         }
         .home-promise::before {
-          content: '';
+          content: '✝';
           position: absolute;
-          inset: 0;
-          background: radial-gradient(ellipse at 50% 100%, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
+          top: -20px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 160px;
+          color: rgba(214, 182, 107, 0.06);
+          font-family: var(--font-serif);
           pointer-events: none;
         }
         .home-promise-inner {
@@ -641,10 +632,11 @@ export default function Home() {
 
         /* ── Grand Hero Banner Carousel ── */
         .home-banner-section {
-          background: linear-gradient(180deg, #071911 0%, #0d281c 45%, #133929 100%);
+          background: linear-gradient(180deg, #FAF7F2 0%, #FAF6EE 100%);
           padding: 24px 20px 20px;
           position: relative;
           outline: none;
+          border-bottom: 1px solid var(--border-gold-subtle);
         }
         .home-banner-container {
           max-width: 1360px;
@@ -1120,15 +1112,15 @@ export default function Home() {
         <div className="ct-container">
           <div className="home-welcome-grid">
             <div>
-              <span className="ct-badge ct-badge-dark">† Welcome to the Sanctuary †</span>
-              <h2 id="welcome-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--ivory)", margin: "14px 0 18px", lineHeight: 1.25 }}>
+              <span className="ct-badge">† Welcome to the Sanctuary †</span>
+              <h2 id="welcome-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--green-deep)", margin: "14px 0 18px", lineHeight: 1.25 }}>
                 A Sanctuary Built by Faith, <br />
                 <span className="ct-gold-text">Sustained by Prayer</span>
               </h2>
-              <p style={{ color: "rgba(250, 246, 238, 0.88)", fontSize: "1.02rem", lineHeight: 1.8, marginBottom: 18 }}>
+              <p style={{ color: "#374151", fontSize: "1.02rem", lineHeight: 1.8, marginBottom: 18 }}>
                 In 1991, Eva. Glory Devapiriyam answered God's divine calling to minister the Gospel with 15 faithful believers in a humble house. Over decades of miraculous healing, fervent prayer, and unshakeable dedication, the ministry flourished into Christ's Tabernacle Church under Pastor Saravanan Immanuel.
               </p>
-              <p style={{ color: "rgba(250, 246, 238, 0.8)", fontSize: "0.96rem", lineHeight: 1.75, marginBottom: 28 }}>
+              <p style={{ color: "#4B5563", fontSize: "0.96rem", lineHeight: 1.75, marginBottom: 28 }}>
                 Today, Christ's Tabernacle stands as an oasis of spiritual renewal in Chennai and beyond — where the broken find healing, captives receive deliverance, and worshippers glorify the King of Kings.
               </p>
 
@@ -1204,12 +1196,12 @@ export default function Home() {
                           : "Christ's Tabernacle Modern Sanctuary Altar"
                   }
                   className="home-welcome-img"
-                  style={{ objectFit: activeSanctuaryView === "vision" ? "contain" : "cover", background: activeSanctuaryView === "vision" ? "#0C2219" : "transparent" }}
+                  style={{ objectFit: activeSanctuaryView === "vision" ? "contain" : "cover", background: activeSanctuaryView === "vision" ? "#FFFFFF" : "transparent" }}
                 />
               </div>
 
               <div className="home-welcome-badge">
-                <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.05rem", fontWeight: 700, color: "var(--gold-bright)" }}>
+                <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.05rem", fontWeight: 700, color: "var(--green-deep)" }}>
                   {activeSanctuaryView === "vision"
                     ? "Divine Calling & Apostolic Vision"
                     : activeSanctuaryView === "pastor"
@@ -1218,7 +1210,7 @@ export default function Home() {
                         ? "Joyful Praise Fellowship"
                         : "Sacred Altar of Worship"}
                 </div>
-                <div style={{ fontSize: "0.75rem", color: "rgba(250, 246, 238, 0.75)", marginTop: 2 }}>
+                <div style={{ fontSize: "0.75rem", color: "#6B7280", marginTop: 2 }}>
                   {activeSanctuaryView === "vision"
                     ? "Ordained & Sent to Preach the Full Gospel of Jesus Christ"
                     : activeSanctuaryView === "pastor"
@@ -1237,10 +1229,10 @@ export default function Home() {
       <section className="home-mission" aria-labelledby="mission-heading">
         <div className="ct-container" style={{ maxWidth: 900 }}>
           <span className="ct-badge">† Our Great Commission †</span>
-          <h2 id="mission-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.8vw, 2.6rem)", color: "var(--green-dark)", margin: "14px 0 16px" }}>
+          <h2 id="mission-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.8vw, 2.6rem)", color: "var(--green-deep)", margin: "14px 0 16px" }}>
             Bringing Freedom, Healing &amp; Hope in Jesus Christ
           </h2>
-          <p style={{ color: "var(--text-muted)", fontSize: "1.02rem", lineHeight: 1.8, maxWidth: 740, margin: "0 auto" }}>
+          <p style={{ color: "#374151", fontSize: "1.02rem", lineHeight: 1.8, maxWidth: 740, margin: "0 auto" }}>
             To proclaim the Full Gospel of Jesus Christ — bringing people from darkness into His marvelous light, delivering them from spiritual bondage, ministering healing to the brokenhearted, and equipping believers for God's Kingdom.
           </p>
 
@@ -1252,7 +1244,7 @@ export default function Home() {
           </div>
 
           <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
-            <Link to="/about/mission" className="ct-btn-emerald">
+            <Link to="/about/mission" className="ct-btn-gold">
               Our Mission &amp; Vision
             </Link>
             <Link to="/about/motto" className="ct-btn-outline">
@@ -1263,14 +1255,14 @@ export default function Home() {
       </section>
 
       {/* ── 4B. Pastoral Leadership & Divine Vision Spotlight ── */}
-      <section style={{ padding: "64px 20px", background: "linear-gradient(180deg, #FDFBF7 0%, #FAF6EE 100%)", borderTop: "1px solid #EDE5D8", borderBottom: "1px solid #EDE5D8" }}>
+      <section style={{ padding: "64px 20px", background: "linear-gradient(180deg, #F8F5EE 0%, #FAF6EE 50%, #FFFFFF 100%)", borderTop: "1.5px solid rgba(214,182,107,0.3)", borderBottom: "1.5px solid rgba(214,182,107,0.3)" }}>
         <div className="ct-container" style={{ maxWidth: 1180 }}>
           <div style={{ textAlign: "center", marginBottom: 36 }}>
-            <span className="ct-badge">† Pastoral Leadership &amp; Apostolic Calling †</span>
-            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", color: "#184332", margin: "12px 0 8px" }}>
+            <span className="ct-badge" style={{ marginBottom: 14 }}>† Pastoral Leadership &amp; Apostolic Calling †</span>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", color: "var(--green-deep)", margin: "12px 0 8px" }}>
               Sent by the Lord to Heal &amp; Restore
             </h2>
-            <p style={{ color: "#4A6355", fontSize: "0.98rem", maxWidth: 660, margin: "0 auto" }}>
+            <p style={{ color: "#4B5563", fontSize: "0.98rem", maxWidth: 660, margin: "0 auto" }}>
               "The Spirit of the Lord GOD is upon Me, because the LORD has anointed Me to preach good tidings to the poor..." — Isaiah 61:1
             </p>
           </div>
@@ -1281,12 +1273,12 @@ export default function Home() {
               background: "#FFFFFF",
               borderRadius: 18,
               overflow: "hidden",
-              border: "1.5px solid #EDE5D8",
-              boxShadow: "0 8px 24px rgba(12, 34, 25, 0.05)",
+              border: "1.5px solid rgba(214,182,107,0.38)",
+              boxShadow: "0 6px 22px rgba(18, 45, 36, 0.06)",
               display: "flex",
               flexDirection: "column"
             }}>
-              <div style={{ height: 260, overflow: "hidden", background: "#0C2219", position: "relative" }}>
+              <div style={{ height: 260, overflow: "hidden", background: "#FAF6EE", position: "relative" }}>
                 <img
                   src={jesusSaravananImg}
                   alt="Pastor Saravanan Immanuel receiving the Lord's mandate"
@@ -1294,19 +1286,20 @@ export default function Home() {
                 />
                 <span style={{
                   position: "absolute", top: 14, left: 14,
-                  background: "rgba(12, 34, 25, 0.88)", color: "#E8CC8F",
+                  background: "#FFFFFF", color: "var(--green-deep)",
                   border: "1px solid #D6B66B", fontSize: "0.72rem",
-                  fontWeight: 800, padding: "4px 12px", borderRadius: 20
+                  fontWeight: 800, padding: "4px 12px", borderRadius: 20,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
                 }}>
                   † Divine Vision &amp; Calling
                 </span>
               </div>
               <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "#184332", margin: "0 0 10px" }}>
+                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "var(--green-deep)", margin: "0 0 10px" }}>
                     The Apostolic Mandate
                   </h3>
-                  <p style={{ color: "#4A6355", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                  <p style={{ color: "#4B5563", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
                     Pastor Saravanan Immanuel answered the divine calling of our Lord Jesus Christ to lead Christ's Tabernacle as a sanctuary of deliverance, supernatural healing, and relentless prayer for all nations.
                   </p>
                 </div>
@@ -1323,8 +1316,8 @@ export default function Home() {
               background: "#FFFFFF",
               borderRadius: 18,
               overflow: "hidden",
-              border: "1.5px solid #EDE5D8",
-              boxShadow: "0 8px 24px rgba(12, 34, 25, 0.05)",
+              border: "1.5px solid rgba(214,182,107,0.38)",
+              boxShadow: "0 6px 22px rgba(18, 45, 36, 0.06)",
               display: "flex",
               flexDirection: "column"
             }}>
@@ -1336,19 +1329,20 @@ export default function Home() {
                 />
                 <span style={{
                   position: "absolute", top: 14, left: 14,
-                  background: "rgba(24, 67, 50, 0.88)", color: "#FAF6EE",
+                  background: "#FFFFFF", color: "var(--green-deep)",
                   border: "1px solid rgba(214, 182, 107, 0.5)", fontSize: "0.72rem",
-                  fontWeight: 800, padding: "4px 12px", borderRadius: 20
+                  fontWeight: 800, padding: "4px 12px", borderRadius: 20,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
                 }}>
                   ✝ Senior Pastor
                 </span>
               </div>
               <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "#184332", margin: "0 0 10px" }}>
+                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "var(--green-deep)", margin: "0 0 10px" }}>
                     Pastor Saravanan Immanuel
                   </h3>
-                  <p style={{ color: "#4A6355", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                  <p style={{ color: "#4B5563", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
                     Under his faithful ministry, thousands of believers across Chennai and around the world experience the transformative power of God through Sunday expository preaching, fasting prayer vigils, and pastoral counseling.
                   </p>
                 </div>
@@ -1368,8 +1362,8 @@ export default function Home() {
               background: "#FFFFFF",
               borderRadius: 18,
               overflow: "hidden",
-              border: "1.5px solid #EDE5D8",
-              boxShadow: "0 8px 24px rgba(12, 34, 25, 0.05)",
+              border: "1.5px solid rgba(214,182,107,0.38)",
+              boxShadow: "0 6px 22px rgba(18, 45, 36, 0.06)",
               display: "flex",
               flexDirection: "column"
             }}>
@@ -1389,10 +1383,10 @@ export default function Home() {
               </div>
               <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "#184332", margin: "0 0 10px" }}>
+                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "var(--green-deep)", margin: "0 0 10px" }}>
                     10th Anniversary Celebration
                   </h3>
-                  <p style={{ color: "#4A6355", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                  <p style={{ color: "#4B5563", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
                     Celebrating a decade of supernatural grace, faithful worship, and community transformation in Christ's Tabernacle. Join in thanksgiving for the great things the Lord has done!
                   </p>
                 </div>
@@ -1411,11 +1405,10 @@ export default function Home() {
       <section className="home-explore" aria-labelledby="explore-heading">
         <div className="ct-container">
           <div style={{ textAlign: "center" }}>
-            <span className="ct-badge">† Discover Ministries †</span>
-            <h2 id="explore-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--green-dark)", marginTop: 12 }}>
+            <h2 id="explore-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--green-dark)", marginTop: 0, marginBottom: 8 }}>
               Explore Christ's Tabernacle
             </h2>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.98rem", maxWidth: 600, margin: "8px auto 0" }}>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.98rem", maxWidth: 600, margin: "0 auto 0" }}>
               Access our sermon archives, worship lyrics, photo galleries, prayer schedules, and testimonies.
             </p>
           </div>
@@ -1441,11 +1434,11 @@ export default function Home() {
       {/* ── 6. Weekly Promise Banner ── */}
       <section className="home-promise" aria-label="Weekly Scripture Promise">
         <div className="home-promise-inner">
-          <span className="ct-badge ct-badge-dark" style={{ marginBottom: 16 }}>† Scripture Promise of the Week †</span>
-          <blockquote style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.2rem, 3vw, 1.8rem)", color: "var(--ivory)", fontStyle: "italic", margin: "16px 0 12px", lineHeight: 1.5 }}>
+          <span className="ct-badge" style={{ marginBottom: 16 }}>† Scripture Promise of the Week †</span>
+          <blockquote style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.2rem, 3vw, 1.8rem)", color: "var(--green-deep)", fontStyle: "italic", margin: "16px 0 12px", lineHeight: 1.5 }}>
             "Call to me and I will answer you, and will tell you great and hidden things that you have not known."
           </blockquote>
-          <cite style={{ fontFamily: "var(--font-sans)", fontSize: "0.9rem", color: "var(--gold-bright)", fontStyle: "normal", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+          <cite style={{ fontFamily: "var(--font-sans)", fontSize: "0.9rem", color: "var(--gold-dark)", fontStyle: "normal", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
             — Jeremiah 33:3
           </cite>
         </div>

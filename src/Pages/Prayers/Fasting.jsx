@@ -1,4 +1,4 @@
-﻿const FASTING_SCHEDULE = [
+const FASTING_SCHEDULE = [
   {
     title: "New Moon & Full Moon All-Night Vigils",
     timing: "Monthly • 10:00 PM – 4:30 AM",
@@ -30,22 +30,23 @@ export default function Fasting() {
     <>
       <style>{`
         .fasting-hero-box {
-          background: var(--grad-sanctuary);
+          background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
           border-radius: 20px;
           border: 1.5px solid var(--border-gold);
           padding: 42px 36px;
-          color: var(--ivory);
+          color: var(--text-main);
           margin-bottom: 44px;
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 4px 20px rgba(18, 45, 36, 0.05);
         }
         .fasting-hero-box h2 {
           font-family: var(--font-serif);
           font-size: clamp(1.6rem, 3.5vw, 2.3rem);
           margin: 10px 0 14px;
+          color: var(--green-dark);
         }
-        .fasting-hero-box h2 span { color: var(--gold-bright); }
+        .fasting-hero-box h2 span { color: var(--gold-dark); }
         .fasting-hero-box p {
-          color: rgba(250, 246, 238, 0.8);
+          color: #374151;
           font-size: 1rem;
           line-height: 1.75;
           max-width: 720px;
@@ -118,7 +119,7 @@ export default function Fasting() {
 
       {/* Hero */}
       <div className="fasting-hero-box">
-        <span className="ct-badge ct-badge-dark">† The Power of Humility &amp; Sacrifice †</span>
+        <span className="ct-badge ct-badge-gold">† The Power of Humility &amp; Sacrifice †</span>
         <h2>
           Fasting <span>&amp; Deliverance Prayers</span>
         </h2>
