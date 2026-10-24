@@ -117,20 +117,61 @@ export default function Photos() {
   const [selectedCat, setSelectedCat] = useState("All");
   const [lightboxPhoto, setLightboxPhoto] = useState(null);
   const [photos, setPhotos] = useState(PHOTO_GALLERY);
+  const [loading, setLoading] = useState(true);
+
+  // Helper for dynamic media URLs (local assets or uploaded / backend URLs)
+  const resolvePhotoUrl = (img) => {
+    if (!img) return "";
+    if (typeof img === "string") {
+      if (img.startsWith("http://") || img.startsWith("https://") || img.startsWith("data:")) {
+        return img;
+      }
+      if (img.startsWith("/uploads/") || img.startsWith("uploads/")) {
+        const clean = img.startsWith("/") ? img : `/${img}`;
+        return `http://localhost:5000${clean}`;
+      }
+    }
+    return img;
+  };
 
   useEffect(() => {
+    let mounted = true;
     const fetchDynamicPhotos = async () => {
       try {
-        const data = await getPublicPhotos(selectedCat);
-        if (data && data.length > 0) {
-          setPhotos(data);
+        setLoading(true);
+        const data = await getPublicPhotos(selectedCat === "All" ? "" : selectedCat);
+        if (!mounted) return;
+        if (Array.isArray(data) && data.length > 0) {
+          if (selectedCat === "All") {
+            const dynamicIds = new Set(data.map(d => String(d._id || d.id)));
+            const fallbackUniques = PHOTO_GALLERY.filter(p => !dynamicIds.has(String(p.id)));
+            setPhotos([...data, ...fallbackUniques]);
+          } else {
+            setPhotos(data);
+          }
+        } else if (selectedCat === "All") {
+          setPhotos(PHOTO_GALLERY);
+        } else {
+          const localFiltered = PHOTO_GALLERY.filter(p => p.category?.toLowerCase() === selectedCat.toLowerCase());
+          setPhotos(localFiltered);
         }
       } catch (err) {
-        // Fallback to static PHOTO_GALLERY silently
+        console.warn("Using offline gallery fallback:", err);
+        if (mounted) {
+          const fallback = selectedCat === "All"
+            ? PHOTO_GALLERY
+            : PHOTO_GALLERY.filter(p => p.category?.toLowerCase() === selectedCat.toLowerCase());
+          setPhotos(fallback);
+        }
+      } finally {
+        if (mounted) setLoading(false);
       }
     };
     fetchDynamicPhotos();
+    return () => { mounted = false; };
   }, [selectedCat]);
+
+  const categoriesList = ["All", "Leadership", "Events", "Worship", "Sanctuary", "Prayer", "Scripture"];
 
   const filtered =
     selectedCat === "All"
@@ -171,92 +212,73 @@ export default function Photos() {
 
         .photo-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-          gap: 26px;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 20px;
         }
         .photo-card {
-          background: var(--white);
+          background: #0C2219;
           border-radius: 16px;
-          border: 1.5px solid var(--border-gold-subtle);
+          border: 1.5px solid rgba(214, 182, 107, 0.28);
           overflow: hidden;
-          box-shadow: var(--shadow-sm);
-          transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
+          box-shadow: 0 4px 16px rgba(18, 45, 36, 0.08);
+          transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s, border-color 0.28s;
           cursor: pointer;
-          display: flex;
-          flex-direction: column;
+          position: relative;
+          aspect-ratio: 4 / 3;
+          display: block;
         }
         .photo-card:hover {
-          transform: translateY(-5px);
-          box-shadow: var(--shadow-md);
+          transform: translateY(-5px) scale(1.01);
+          box-shadow: 0 14px 32px rgba(18, 45, 36, 0.16);
           border-color: var(--gold);
-        }
-        .photo-thumb-wrap {
-          position: relative;
-          height: 220px;
-          overflow: hidden;
-          background: #111;
         }
         .photo-thumb {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transition: transform 0.45s ease;
+          display: block;
+          transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .photo-card:hover .photo-thumb {
-          transform: scale(1.05);
+          transform: scale(1.08);
         }
-        .photo-badge {
+        .photo-overlay {
           position: absolute;
-          top: 12px;
-          right: 12px;
-          background: rgba(12, 34, 25, 0.85);
-          color: var(--gold-bright);
-          font-size: 0.7rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          padding: 4px 10px;
-          border-radius: 50px;
-          border: 1px solid var(--gold);
-          backdrop-filter: blur(4px);
-        }
-        .photo-card-body {
-          padding: 20px 22px;
-          flex-grow: 1;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(12, 34, 25, 0.1) 0%, rgba(12, 34, 25, 0.45) 100%);
           display: flex;
-          flex-direction: column;
-        }
-        .photo-card-title {
-          font-family: var(--font-serif);
-          font-size: 1.15rem;
-          color: var(--green-dark);
-          margin: 0 0 8px;
-          font-weight: 700;
-        }
-        .photo-card-caption {
-          font-size: 0.86rem;
-          color: var(--text-muted);
-          line-height: 1.6;
-          margin: 0 0 14px;
-          flex-grow: 1;
-        }
-        .photo-card-meta {
-          display: flex;
-          justify-content: space-between;
           align-items: center;
-          font-size: 0.76rem;
-          color: var(--gold-dark);
-          font-weight: 600;
-          border-top: 1px solid var(--border-gold-subtle);
-          padding-top: 10px;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.25s ease;
+        }
+        .photo-card:hover .photo-overlay {
+          opacity: 1;
+        }
+        .photo-zoom-btn {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: rgba(214, 182, 107, 0.95);
+          color: var(--green-dark);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.25rem;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+          transform: scale(0.85);
+          transition: transform 0.2s ease;
+        }
+        .photo-card:hover .photo-zoom-btn {
+          transform: scale(1);
         }
 
         /* Lightbox */
         .lightbox-modal {
           position: fixed;
           inset: 0;
-          background: rgba(9, 28, 19, 0.92);
-          backdrop-filter: blur(10px);
+          background: rgba(9, 28, 19, 0.95);
+          backdrop-filter: blur(12px);
           z-index: 1050;
           display: flex;
           align-items: center;
@@ -264,24 +286,21 @@ export default function Photos() {
           padding: 24px;
         }
         .lightbox-content {
-          max-width: 900px;
+          max-width: 1000px;
           width: 100%;
-          background: var(--white);
-          border-radius: 20px;
-          border: 2px solid var(--gold);
-          overflow: hidden;
-          box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
           position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
         .lightbox-img {
           width: 100%;
-          max-height: 520px;
-          object-fit: cover;
+          max-height: 82vh;
+          object-fit: contain;
+          border-radius: 16px;
+          border: 2px solid rgba(214, 182, 107, 0.6);
+          box-shadow: 0 25px 70px rgba(0, 0, 0, 0.65);
           display: block;
-        }
-        .lightbox-info {
-          padding: 24px 28px;
-          background: var(--white);
         }
       `}</style>
 
@@ -300,7 +319,7 @@ export default function Photos() {
         ))}
       </div>
 
-      {/* Grid */}
+      {/* Grid: Photo Only (No Title, No Description) */}
       <div className="photo-grid">
         {filtered.map((item) => (
           <article
@@ -309,27 +328,20 @@ export default function Photos() {
             onClick={() => setLightboxPhoto(item)}
             role="button"
             tabIndex={0}
+            aria-label="View photo"
             onKeyDown={(e) => {
               if (e.key === "Enter") setLightboxPhoto(item);
             }}
           >
-            <div className="photo-thumb-wrap">
-              <img src={item.image} alt={item.title} className="photo-thumb" />
-              <span className="photo-badge">{item.category}</span>
-            </div>
-            <div className="photo-card-body">
-              <h3 className="photo-card-title">{item.title}</h3>
-              <p className="photo-card-caption">{item.caption}</p>
-              <div className="photo-card-meta">
-                <span>📅 {item.date}</span>
-                <span>🔍 Click to Expand</span>
-              </div>
+            <img src={resolvePhotoUrl(item.image)} alt="" className="photo-thumb" loading="lazy" />
+            <div className="photo-overlay">
+              <div className="photo-zoom-btn">⤢</div>
             </div>
           </article>
         ))}
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal: Photo Only */}
       {lightboxPhoto && (
         <div
           className="lightbox-modal"
@@ -345,32 +357,33 @@ export default function Photos() {
               className="ct-modal-close"
               onClick={() => setLightboxPhoto(null)}
               aria-label="Close photo view"
+              style={{
+                position: "absolute",
+                top: -16,
+                right: -16,
+                background: "var(--gold)",
+                color: "var(--green-dark)",
+                border: "none",
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                fontSize: "1rem",
+                fontWeight: 900,
+                cursor: "pointer",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 20
+              }}
             >
               ✕
             </button>
             <img
-              src={lightboxPhoto.image}
-              alt={lightboxPhoto.title}
+              src={resolvePhotoUrl(lightboxPhoto.image)}
+              alt=""
               className="lightbox-img"
             />
-            <div className="lightbox-info">
-              <span className="ct-badge" style={{ marginBottom: 8 }}>
-                {lightboxPhoto.category} • {lightboxPhoto.date}
-              </span>
-              <h3
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontSize: "1.5rem",
-                  color: "var(--green-dark)",
-                  margin: "6px 0 8px",
-                }}
-              >
-                {lightboxPhoto.title}
-              </h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", lineHeight: 1.7 }}>
-                {lightboxPhoto.caption}
-              </p>
-            </div>
           </div>
         </div>
       )}

@@ -23,7 +23,7 @@ const MILESTONES = [
     caption: "Pastor Saravanan Immanuel receiving the Lord Jesus' divine calling and apostolic mandate.",
   },
   {
-    year: "Dec 2007",
+    year: "Dec 2008",
     icon: "🕊️",
     badge: "Ordained",
     title: "Ordination & Ministerial Anointing",
