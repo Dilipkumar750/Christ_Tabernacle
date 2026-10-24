@@ -366,10 +366,10 @@ export default function Home() {
         }
         .home-pillar-card {
           background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.35);
+          border: 1.5px solid rgba(214, 182, 107, 0.35);
           border-radius: 18px;
           padding: 38px 30px;
-          box-shadow: 0 6px 20px rgba(18, 45, 36, 0.06);
+          box-shadow: 0 6px 24px rgba(18, 45, 36, 0.05);
           transition: transform 0.28s ease, background 0.28s, border-color 0.28s, box-shadow 0.28s;
           display: flex;
           flex-direction: column;
@@ -378,49 +378,67 @@ export default function Home() {
           transform: translateY(-6px);
           background: #FAF6EE;
           border-color: var(--gold);
-          box-shadow: 0 14px 36px rgba(18, 45, 36, 0.12);
+          box-shadow: 0 16px 40px rgba(18, 45, 36, 0.12);
         }
-        .home-pillar-icon {
-          font-size: 2.5rem;
-          margin-bottom: 18px;
-          display: block;
+        .home-pillar-icon-box {
+          width: 58px;
+          height: 58px;
+          border-radius: 16px;
+          background: #FAF6EE;
+          border: 1.5px solid rgba(214, 182, 107, 0.4);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.85rem;
+          margin-bottom: 20px;
+          box-shadow: 0 4px 12px rgba(18, 45, 36, 0.04);
+          transition: transform 0.25s ease, background 0.25s, border-color 0.25s;
+        }
+        .home-pillar-card:hover .home-pillar-icon-box {
+          transform: scale(1.08) rotate(2deg);
+          background: #FFFFFF;
+          border-color: var(--gold);
         }
         .home-pillar-card h3 {
           font-family: var(--font-serif);
           font-size: 1.35rem;
           color: var(--green-deep);
           margin: 0 0 8px;
-          font-weight: 700;
+          font-weight: 800;
         }
         .home-pillar-verse {
-          font-size: 0.75rem;
-          letter-spacing: 0.1em;
+          font-size: 0.78rem;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
           color: var(--gold-dark);
-          font-weight: 700;
+          font-weight: 800;
           margin-bottom: 14px;
+          display: inline-block;
         }
         .home-pillar-card p {
-          font-size: 0.92rem;
+          font-size: 0.94rem;
           color: #374151;
-          line-height: 1.75;
-          margin: 0 0 20px;
+          line-height: 1.8;
+          margin: 0 0 22px;
           flex-grow: 1;
         }
         .home-pillar-link {
-          font-size: 0.82rem;
-          font-weight: 700;
+          font-size: 0.84rem;
+          font-weight: 800;
           color: var(--green);
           text-transform: uppercase;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.08em;
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          transition: transform 0.2s, color 0.2s;
+          gap: 8px;
+          transition: all 0.2s ease;
+          padding-top: 16px;
+          border-top: 1px dashed rgba(214, 182, 107, 0.35);
+          margin-top: auto;
         }
         .home-pillar-link:hover {
           transform: translateX(4px);
-          color: var(--green-deep);
+          color: var(--gold-dark);
         }
 
         /* ── Welcome & Story Section (Light Warm Theme) ── */
@@ -1081,12 +1099,32 @@ export default function Home() {
       {/* ── 2. The Three Pillars ── */}
       <section className="home-pillars" aria-labelledby="pillars-heading">
         <div className="ct-container">
-          <div style={{ textAlign: "center" }}>
-            <span className="ct-badge ct-badge-dark">† Divine Calling &amp; Pillars †</span>
-            <h2 id="pillars-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "var(--ivory)", marginTop: 12 }}>
+          <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto" }}>
+            <span className="ct-badge">† Divine Calling &amp; Pillars †</span>
+            <h2
+              id="pillars-heading"
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: "clamp(2rem, 4vw, 2.85rem)",
+                color: "var(--green-deep)",
+                marginTop: 14,
+                marginBottom: 10,
+                fontWeight: 800,
+                lineHeight: 1.25
+              }}
+            >
               A Community Anchored in <span className="ct-gold-text">Faith &amp; Deliverance</span>
             </h2>
-            <p style={{ color: "rgba(250, 246, 238, 0.75)", fontStyle: "italic", fontFamily: "var(--font-serif)", marginTop: 8 }}>
+            <p
+              style={{
+                color: "var(--text-muted)",
+                fontStyle: "italic",
+                fontFamily: "var(--font-serif)",
+                fontSize: "1.08rem",
+                marginTop: 10,
+                lineHeight: 1.6
+              }}
+            >
               "The Lord who brought me to this ministry will lead me henceforth."
             </p>
           </div>
@@ -1094,7 +1132,9 @@ export default function Home() {
           <div className="home-pillars-grid">
             {PILLARS.map((p) => (
               <div key={p.title} className="home-pillar-card">
-                <span className="home-pillar-icon" aria-hidden="true">{p.icon}</span>
+                <div className="home-pillar-icon-box" aria-hidden="true">
+                  <span>{p.icon}</span>
+                </div>
                 <h3>{p.title}</h3>
                 <span className="home-pillar-verse">{p.verse}</span>
                 <p>{p.desc}</p>

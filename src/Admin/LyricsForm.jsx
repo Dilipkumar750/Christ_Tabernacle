@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAllSongsAdmin, createSong, updateSong, uploadPPTFile } from "../services/api";
+import { getSongById, getAllSongsAdmin, createSong, updateSong, uploadPPTFile } from "../services/api";
 import {
   FaArrowLeft, FaSave, FaTimes, FaUpload, FaCheck
 } from "react-icons/fa";
@@ -45,31 +45,45 @@ export default function LyricsForm() {
     isActive: true,
   });
 
+  const populateForm = (song) => {
+    setFormData({
+      title: song.title || "",
+      language: song.language || "Tamil",
+      theme: song.theme || "Adoration & Grace",
+      key: song.key || "",
+      tempo: song.tempo || "",
+      author: song.author || "",
+      youtubeUrl: song.youtubeUrl || "",
+      pptUrl: song.pptUrl || "",
+      lyrics: song.lyrics || "",
+      englishLyrics: song.englishLyrics || "",
+      chords: song.chords || "",
+      tags: Array.isArray(song.tags) ? song.tags.join(", ") : (song.tags || ""),
+      order: song.order !== undefined ? song.order : 1,
+      isActive: song.isActive !== undefined ? song.isActive : true,
+    });
+  };
+
   useEffect(() => {
     if (isEdit) {
-      getAllSongsAdmin()
-        .then((songs) => {
-          const song = songs.find((s) => s._id === id);
+      getSongById(id)
+        .then((song) => {
           if (song) {
-            setFormData({
-              title: song.title || "",
-              language: song.language || "Tamil",
-              theme: song.theme || "Adoration & Grace",
-              key: song.key || "",
-              tempo: song.tempo || "",
-              author: song.author || "",
-              youtubeUrl: song.youtubeUrl || "",
-              pptUrl: song.pptUrl || "",
-              lyrics: song.lyrics || "",
-              englishLyrics: song.englishLyrics || "",
-              chords: song.chords || "",
-              tags: Array.isArray(song.tags) ? song.tags.join(", ") : (song.tags || ""),
-              order: song.order !== undefined ? song.order : 1,
-              isActive: song.isActive !== undefined ? song.isActive : true,
-            });
+            populateForm(song);
           } else {
-            setError("Worship song not found.");
+            throw new Error("Song not found");
           }
+        })
+        .catch(() => {
+          return getAllSongsAdmin()
+            .then((songs) => {
+              const song = songs.find((s) => String(s._id) === String(id) || String(s.id) === String(id));
+              if (song) {
+                populateForm(song);
+              } else {
+                setError("Worship song not found.");
+              }
+            });
         })
         .catch((err) => setError(err.message || "Failed to load song"))
         .finally(() => setLoading(false));

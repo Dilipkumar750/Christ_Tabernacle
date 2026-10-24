@@ -255,8 +255,8 @@ export default function SundaySermons() {
               <span className="sermon-card-date">{sermon.date}</span>
             </div>
             {sermon.image && (
-              <div style={{ height: 160, borderRadius: 10, overflow: "hidden", margin: "10px 0 14px", border: "1.5px solid var(--border-gold-subtle)" }}>
-                <img src={sermon.image} alt={sermon.speaker} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ height: 300, borderRadius: 10, overflow: "hidden", margin: "10px 0 14px", border: "1.5px solid var(--border-gold-subtle)" }}>
+                <img src={sermon.image} alt={sermon.speaker} style={{ width: "100%", height: "100%", objectFit: "fit" }} />
               </div>
             )}
             <h3 className="sermon-card-title">{sermon.title}</h3>
