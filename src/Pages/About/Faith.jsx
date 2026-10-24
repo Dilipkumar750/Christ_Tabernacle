@@ -104,106 +104,173 @@ export default function Faith() {
       <style>{`
         .faith-wrap { font-family:var(--font-sans); }
         .faith-eyebrow {
-          font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase;
-          color:var(--gold); font-weight:700; margin-bottom:12px;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.72rem;
+          letter-spacing: 0.26em;
+          text-transform: uppercase;
+          color: var(--gold-bright);
+          font-weight: 700;
+          padding: 6px 18px;
+          border: 1.5px solid rgba(214,182,107,0.35);
+          border-radius: 50px;
+          background: rgba(214,182,107,0.1);
+          margin-bottom: 16px;
         }
         .faith-title {
           font-family:var(--font-serif);
-          font-size:clamp(1.3rem,3vw,2rem); color:var(--green);
-          margin:0 0 8px; font-weight:700;
+          font-size:clamp(1.8rem, 4vw, 2.6rem);
+          color:var(--ivory);
+          margin:0 0 10px;
+          font-weight:900;
         }
         .faith-subtitle {
-          font-size:0.9rem; color:#6b7280; margin:0 0 36px; line-height:1.65;
+          font-size:1rem;
+          color:rgba(250,246,238,0.8);
+          margin:0 0 36px;
+          line-height:1.75;
+          max-width: 720px;
         }
         .faith-intro {
-          background: var(--grad-green-accent); border-radius:14px;
-          padding:28px 32px; margin-bottom:40px;
+          background: linear-gradient(145deg, #123425 0%, #0B2218 100%);
+          border: 1.5px solid rgba(214,182,107,0.35);
+          border-radius:18px;
+          padding:28px 32px;
+          margin-bottom:40px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         .faith-intro p {
-          font-size:0.9rem; color:rgba(250,246,238,0.8);
-          line-height:1.8; margin:0;
+          font-size:0.98rem;
+          color:rgba(250,246,238,0.88);
+          line-height:1.8;
+          margin:0;
         }
-        .faith-intro strong { color:var(--gold); }
+        .faith-intro strong { color:var(--gold-bright); }
 
-        /* Articles grid */
+        /* Articles grid (Rich Sanctuary Dark Green) */
         .faith-articles {
-          display:flex; flex-direction:column; gap:0;
-          border:1px solid rgba(214,182,107,0.18);
-          border-radius:16px; overflow:hidden;
+          display:flex;
+          flex-direction:column;
+          gap:0;
+          border:1.5px solid rgba(214,182,107,0.35);
+          border-radius:20px;
+          overflow:hidden;
+          background: #0A1E15;
+          box-shadow: 0 14px 40px rgba(0,0,0,0.35);
         }
         .faith-article {
-          display:grid; grid-template-columns:52px 1fr;
-          gap:0; border-bottom:1px solid rgba(214,182,107,0.12);
-          transition:background 0.2s;
+          display:grid;
+          grid-template-columns:56px 1fr;
+          gap:0;
+          border-bottom:1px solid rgba(214,182,107,0.2);
+          transition:background 0.25s;
         }
         .faith-article:last-child { border-bottom:none; }
-        .faith-article:hover { background:rgba(214,182,107,0.04); }
+        .faith-article:hover { background:rgba(214,182,107,0.08); }
         .faith-article-num {
-          background: var(--grad-green-accent);
-          display:flex; align-items:flex-start; justify-content:center;
-          padding:22px 0 0;
+          background: linear-gradient(135deg, #184332 0%, #0C2219 100%);
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          padding:24px 0 0;
           font-family:var(--font-serif);
-          font-size:0.85rem; font-weight:700; color:var(--gold);
+          font-size:0.95rem;
+          font-weight:700;
+          color:var(--gold-bright);
+          border-right: 1px solid rgba(214,182,107,0.25);
           flex-shrink:0;
         }
-        .faith-article-body { padding:20px 24px 20px 20px; }
+        .faith-article-body { padding:22px 28px 22px 24px; }
         .faith-article-body h3 {
           font-family:var(--font-serif);
-          font-size:1rem; color:var(--green);
-          margin:0 0 8px; font-weight:700;
+          font-size:1.2rem;
+          color:var(--gold-bright);
+          margin:0 0 8px;
+          font-weight:700;
         }
         .faith-article-body p {
-          font-size:0.84rem; color:#4b5563;
-          line-height:1.75; margin:0 0 8px;
+          font-size:0.94rem;
+          color:rgba(250,246,238,0.88);
+          line-height:1.8;
+          margin:0 0 8px;
         }
         .faith-article-refs {
-          font-size:0.74rem; color:var(--gold);
-          font-style:italic; margin:0;
-          font-weight:500;
+          font-size:0.78rem;
+          color:#72C3A2;
+          font-style:italic;
+          margin:0;
+          font-weight:600;
         }
 
         /* Confession Box */
         .faith-confession {
-          margin-top:40px;
-          background: var(--grad-sanctuary);
-          border: 1.5px solid var(--border-gold);
-          border-radius:16px; padding:40px 36px; text-align:center;
-          box-shadow: var(--shadow-md);
+          margin-top:48px;
+          background: linear-gradient(150deg, #113425 0%, #0B2218 60%, #071710 100%);
+          border: 1.5px solid rgba(214,182,107,0.38);
+          border-radius:24px;
+          padding:46px 40px;
+          text-align:center;
+          box-shadow: 0 16px 48px rgba(0,0,0,0.4);
         }
         .faith-confession h3 {
           font-family:var(--font-serif);
-          font-size:1.3rem; color:var(--gold);
-          margin:0 0 6px; font-weight:700;
+          font-size:1.6rem;
+          color:var(--gold-bright);
+          margin:0 0 6px;
+          font-weight:700;
         }
         .faith-confession-sub {
-          font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase;
-          color:var(--gold-light); margin-bottom:28px; display:block;
+          font-size:0.75rem;
+          letter-spacing:0.2em;
+          text-transform:uppercase;
+          color:var(--gold);
+          margin-bottom:30px;
+          display:block;
         }
         .faith-confessions-list {
-          display:flex; flex-direction:column; gap:10px; margin-bottom:28px;
+          display:flex;
+          flex-direction:column;
+          gap:12px;
+          margin-bottom:32px;
         }
         .faith-confession-item {
-          display:flex; align-items:center; gap:12px;
-          background:rgba(255,255,255,0.05);
-          border:1px solid rgba(214,182,107,0.15);
-          border-radius:10px; padding:12px 18px;
+          display:flex;
+          align-items:center;
+          gap:14px;
+          background:rgba(214,182,107,0.08);
+          border:1px solid rgba(214,182,107,0.25);
+          border-radius:12px;
+          padding:14px 20px;
           text-align:left;
+          transition: background 0.25s, transform 0.25s;
+        }
+        .faith-confession-item:hover {
+          background: rgba(214,182,107,0.15);
+          transform: translateX(4px);
         }
         .faith-confession-item-icon {
-          color:var(--gold); font-size:0.85rem; flex-shrink:0;
+          color:var(--gold-bright);
+          font-size:0.95rem;
+          flex-shrink:0;
         }
         .faith-confession-item span {
-          font-size:0.85rem; color:rgba(250,246,238,0.8); line-height:1.5;
+          font-size:0.92rem;
+          color:rgba(250,246,238,0.92);
+          line-height:1.5;
         }
         .faith-final {
-          font-size:0.78rem; color:rgba(250,246,238,0.4);
-          letter-spacing:0.06em; font-family:var(--font-serif); font-style:italic;
+          font-size:0.85rem;
+          color:rgba(250,246,238,0.65);
+          letter-spacing:0.08em;
+          font-family:var(--font-serif);
+          font-style:italic;
         }
 
         @media(max-width:580px){
-          .faith-article{ grid-template-columns:36px 1fr; }
-          .faith-article-num{ font-size:0.75rem; padding:18px 0 0; }
-          .faith-confession{ padding:28px 20px; }
+          .faith-article{ grid-template-columns:42px 1fr; }
+          .faith-article-num{ font-size:0.82rem; padding:20px 0 0; }
+          .faith-confession{ padding:32px 20px; }
           .faith-intro{ padding:22px 20px; }
         }
       `}</style>

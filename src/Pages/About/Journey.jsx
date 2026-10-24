@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import jesusSaravananImg from "../../assets/jesus_saravanan.jpeg";
 import saravananImg from "../../assets/saravanan.jpeg";
 import saravanan3Img from "../../assets/saravanan3.jpeg";
@@ -7,316 +8,574 @@ const MILESTONES = [
   {
     year: "1991",
     icon: "🌱",
-    title: "It Began With a Divine Calling",
+    badge: "The Beginning",
+    title: "A Divine Calling Is Born",
     desc: "Eva. Glory Devapiriyam stepped out in radical faith and initiated a Gospel ministry with 15 faithful believers in a humble home, driven by a burning burden: to bring Christ's unyielding love to the needy and direct souls toward the Living God.",
+    image: null,
   },
   {
     year: "2007",
     icon: "🌿",
-    title: "Apostolic Gospel Prayer House & The Divine Mandate",
+    badge: "God's Blueprint",
+    title: "Apostolic Gospel Prayer House",
     desc: "The Apostolic Gospel Prayer House was established as the Holy Spirit moved mightily. Pastor Saravanan Immanuel received the heavenly vision and divine mandate from our Lord Jesus Christ, ministering hand in hand to set captives free.",
     image: jesusSaravananImg,
-    caption: "✝ Pastor Saravanan Immanuel receiving the Lord Jesus' divine calling and apostolic mandate."
+    caption: "Pastor Saravanan Immanuel receiving the Lord Jesus' divine calling and apostolic mandate.",
   },
   {
     year: "Dec 2007",
     icon: "🕊️",
+    badge: "Ordained",
     title: "Ordination & Ministerial Anointing",
     desc: "Pastor Immanuel Saravanan was officially ordained by Chief Pastor M. K. Sam Sundaram, ACA, and blessed by Pastor M. M. Jebaraj, ACA (Selavoyal Ministries) — marking an enduring milestone of spiritual authority and apostolic mandate.",
     image: saravananImg,
-    caption: "Pastor Saravanan Immanuel ministering with the apostolic burden and power of the Holy Spirit."
+    caption: "Pastor Saravanan Immanuel ministering with the apostolic burden and power of the Holy Spirit.",
   },
   {
     year: "2016",
     icon: "✨",
-    title: "A New Vision — Christ's Tabernacle Church",
+    badge: "New Vision",
+    title: "Christ's Tabernacle Church",
     desc: "The Lord revealed a new vision to establish and build a permanent sanctuary for all nations. Apostolic Gospel Prayer House transitioned into Christ's Tabernacle Church, consecrated and dedicated by Rev. I. Christdhas of Hope AG Church, Pallikaranai.",
     image: saravanan3Img,
-    caption: "Senior Pastor Saravanan Immanuel at the sacred sanctuary pulpit of Christ's Tabernacle."
+    caption: "Senior Pastor Saravanan Immanuel at the sacred sanctuary pulpit of Christ's Tabernacle.",
   },
   {
-    year: "Present Day",
+    year: "Today",
     icon: "🔥",
+    badge: "Present Day",
     title: "Continuing the Kingdom Mandate",
     desc: "Today, Christ's Tabernacle ministers each week to families across Chennai, empowering the next generation through Sunday School, fasting intercessions, dynamic worship, and supernatural demonstrations of God's grace.",
     image: outdoorFellowshipImg,
-    caption: "Joyous gathering of the Christ's Tabernacle congregation praising the Lord in unity."
+    caption: "Joyous gathering of the Christ's Tabernacle congregation praising the Lord in unity.",
   },
 ];
 
-const OUTCOMES = ["Delivered", "Healed", "Restored", "Equipped"];
+const OUTCOMES = [
+  { label: "Delivered", icon: "🔓" },
+  { label: "Healed",    icon: "💊" },
+  { label: "Restored",  icon: "🕊️" },
+  { label: "Equipped",  icon: "📖" },
+];
+
+function useReveal(sel) {
+  useEffect(() => {
+    const els = document.querySelectorAll(sel);
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("jr-in");
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.1 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [sel]);
+}
 
 export default function Journey() {
+  useReveal(".jr-reveal");
+
   return (
     <>
       <style>{`
-        .journey-intro {
-          background: var(--white);
-          border: 1.5px solid var(--border-gold);
-          border-radius: 18px;
-          padding: 36px 40px;
-          margin-bottom: 50px;
-          box-shadow: var(--shadow-sm);
+        /* ── Reveal Animations ── */
+        .jr-reveal {
+          opacity: 0;
+          transform: translateY(28px);
+          transition: opacity 0.7s cubic-bezier(.22,1,.36,1),
+                      transform 0.7s cubic-bezier(.22,1,.36,1);
         }
-        .journey-intro-eyebrow {
-          font-size: 0.72rem;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-weight: 700;
-          margin-bottom: 10px;
-        }
-        .journey-intro h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.5rem, 3.2vw, 2.2rem);
-          color: var(--green-dark);
-          margin: 0 0 16px;
-          font-weight: 700;
-        }
-        .journey-intro p {
-          font-size: 1rem;
-          color: var(--text-muted);
-          line-height: 1.8;
-          margin: 0 0 12px;
-        }
-        .journey-intro p:last-child { margin: 0; }
+        .jr-reveal.jr-in { opacity: 1; transform: none; }
 
-        /* Timeline */
-        .journey-timeline {
-          position: relative;
-          padding-left: 36px;
-          margin: 40px 0;
+        /* ── Page Header (Dark Sanctuary Green) ── */
+        .jr-header { margin-bottom: 56px; }
+        .jr-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.72rem;
+          letter-spacing: 0.26em;
+          text-transform: uppercase;
+          color: var(--gold-bright);
+          font-weight: 700;
+          padding: 6px 18px;
+          border: 1.5px solid rgba(214,182,107,0.35);
+          border-radius: 50px;
+          background: rgba(214,182,107,0.1);
+          margin-bottom: 20px;
         }
-        .journey-timeline::before {
+        .jr-header h2 {
+          font-family: var(--font-serif);
+          font-size: clamp(2rem, 4.5vw, 2.9rem);
+          color: var(--ivory);
+          margin: 0 0 16px;
+          font-weight: 900;
+          line-height: 1.15;
+        }
+        .jr-header h2 em {
+          font-style: italic;
+          color: var(--gold-bright);
+        }
+        .jr-header p {
+          font-size: 1.02rem;
+          color: rgba(250,246,238,0.85);
+          line-height: 1.85;
+          max-width: 720px;
+          margin: 0;
+        }
+
+        /* ── Timeline Container ── */
+        .jr-timeline {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          gap: 46px;
+        }
+        /* Vertical glowing green/gold timeline bar */
+        .jr-timeline::before {
           content: '';
           position: absolute;
-          left: 12px;
-          top: 8px;
-          bottom: 8px;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 0;
+          bottom: 0;
           width: 3px;
-          background: linear-gradient(to bottom, var(--gold), rgba(214, 182, 107, 0.2));
-          border-radius: 3px;
+          background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            #276D52 10%,
+            #D6B66B 50%,
+            #276D52 90%,
+            transparent 100%
+          );
+          box-shadow: 0 0 10px rgba(214,182,107,0.4);
+          z-index: 0;
         }
-        .journey-item {
+
+        /* ── Each Milestone: Left Image, Center Dot, Right Card ── */
+        .jr-row {
+          display: grid;
+          grid-template-columns: 1fr 64px 1fr;
+          align-items: center;
           position: relative;
-          margin-bottom: 46px;
-          background: var(--white);
-          border: 1px solid var(--border-gold-subtle);
-          border-radius: 16px;
-          padding: 24px 28px;
-          box-shadow: var(--shadow-sm);
-          transition: transform 0.25s, box-shadow 0.25s;
+          z-index: 1;
         }
-        .journey-item:hover {
-          transform: translateX(4px);
-          box-shadow: var(--shadow-md);
-          border-color: var(--border-gold);
+
+        /* ── Center dot ── */
+        .jr-center {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          z-index: 2;
         }
-        .journey-dot {
-          position: absolute;
-          left: -48px;
-          top: 24px;
-          width: 26px;
-          height: 26px;
-          background: var(--grad-green-accent);
-          border: 3px solid var(--gold);
+        .jr-dot {
+          width: 50px;
+          height: 50px;
+          background: linear-gradient(135deg, #184332 0%, #0C2219 100%);
+          border: 2.5px solid var(--gold);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 0.7rem;
-          color: var(--white);
-          z-index: 1;
-          box-shadow: 0 0 0 5px rgba(214, 182, 107, 0.2);
+          font-size: 1.25rem;
+          box-shadow:
+            0 0 0 6px rgba(214,182,107,0.18),
+            0 6px 18px rgba(0,0,0,0.4);
+          transition: transform 0.35s, box-shadow 0.35s;
+          flex-shrink: 0;
         }
-        .journey-year {
-          font-size: 0.72rem;
-          font-weight: 700;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          margin-bottom: 6px;
-          display: inline-block;
-          background: var(--gold-soft);
-          padding: 4px 12px;
-          border-radius: 50px;
-          border: 1px solid var(--border-gold-subtle);
-        }
-        .journey-item h3 {
-          font-family: var(--font-serif);
-          font-size: 1.3rem;
-          color: var(--green-dark);
-          margin: 6px 0 10px;
-          font-weight: 700;
-        }
-        .journey-item p {
-          font-size: 0.95rem;
-          color: var(--text-muted);
-          line-height: 1.75;
-          margin: 0;
+        .jr-row:hover .jr-dot {
+          transform: scale(1.15);
+          box-shadow:
+            0 0 0 9px rgba(214,182,107,0.28),
+            0 10px 26px rgba(0,0,0,0.5);
+          border-color: var(--gold-bright);
         }
 
-        /* What God Has Done */
-        .journey-outcomes {
-          margin-top: 56px;
-          background: var(--grad-sanctuary);
-          border-radius: 18px;
-          padding: 44px 36px;
-          text-align: center;
-          color: var(--ivory);
-          border: 1px solid var(--border-gold);
-          box-shadow: var(--shadow-md);
+        /* ── LEFT SIDE: Standalone Image ── */
+        .jr-img-side {
+          padding-right: 32px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
         }
-        .journey-outcomes h3 {
-          font-family: var(--font-serif);
-          font-size: 1.6rem;
+        .jr-img-side.jr-no-img {
+          justify-content: center;
+        }
+
+        .jr-img-box {
+          width: 100%;
+          max-width: 440px;
+          border-radius: 18px;
+          overflow: hidden;
+          border: 2px solid rgba(214,182,107,0.4);
+          box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+          background: #0C2219;
+          transition: transform 0.4s cubic-bezier(.22,1,.36,1),
+                      box-shadow 0.4s,
+                      border-color 0.4s;
+        }
+        .jr-row:hover .jr-img-box {
+          transform: translateY(-5px) scale(1.015);
+          box-shadow: 0 18px 48px rgba(0,0,0,0.45);
+          border-color: var(--gold);
+        }
+        .jr-img-box img {
+          width: 100%;
+          height: 250px;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.6s cubic-bezier(.22,1,.36,1);
+        }
+        .jr-row:hover .jr-img-box img {
+          transform: scale(1.05);
+        }
+        .jr-img-caption {
+          padding: 12px 18px;
+          background: linear-gradient(135deg, #102B20 0%, #0A1C14 100%);
+          font-size: 0.82rem;
+          font-weight: 600;
           color: var(--gold-bright);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          line-height: 1.45;
+          border-top: 1px solid rgba(214,182,107,0.2);
+        }
+        .jr-img-caption .cap-cross { color: var(--gold); flex-shrink: 0; }
+
+        /* No image scripture box (Rich Green) */
+        .jr-no-img-block {
+          width: 100%;
+          max-width: 440px;
+          padding: 28px 30px;
+          background: linear-gradient(145deg, #133425 0%, #0C2219 100%);
+          border: 1.5px solid rgba(214,182,107,0.35);
+          border-radius: 18px;
+          text-align: right;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .jr-no-img-block blockquote {
+          font-family: var(--font-serif);
+          font-style: italic;
+          font-size: 1.05rem;
+          color: var(--gold-bright);
+          line-height: 1.7;
           margin: 0 0 10px;
         }
-        .journey-outcomes p {
-          font-size: 0.95rem;
-          color: rgba(250, 246, 238, 0.78);
-          line-height: 1.75;
-          margin: 0 0 26px;
-          max-width: 680px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-        .journey-outcomes-tags {
-          display: flex;
-          gap: 14px;
-          justify-content: center;
-          flex-wrap: wrap;
-          margin-bottom: 24px;
-        }
-        .journey-outcomes-tag {
-          background: rgba(214, 182, 107, 0.15);
-          border: 1.5px solid var(--gold);
-          color: var(--gold-bright);
-          font-size: 0.8rem;
+        .jr-no-img-block cite {
+          font-size: 0.76rem;
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          padding: 9px 24px;
-          border-radius: 50px;
+          color: rgba(250,246,238,0.7);
+          font-style: normal;
         }
 
-        /* Calling quote */
-        .journey-calling-box {
-          margin-top: 40px;
-          border-left: 4px solid var(--gold);
-          padding: 24px 28px;
-          background: var(--white);
-          border-radius: 0 14px 14px 0;
-          box-shadow: var(--shadow-sm);
+        /* ── RIGHT SIDE: Content Card (Green Sanctuary Theme) ── */
+        .jr-card-side {
+          padding-left: 32px;
         }
-        .journey-calling-box h3 {
+        .jr-card {
+          background: linear-gradient(145deg, #123425 0%, #0B2218 100%);
+          border: 1.5px solid rgba(214,182,107,0.35);
+          border-radius: 20px;
+          padding: 32px 32px;
+          box-shadow: 0 10px 32px rgba(0,0,0,0.3);
+          transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
+          position: relative;
+          overflow: hidden;
+        }
+        /* Glowing Gold/Green left accent border */
+        .jr-card::before {
+          content: '';
+          position: absolute;
+          left: 0; top: 0; bottom: 0;
+          width: 5px;
+          background: var(--grad-gold);
+          border-radius: 4px 0 0 4px;
+        }
+        .jr-row:hover .jr-card {
+          border-color: var(--gold);
+          box-shadow: 0 16px 44px rgba(0,0,0,0.45), 0 0 20px rgba(214,182,107,0.15);
+          transform: translateY(-4px);
+        }
+
+        .jr-year-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 16px;
+        }
+        .jr-year {
+          font-size: 0.74rem;
+          font-weight: 800;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--gold-bright);
+          background: rgba(214,182,107,0.16);
+          border: 1px solid rgba(214,182,107,0.4);
+          padding: 5px 14px;
+          border-radius: 50px;
+        }
+        .jr-badge {
+          font-size: 0.65rem;
+          font-weight: 800;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          background: #276D52;
+          color: #FFFFFF;
+          padding: 4px 12px;
+          border-radius: 50px;
+          border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .jr-card h3 {
           font-family: var(--font-serif);
-          font-size: 1.15rem;
-          color: var(--green-dark);
-          margin: 0 0 8px;
+          font-size: 1.4rem;
+          color: var(--gold-bright);
+          margin: 0 0 12px;
+          font-weight: 700;
+          line-height: 1.3;
         }
-        .journey-calling-box p {
-          font-size: 0.95rem;
-          color: var(--text-muted);
-          line-height: 1.7;
+        .jr-card p {
+          font-size: 0.96rem;
+          color: rgba(250,246,238,0.88);
+          line-height: 1.85;
           margin: 0;
         }
 
-        @media (max-width: 680px) {
-          .journey-intro { padding: 24px 20px; margin-bottom: 36px; }
-          .journey-timeline { padding-left: 20px; }
-          .journey-timeline::before { left: 6px; }
-          .journey-dot { left: -30px; width: 22px; height: 22px; font-size: 0.6rem; top: 20px; }
-          .journey-item { padding: 18px 16px; margin-bottom: 28px; }
-          .journey-outcomes { padding: 32px 20px; }
-          .journey-outcomes-tags { gap: 8px; }
-          .journey-outcomes-tag { padding: 7px 16px; font-size: 0.72rem; }
-          .journey-calling-box { padding: 18px 20px; }
+        /* ── Calling Quote (Green Banner) ── */
+        .jr-calling {
+          margin-top: 60px;
+          display: grid;
+          grid-template-columns: 5px 1fr;
+          border-radius: 18px;
+          overflow: hidden;
+          background: linear-gradient(145deg, #123425 0%, #0A1E15 100%);
+          border: 1.5px solid rgba(214,182,107,0.35);
+          box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+        }
+        .jr-calling-bar { background: var(--grad-gold); }
+        .jr-calling-body { padding: 30px 32px; }
+        .jr-calling-body h3 {
+          font-family: var(--font-serif);
+          font-size: 1.2rem;
+          color: var(--gold-bright);
+          margin: 0 0 8px;
+          font-weight: 700;
+        }
+        .jr-calling-body p {
+          font-size: 0.98rem;
+          color: rgba(250,246,238,0.85);
+          line-height: 1.8;
+          margin: 0;
+          font-style: italic;
+        }
+
+        /* ── Outcomes Banner (Dark Sanctuary Green) ── */
+        .jr-outcomes {
+          margin-top: 56px;
+          background: linear-gradient(150deg, #113425 0%, #0B2218 60%, #071710 100%);
+          border-radius: 24px;
+          padding: 56px 44px;
+          text-align: center;
+          border: 1.5px solid rgba(214,182,107,0.38);
+          box-shadow: 0 20px 52px rgba(0,0,0,0.4);
+          position: relative;
+          overflow: hidden;
+        }
+        .jr-outcomes::before {
+          content: '✝';
+          position: absolute;
+          top: -30px; left: 50%;
+          transform: translateX(-50%);
+          font-size: 200px;
+          color: rgba(214,182,107,0.05);
+          font-family: var(--font-serif);
+          pointer-events: none;
+        }
+        .jr-outcomes-inner { position: relative; z-index: 1; }
+        .jr-outcomes h3 {
+          font-family: var(--font-serif);
+          font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+          color: var(--gold-bright);
+          margin: 0 0 12px;
+          font-weight: 700;
+        }
+        .jr-outcomes-sub {
+          font-size: 1rem;
+          color: rgba(250,246,238,0.8);
+          line-height: 1.8;
+          margin: 0 auto 36px;
+          max-width: 600px;
+        }
+        .jr-outcomes-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 18px;
+          margin-bottom: 36px;
+        }
+        .jr-outcome-card {
+          background: rgba(214,182,107,0.08);
+          border: 1.5px solid rgba(214,182,107,0.28);
+          border-radius: 18px;
+          padding: 24px 14px;
+          transition: background 0.3s, transform 0.3s, border-color 0.3s;
+        }
+        .jr-outcome-card:hover {
+          background: rgba(214,182,107,0.18);
+          border-color: var(--gold);
+          transform: translateY(-5px);
+        }
+        .jr-outcome-icon { font-size: 2rem; display: block; margin-bottom: 12px; }
+        .jr-outcome-label {
+          font-size: 0.82rem;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--gold-bright);
+          line-height: 1.5;
+        }
+        .jr-outcomes-quote {
+          font-family: var(--font-serif);
+          font-style: italic;
+          font-size: 1.05rem;
+          color: rgba(250,246,238,0.7);
+          margin: 0;
+        }
+
+        /* ── Mobile Stacking ── */
+        @media (max-width: 860px) {
+          .jr-timeline::before { left: 24px; transform: none; }
+          .jr-row {
+            grid-template-columns: 50px 1fr;
+            grid-template-areas:
+              "dot card"
+              ". img";
+            gap: 16px 16px;
+          }
+          .jr-center {
+            grid-area: dot;
+            align-items: center;
+          }
+          .jr-img-side {
+            grid-area: img;
+            padding: 0 0 0 10px;
+            align-items: flex-start;
+          }
+          .jr-img-box { max-width: 100%; }
+          .jr-no-img-block { max-width: 100%; text-align: left; }
+          .jr-card-side { grid-area: card; padding-left: 0; }
+          .jr-timeline { gap: 48px; }
+          .jr-outcomes { padding: 40px 20px; }
+          .jr-outcomes-grid { grid-template-columns: repeat(2, 1fr); }
         }
       `}</style>
 
-      {/* Intro */}
-      <div className="journey-intro">
-        <div className="journey-intro-eyebrow">† Our Sacred Heritage †</div>
-        <h2>A Story Written by God's Faithfulness</h2>
+      {/* ── Page Header ── */}
+      <div className="jr-header jr-reveal">
+        <div className="jr-eyebrow">✝ Our Sacred Heritage</div>
+        <h2>
+          A Story Written by<br />
+          <em>God's Faithfulness</em>
+        </h2>
         <p>
-          The ministry of Christ's Tabernacle was not built on worldly strength or human wisdom, but born out of prayer, sustained through intercession, and established upon the uncompromised Word of God.
-        </p>
-        <p>
-          From a humble gathering of 15 saints in 1991 to a vibrant church family today, every step of our pilgrimage has been marked by testimonies of divine deliverance, supernatural healing, and transformed hearts.
+          The ministry of Christ's Tabernacle was not built on worldly strength or human wisdom,
+          but born out of prayer, sustained through intercession, and established upon the
+          uncompromised Word of God. From 15 saints in 1991 to a vibrant church family today —
+          every step marked by divine deliverance, supernatural healing, and transformed hearts.
         </p>
       </div>
 
-      {/* Timeline */}
-      <div className="journey-timeline">
-        {MILESTONES.map((m) => (
-          <div key={m.year} className="journey-item">
-            <div className="journey-dot">{m.icon}</div>
-            <span className="journey-year">{m.year}</span>
-            <h3>{m.title}</h3>
-            <p>{m.desc}</p>
-            {m.image && (
-              <div style={{
-                marginTop: 18,
-                borderRadius: 14,
-                overflow: "hidden",
-                border: "1.5px solid var(--border-gold-subtle)",
-                boxShadow: "0 6px 20px rgba(12, 34, 25, 0.08)",
-                maxWidth: 620
-              }}>
-                <img
-                  src={m.image}
-                  alt={m.title}
-                  style={{
-                    width: "100%",
-                    height: 280,
-                    objectFit: "cover",
-                    display: "block"
-                  }}
-                />
-                {m.caption && (
-                  <div style={{
-                    padding: "10px 16px",
-                    background: "#FAF6EE",
-                    fontSize: "0.82rem",
-                    color: "var(--green-dark)",
-                    fontWeight: 600,
-                    borderTop: "1px solid var(--border-gold-subtle)"
-                  }}>
-                    {m.caption}
-                  </div>
-                )}
+      {/* ── Timeline: Left Image, Right Card ── */}
+      <div className="jr-timeline">
+        {MILESTONES.map((m, i) => (
+          <div
+            key={m.year}
+            className="jr-row jr-reveal"
+            style={{ transitionDelay: `${i * 0.1}s` }}
+          >
+            {/* LEFT — Standalone Image Box or Scripture */}
+            <div className={`jr-img-side${!m.image ? " jr-no-img" : ""}`}>
+              {m.image ? (
+                <div className="jr-img-box">
+                  <img src={m.image} alt={m.title} />
+                  {m.caption && (
+                    <div className="jr-img-caption">
+                      <span className="cap-cross">✝</span>
+                      {m.caption}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="jr-no-img-block">
+                  <blockquote>
+                    "Not by might, nor by power, but by my Spirit, says the LORD of hosts."
+                  </blockquote>
+                  <cite>— Zechariah 4:6</cite>
+                </div>
+              )}
+            </div>
+
+            {/* CENTER — Timeline Dot */}
+            <div className="jr-center">
+              <div className="jr-dot" aria-hidden="true">{m.icon}</div>
+            </div>
+
+            {/* RIGHT — Content Card */}
+            <div className="jr-card-side">
+              <div className="jr-card">
+                <div className="jr-year-badge">
+                  <span className="jr-year">{m.year}</span>
+                  <span className="jr-badge">{m.badge}</span>
+                </div>
+                <h3>{m.title}</h3>
+                <p>{m.desc}</p>
               </div>
-            )}
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Calling Box */}
-      <div className="journey-calling-box">
-        <h3>The Founding Word</h3>
-        <p>
-          "Not by might, nor by power, but by my Spirit, says the LORD of hosts." — Zechariah 4:6. This promise continues to guide our leaders and church family in every season of ministry.
-        </p>
+      {/* ── Calling Quote ── */}
+      <div className="jr-calling jr-reveal">
+        <div className="jr-calling-bar" aria-hidden="true" />
+        <div className="jr-calling-body">
+          <h3>The Founding Word</h3>
+          <p>
+            "Not by might, nor by power, but by my Spirit, says the LORD of hosts." — Zechariah 4:6.
+            This promise continues to guide our leaders and church family in every season of ministry.
+          </p>
+        </div>
       </div>
 
-      {/* Outcomes Strip */}
-      <div className="journey-outcomes">
-        <h3>What the Lord Has Done</h3>
-        <p>
-          Over the past three decades, countless individuals burdened by illness, fear, and hopelessness have experienced the mighty touch of Jesus Christ in our prayer sanctuary.
-        </p>
-        <div className="journey-outcomes-tags">
-          {OUTCOMES.map((o) => (
-            <span key={o} className="journey-outcomes-tag">
-              ✓ {o} in Christ
-            </span>
-          ))}
+      {/* ── Outcomes Banner ── */}
+      <div className="jr-outcomes jr-reveal">
+        <div className="jr-outcomes-inner">
+          <h3>What the Lord Has Done</h3>
+          <p className="jr-outcomes-sub">
+            Over the past three decades, countless individuals burdened by illness, fear, and
+            hopelessness have experienced the mighty touch of Jesus Christ in our prayer sanctuary.
+          </p>
+          <div className="jr-outcomes-grid">
+            {OUTCOMES.map((o) => (
+              <div key={o.label} className="jr-outcome-card">
+                <span className="jr-outcome-icon">{o.icon}</span>
+                <span className="jr-outcome-label">{o.label}<br />in Christ</span>
+              </div>
+            ))}
+          </div>
+          <p className="jr-outcomes-quote">
+            "To God be all the glory, great things He hath done!"
+          </p>
         </div>
-        <p style={{ fontStyle: "italic", fontFamily: "var(--font-serif)", fontSize: "0.95rem", color: "var(--gold-bright)", margin: 0 }}>
-          "To God be all the glory, great things He hath done!"
-        </p>
       </div>
     </>
   );

@@ -1,20 +1,64 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getPublicSongs } from "../../services/api";
 import {
   FaSearch, FaMusic, FaCopy, FaCheck, FaDownload, FaYoutube,
   FaFilePowerpoint, FaChevronRight, FaGuitar, FaPrint, FaTimes,
   FaPlay, FaChevronLeft, FaShareAlt,
-  FaExclamationCircle, FaTag,
-  FaPlus, FaMinus, FaDesktop, FaColumns
+  FaDesktop, FaHeart, FaRegHeart,
+  FaExpand
 } from "react-icons/fa";
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME — Sacred Sanctuary Green & Divine Gold Palette
+   Primary Sanctuary Green: #184332 | Deep Forest: #0C2219 | Medium: #1E5440
+   Sacred Gold: #D6B66B | Gold Bright: #F5E0B0 | Gold Dark: #A88A42
+   Holy Crimson Cross: #C81D25 | Warm Ivory: #FAF6EE | Text: #112218
+═══════════════════════════════════════════════════════════════ */
+const T = {
+  primary:   "#184332",
+  primaryDk: "#0C2219",
+  primaryLt: "#2A6E54",
+  gold:      "#D6B66B",
+  goldLt:    "#E8CC8F",
+  goldDk:    "#A88A42",
+  crimson:   "#C81D25",
+  crimsonLt: "#DC2626",
+  bg:        "#FAF6EE",
+  bgCard:    "#FFFFFF",
+  bgMuted:   "#EAF2EE",
+  border:    "#EDE5D8",
+  borderDk:  "rgba(24, 67, 50, 0.2)",
+  borderGold:"rgba(214, 182, 107, 0.45)",
+  textDk:    "#112218",
+  textMid:   "#4A6355",
+  textMuted: "#7A9288",
+  green:     "#184332",
+  purple:    "#1E5440",
+  purpleLt:  "#EAF2EE",
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   ALPHABET & CHORDS CONSTANTS
+═══════════════════════════════════════════════════════════════ */
+const ALPHABET = [
+  "All", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+  "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "த"
+];
+
+const CHORDS_KEYS_GRID = [
+  "A", "B", "C", "D", "E", "F", "G",
+  "H", "I", "J", "K", "L", "M", "N",
+  "O", "P", "Q", "R", "S", "T", "U",
+  "V", "W", "X", "Y", "Z"
+];
 
 /* ═══════════════════════════════════════════════════════════════
    YOUTUBE HELPERS
 ═══════════════════════════════════════════════════════════════ */
 function extractYouTubeId(url) {
   if (!url) return null;
-  const iframeMatch = url.match(/src=["'](.*?)["']/);
+  const iframeMatch = url.match(/src=["'](.*?)['"]/);
   const target = (iframeMatch ? iframeMatch[1] : url).trim();
   const match = target.match(
     /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([A-Za-z0-9_-]{11})/
@@ -25,52 +69,43 @@ function extractYouTubeId(url) {
 }
 function getYouTubeEmbedUrl(url) {
   const id = extractYouTubeId(url);
-  if (id) return `https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=0`;
-  return null;
+  return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&autoplay=0` : null;
 }
 function getYouTubeWatchUrl(url) {
   const id = extractYouTubeId(url);
-  if (id) return `https://www.youtube.com/watch?v=${id}`;
-  return url || null;
+  return id ? `https://www.youtube.com/watch?v=${id}` : url || null;
 }
 function getYouTubeThumbnail(url) {
   const id = extractYouTubeId(url);
-  if (id) return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
-  return null;
+  return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : null;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   CHORD TRANSPOSER UTILITIES
+   CHORD TRANSPOSER
 ═══════════════════════════════════════════════════════════════ */
-const SCALE_SHARP = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-const SCALE_FLAT  = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
-
+const SCALE_SHARP = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+const SCALE_FLAT  = ["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
 function transposeChord(chord, semitones) {
   if (semitones === 0) return chord;
-  return chord.replace(/[A-G][b#]?/g, (match) => {
-    let idx = SCALE_SHARP.indexOf(match);
-    if (idx === -1) idx = SCALE_FLAT.indexOf(match);
-    if (idx === -1) return match;
-    const newIdx = (idx + semitones + 12 * 10) % 12;
-    return SCALE_SHARP[newIdx];
+  return chord.replace(/[A-G][b#]?/g, (m) => {
+    let idx = SCALE_SHARP.indexOf(m); if (idx === -1) idx = SCALE_FLAT.indexOf(m);
+    if (idx === -1) return m;
+    return SCALE_SHARP[(idx + semitones + 120) % 12];
   });
 }
-
 function transposeChordsText(text, semitones) {
   if (!text || semitones === 0) return text;
   return text.split("\n").map(line => {
-    // Check if line looks like chords
     const words = line.trim().split(/\s+/);
-    const isChordLine = words.length > 0 && words.every(w => /^[A-G][b#]?(?:m|maj|min|dim|aug|sus[24]?|[0-9])*(?:\/[A-G][b#]?)?$/.test(w) || w === "" || w.startsWith("["));
-    if (isChordLine && !line.startsWith("[")) {
-      return transposeChord(line, semitones);
-    }
-    return line;
+    const isChordLine = words.length > 0 && words.every(w =>
+      /^[A-G][b#]?(?:m|maj|min|dim|aug|sus[24]?|[0-9])*(?:\/[A-G][b#]?)?$/.test(w) || w === "" || w.startsWith("[")
+    );
+    return (isChordLine && !line.startsWith("[")) ? transposeChord(line, semitones) : line;
   }).join("\n");
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   DEMO / DEFAULT WORSHIP REPERTOIRE
+   DEFAULT SACRED SONGS
 ═══════════════════════════════════════════════════════════════ */
 const DEFAULT_SONGS = [
   {
@@ -79,545 +114,295 @@ const DEFAULT_SONGS = [
     language: "Tamil", theme: "Adoration & Grace", key: "D Major", tempo: "68 BPM • Slow Worship",
     author: "Gersson Edinbaro / Jabadeepak", uploadDate: "Oct 2026", views: "192K views", duration: "06:45",
     youtubeUrl: "https://www.youtube.com/watch?v=kYI9Fj9-X3I",
-    pptUrl: "https://example.com/tholainthu-pona-ennai.pptx",
-    lyrics:
-`[பல்லவி - Chorus]
-தொலைந்து போன என்னை
+    lyrics: `தொலைந்து போன என்னை
 அரவணைத்த அன்பை
 ஜீவன் உள்ள நாளெல்லாம்
 நான் பாடுவேன்
 
-அந்த அன்பிற்கு ஈடேதும் இல்லையே
-அதை பாடாத ஒரு நாளும் இல்லையே
-
-[சரணம் 1 - Verse 1]
 தவறுகள் செய்ததால் தகுதி இழந்தேன்
 தகப்பன் வீட்டை நான் முற்றும் மறந்தேன்
 சுயநலமாய் நான் வாழ்ந்த போதிலும்
 சுகமாக என்னை சுமந்து வந்தவரே
 
-ஒழுங்கில்லாது வாழ்ந்த என்னை தேடி வந்தவரே
-நீர் ஒருவர் மட்டும் உம் தயவால் எனக்காய் நின்றவரே
-
-[சரணம் 2 - Verse 2]
 உலகத்தில் அன்பை நான் தேடி அலைந்தேன்
 உமது அன்பை நான் முற்றும் வெறுத்தேன்
 எல்லாம் நான் இழந்த போதிலும்
-இறுதி வரை என்னை நேசித்தீரையா
-
-பன்றிகளோடு வாழ்ந்த என்னை சேர்த்துக் கொண்டவரே
-உம் பாசத்தாலே முத்தங்கள் செய்து அணைத்து கொண்டவரே
-
-[சரணம் 3 - Verse 3]
-திரும்பிய என்னை நீர் தள்ளிடாமலே
-திருந்தி வாழ்வதற்கு வாய்ப்பு தந்தவரே
-இதுவரையில் என்னை தூக்க மறக்கலையே
-இனிமேலும் என்னை விட்டுக்கொடுக்கலையே
-
-நான் எந்த நிலையில் இருந்தாலும் என்னை வெறுக்கலையே
-நல்ல தகப்பனாக இதுவரையில் என்னை மறக்கலையே`,
-    englishLyrics:
-`[Chorus]
-Tholainthu Pona Ennai
+இறுதி வரை என்னை நேசித்தீரையா`,
+    englishLyrics: `Tholainthu Pona Ennai
 The boundless love that embraced me when I was lost
 All the living days of my life
 I will sing Your praise
 
-There is nothing equal to that divine love
-Not a single day shall pass without singing of it
+Having stumbled and sinned, I forfeited all worth
+I completely wandered away from the Father's home
+Yet though I lived in selfishness and pride
+You bore me gently in Your everlasting arms
 
-[Verse 1]
-Because of my sins, I forfeited all worth
-I completely turned away from my Father's house
-Even when I lived solely for myself
-You carried me gently in Your tender mercy
+In this empty world I searched for true love
+Blindly rejecting Your sacred grace
+Even when I had forfeited everything
+You loved me faithfully unto the very end`,
+    chords: `[Intro]
+D   Bm   G   A
 
-You came seeking me in the midst of my ruins
-You alone stood for me by Your unmerited grace
-
-[Verse 2]
-I wandered searching for worldly love
-I cast aside the supreme love of Heaven
-Even when I squandered and lost everything
-You loved me faithfully until the very end
-
-You received me back with open arms
-You kissed away my tears and embraced me into Your glory
-
-[Verse 3]
-When I turned back, You did not cast me out
-You granted me new life and glorious redemption
-You have never ceased to lift me up
-You will never let me go in the days ahead
-
-No matter how broken I am, You never despise me
-As a faithful Father, You have never forsaken me`,
-    chords:
-`[பல்லவி - Key: D Major]
-D        Bm       G        A
-தொலைந்து போன என்னை
-D        Bm       G        A
-அரவணைத்த அன்பை
-G        A        D        Bm
-ஜீவன் உள்ள நாளெல்லாம்
-G        A        D
-நான் பாடுவேன்
-
-[சரணம் 1]
-Bm       G        D        A
-தவறுகள் செய்ததால் தகுதி இழந்தேன்
-Bm       G        D        A
-தகப்பன் வீட்டை நான் முற்றும் மறந்தேன்
-G        A        D        Bm
-சுயநலமாய் நான் வாழ்ந்த போதிலும்
-G        A        D
-சுகமாக என்னை சுமந்து வந்தவரே`,
-    tags: ["Grace", "Prodigal Son", "Gersson Edinbaro", "Sanctuary Worship", "Tamil Hymn"],
+[Verse]
+D                Bm
+Tholainthu pona ennai
+G                A
+Aravanaitha anbai
+D                Bm
+Jeevan ulla naalellam
+G        A       D
+Naan paaduven`
   },
   {
     _id: "song_2", id: 2,
-    title: "En Uyirana Yesuvae (என் உயிரான இயேசுவே)",
-    language: "Tamil", theme: "Adoration & Praise", key: "G Major", tempo: "72 BPM • Moderately Slow",
-    author: "Christ's Tabernacle Worship", uploadDate: "Sep 2026", views: "98K views", duration: "05:02",
-    youtubeUrl: "https://www.youtube.com/watch?v=Jbe7OruLk8I",
-    pptUrl: "https://example.com/en-uyirana-yesuvae.pptx",
-    lyrics:
-`[பல்லவி - Chorus]
-என் உயிரான இயேசுவே
-என் உயிருள்ள நாளெல்லாம்
-உம்மை புகழ்ந்து பாடுவேன்
-உம்மையே போற்றி துதிப்பேன்
-
-[சரணம் 1 - Verse 1]
-என்னை தாங்கும் கன்மலையே
-என்னை காக்கும் புகலிடமே
-காரிருள் சூழ்ந்த வேளையிலும்
-என் தீபமாய் வந்தவரே
-
-[சரணம் 2 - Verse 2]
-தாயினும் மேலாய் அன்பு கூர்ந்து
-தழும்புகளால் என்னை சுகமாக்கினீர்
-ஜீவனை எனக்காய் ஈந்தவரே
-ஜீவனுள்ள தேவா ஸ்தோத்திரம்`,
-    englishLyrics:
-`[Chorus]
-O Jesus, breath of my very soul
-All the days that breath remains in me
-I will lift my voice and sing Your glory
-I will praise and worship only You
-
-[Verse 1]
-You are the Rock that steadfastly upholds me
-You are the sanctuary where I take refuge
-Even when darkest night surrounds me
-You shine as my eternal lamp
-
-[Verse 2]
-Loving me deeper than a mother ever could
-By Your holy stripes You brought me healing
-You laid down Your sacred life for me
-Living God, all praise to Your Name!`,
-    chords:
-`[பல்லவி - Key: G Major]
-G        Em       C        D
-என் உயிரான இயேசுவே
-G        Em       C        D
-என் உயிருள்ள நாளெல்லாம்
-C        D        G        Em
-உம்மை புகழ்ந்து பாடுவேன்
-C        D        G
-உம்மையே போற்றி துதிப்பேன்`,
-    tags: ["Rock of Ages", "Sacred Worship", "Tamil Hymn", "Adoration"],
-  },
-  {
-    _id: "song_3", id: 3,
     title: "Amazing Grace (My Chains Are Gone)",
-    language: "English", theme: "Deliverance & Cross", key: "E Major", tempo: "64 BPM • Classic Hymn",
-    author: "John Newton / Chris Tomlin", uploadDate: "Aug 2026", views: "142K views", duration: "05:40",
-    youtubeUrl: "https://www.youtube.com/watch?v=nQWFzMvCfLE",
-    pptUrl: "https://example.com/amazing-grace-chains-gone.pptx",
-    lyrics:
-`[Verse 1]
-Amazing grace! How sweet the sound
+    language: "English", theme: "Deliverance & Grace", key: "G Major", tempo: "Moderately Slow",
+    author: "Christ's Tabernacle Worship Choir", uploadDate: "Sep 2026", views: "84K views", duration: "05:02",
+    youtubeUrl: "https://www.youtube.com/watch?v=Jbe7OpxHNoU",
+    lyrics: `Amazing grace! How sweet the sound
 That saved a wretch like me!
 I once was lost, but now am found;
 Was blind, but now I see.
 
-[Chorus]
-My chains are gone, I've been set free!
-My God, my Savior has ransomed me!
-And like a flood His mercy reigns,
-Unending love, amazing grace!
-
-[Verse 2]
 'Twas grace that taught my heart to fear,
 And grace my fears relieved;
 How precious did that grace appear
 The hour I first believed!
 
-[Verse 3]
-The Lord has promised good to me,
-His word my hope secures;
-He will my shield and portion be
-As long as life endures.`,
-    englishLyrics:
-`[Verse 1]
-Amazing grace! How sweet the sound
-That saved a wretch like me!
-I once was lost, but now am found;
-Was blind, but now I see.
-
-[Chorus]
 My chains are gone, I've been set free!
 My God, my Savior has ransomed me!
 And like a flood His mercy reigns,
 Unending love, amazing grace!
 
-[Verse 2]
-'Twas grace that taught my heart to fear,
-And grace my fears relieved;
-How precious did that grace appear
-The hour I first believed!`,
-    chords:
-`[Verse 1 - Key: E Major]
-E                A       E
-Amazing grace! How sweet the sound
-E                B
+The Lord has promised good to me,
+His Word my hope secures;
+He will my shield and portion be
+As long as life endures.`,
+    englishLyrics: `Amazing grace! How sweet the sound
 That saved a wretch like me!
-E                A       E
 I once was lost, but now am found;
-C#m      B       E
 Was blind, but now I see.
 
-[Chorus]
-A                        E/G#
 My chains are gone, I've been set free!
-A/C#             E/B
 My God, my Savior has ransomed me!
-A                E/G#
 And like a flood His mercy reigns,
-F#m7     B7      E
 Unending love, amazing grace!`,
-    tags: ["Classic Hymn", "Salvation", "English Worship", "Deliverance"],
+    chords: `[Verse]
+G                  C/G       G
+Amazing grace how sweet the sound
+                D/F#
+That saved a wretch like me
+G                 C/G    G
+I once was lost but now am found
+      Em     D/F#  G
+Was blind but now I see`
+  },
+  {
+    _id: "song_3", id: 3,
+    title: "En Uyirana Yesuvae (என் உயிரான இயேசுவே)",
+    language: "Tamil", theme: "Consecration & Love", key: "D Major", tempo: "72 BPM",
+    author: "Fr. S. J. Berchmans", uploadDate: "Aug 2026", views: "340K views", duration: "07:15",
+    youtubeUrl: "https://www.youtube.com/watch?v=pP4q32N6z0c",
+    lyrics: `என் உயிரான இயேசுவே என் உயிருள்ள நாளெல்லாம்
+உம்மை புகழ்ந்து பாடுவேன் உம்மையே போற்றி துதிப்பேன்
+என்னை தாங்கும் கன்மலையே என்னை காக்கும் புகலிடமே
+என்னை நடத்தும் நல்மேய்ப்பரே என்னோடு என்றும் வாழ்பவரே
+
+தாயின் கருவில் உருவான நாள் முதல் இன்று வரை என்னை தாங்கினீரே
+கண்ணின் மணி போல் காத்து வந்தீரே காலமெல்லாம் என்னை நடத்தினீரே
+உந்தன் மாறாத பேரன்பை எண்ணி உள்ளமெல்லாம் உருகிடுதே
+ஜீவனுள்ள நாளெல்லாம் உமக்காய் வாழ்வேன் இயேசுவே`,
+    englishLyrics: `O Jesus, breath and essence of my life
+Every day that breath remains in me
+I shall proclaim Your sacred praises
+You are the Rock that upholds my feet
+The strong fortress where my soul takes refuge
+The Shepherd who leads me beside still waters.`,
+    chords: `[Verse]
+D             Bm
+En uyirana Yesuvae
+G             A
+En uyirulla naalellam
+D             Bm
+Ummai pugazhnthu paaduven
+G        A    D
+Ummaiyae potri thuthippan`
   },
   {
     _id: "song_4", id: 4,
-    title: "Ennai Nadathi Vanthathum (என்னை நடத்தி வந்ததும்)",
-    language: "Tamil", theme: "Gratitude & Testimony", key: "C Major", tempo: "74 BPM • Medium Praise",
-    author: "Christ's Tabernacle Choir", uploadDate: "Aug 2026", views: "67K views", duration: "05:30",
-    youtubeUrl: "",
-    pptUrl: "",
-    lyrics:
-`[பல்லவி - Chorus]
-என்னை நடத்தி வந்ததும்
-உங்க கிருபைதான்
-என்னை காத்து வந்ததும்
-உங்க கிருபைதான்
+    title: "Ummai Allamal Enaku Yaar Undu (உம்மை அல்லாமல் எனக்கு யார் உண்டு)",
+    language: "Tamil", theme: "Faith & Surrender", key: "E Minor", tempo: "65 BPM",
+    author: "Eva. Glory Devapiriyam / Christ's Tabernacle", uploadDate: "Jul 2026", views: "115K views", duration: "05:40",
+    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    lyrics: `உம்மை அல்லாமல் எனக்கு யார் உண்டு
+பரலோகத்தில் உம்மைத் தவிர பூலோகத்தில் எனக்கு
+விருப்பம் இல்லை இயேசுவே என் அடைக்கலமே என் உடலும் என் உள்ளமும்
 
-அந்த கிருபை என்னை விட்டகலாது
-ஒரு நாளும் என்னை கைவிடாது
-
-[சரணம் 1 - Verse 1]
-கல்வாரி சிலுவையிலே
-என்னை மீட்டு வந்ததும்
-தேவனே உம் கிருபை
-என்றும் மாறாதே`,
-    englishLyrics:
-`[Chorus]
-Leading me through every path
-It was only Your boundless grace
-Protecting me day and night
-It was only Your holy grace
-
-That grace shall never depart from me
-Never will it forsake my soul
-
-[Verse 1]
-Upon the Cross of Calvary
-Redeeming my unworthy soul
-O Lord, Your unfailing grace
-Endures for evermore`,
-    chords:
-`[Key: C Major]
-C        Am       F        G
-என்னை நடத்தி வந்ததும்
-C        Am       F        G
-உங்க கிருபைதான்`,
-    tags: ["Grace", "Testimony", "Tamil"],
-  },
+அழிந்து போனாலும் தேவன் என்றும் என் இருதயத்தின் கன்மலை
+என் ஜீவனின் பெலன் என் நித்திய பங்கு
+நான் தேவனை அண்டிக்கொள்வதே எனக்கு நலம்
+உமது கிரியைகளையெல்லாம் நான் விவரிப்பேன்`,
+    englishLyrics: `Whom have I in heaven but You?
+And earth has nothing I desire besides You.
+My flesh and my heart may fail,
+but God is the strength of my heart
+and my portion forever.`,
+    chords: `[Verse]
+Em               C
+Ummai allamal enaku yaar undu
+D                Em
+Paralogathil ummai thavira
+Em               C
+Boolagathil enaku viruppam illai
+D                Em
+Yesuvae en adaikkalamae`
+  }
 ];
 
 /* ═══════════════════════════════════════════════════════════════
-   PRINT FUNCTION
-═══════════════════════════════════════════════════════════════ */
-function handlePrintSong(song) {
-  const w = window.open("", "_blank");
-  w.document.write(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>${song.title} — Christ's Tabernacle Worship</title>
-        <style>
-          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Noto+Sans+Tamil:wght@400;700&display=swap');
-          body { font-family: 'Noto Sans Tamil', 'Inter', -apple-system, sans-serif; padding: 40px; color: #112218; max-width: 720px; margin: 0 auto; line-height: 1.8; }
-          .church-header { border-bottom: 2px solid #184332; padding-bottom: 16px; margin-bottom: 24px; text-align: center; }
-          .church-header h2 { font-family: 'Playfair Display', serif; color: #184332; margin: 0 0 4px; font-size: 1.4rem; letter-spacing: 1px; }
-          .church-header p { margin: 0; color: #A88A42; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; }
-          .song-title { font-size: 1.5rem; font-weight: 800; color: #184332; margin-bottom: 6px; }
-          .song-meta { font-size: 0.85rem; color: #4A6355; margin-bottom: 28px; padding: 8px 14px; background: #FAF6EE; border-radius: 8px; display: flex; gap: 16px; }
-          .section-title { font-size: 0.82rem; font-weight: 800; color: #A88A42; text-transform: uppercase; letter-spacing: 1.5px; margin: 24px 0 10px; border-bottom: 1px dashed #EDE5D8; padding-bottom: 4px; }
-          .lyrics-block { white-space: pre-wrap; font-size: 1.05rem; line-height: 2.1; color: #184332; margin-bottom: 24px; }
-          .chords-block { font-family: monospace; white-space: pre-wrap; font-size: 0.95rem; line-height: 1.8; color: #6D28D9; background: #F5F3FF; padding: 14px; border-radius: 8px; }
-          .footer { margin-top: 50px; padding-top: 16px; border-top: 1px solid #EDE5D8; text-align: center; font-size: 0.78rem; color: #7A9288; }
-        </style>
-      </head>
-      <body>
-        <div class="church-header">
-          <h2>CHRIST'S TABERNACLE</h2>
-          <p>† Prayer &amp; Worship Centre — Sacred Repertoire †</p>
-        </div>
-        <div class="song-title">${song.title}</div>
-        <div class="song-meta">
-          <span><strong>Author:</strong> ${song.author || "Christ's Tabernacle"}</span>
-          <span><strong>Key:</strong> ${song.key || "Standard"}</span>
-          <span><strong>Tempo:</strong> ${song.tempo || "Worship"}</span>
-          <span><strong>Language:</strong> ${song.language || "Tamil"}</span>
-        </div>
-
-        <div class="section-title">Tamil Lyrics (தமிழ் வரிகள்)</div>
-        <div class="lyrics-block">${(song.lyrics || "").replace(/\n/g, "<br>")}</div>
-
-        ${song.englishLyrics ? `
-          <div class="section-title">English Lyrics / Translation</div>
-          <div class="lyrics-block">${song.englishLyrics.replace(/\n/g, "<br>")}</div>
-        ` : ""}
-
-        ${song.chords ? `
-          <div class="section-title">Musical Chords &amp; Arrangement</div>
-          <div class="chords-block">${song.chords.replace(/\n/g, "<br>")}</div>
-        ` : ""}
-
-        <div class="footer">
-          "Sing to the LORD a new song; sing to the LORD, all the earth." — Psalm 96:1<br>
-          Christ's Tabernacle Sacred Hymnal • christstabernacle.org
-        </div>
-      </body>
-    </html>
-  `);
-  w.document.close();
-  setTimeout(() => w.print(), 350);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PRESENTER FULLSCREEN MODE (Church Sanctuary Projector)
+   MODAL — SANCTUARY FULLSCREEN PRESENTER
 ═══════════════════════════════════════════════════════════════ */
 function SanctuaryPresenterModal({ song, onClose }) {
   const [slideIdx, setSlideIdx] = useState(0);
   const [lang, setLang] = useState("tamil");
-  const [isBlackout, setIsBlackout] = useState(false);
-  const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);
 
-  const activeText = lang === "tamil" ? (song.lyrics || song.englishLyrics) : (song.englishLyrics || song.lyrics);
-  const rawSlides = activeText ? activeText.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean) : [];
-
-  const goNext = useCallback(() => setSlideIdx(i => Math.min(i + 1, rawSlides.length - 1)), [rawSlides.length]);
-  const goPrev = useCallback(() => setSlideIdx(i => Math.max(i - 1, 0)), []);
+  const rawLyrics = lang === "tamil" ? song.lyrics : (song.englishLyrics || song.lyrics);
+  const slides = useMemo(() => {
+    if (!rawLyrics) return [["No lyrics available"]];
+    const paras = rawLyrics.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+    return paras.map(p => p.split("\n").map(l => l.trim()).filter(Boolean));
+  }, [rawLyrics]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " ") {
-        e.preventDefault();
-        goNext();
-      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-        e.preventDefault();
-        goPrev();
-      } else if (e.key === "Escape") {
-        onClose();
-      } else if (e.key === "b" || e.key === "B") {
-        setIsBlackout(v => !v);
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
+        setSlideIdx(i => Math.min(slides.length - 1, i + 1));
+      } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        setSlideIdx(i => Math.max(0, i - 1));
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [goNext, goPrev, onClose]);
+  }, [slides.length, onClose]);
 
-  const currentSlide = rawSlides[slideIdx] || "";
-  const lines = currentSlide.split("\n").map(l => l.trim()).filter(Boolean);
-  const isTaggedHeader = lines[0] && /^\[.*?\]$/.test(lines[0]);
-  const slideTag = isTaggedHeader ? lines[0].replace(/\[|\]/g, "") : null;
-  const slideLines = isTaggedHeader ? lines.slice(1) : lines;
+  const currentLines = slides[slideIdx] || [];
 
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 99999,
-      background: isBlackout ? "#000000" : "radial-gradient(ellipse at center, #133929 0%, #0C2219 55%, #05100B 100%)",
+      background: "#06150F", color: "#FFFFFF",
       display: "flex", flexDirection: "column",
-      color: "#FAF6EE", transition: "background 0.3s ease",
+      fontFamily: "'Playfair Display', Georgia, serif",
       userSelect: "none"
     }}>
-      {/* Projection Top Toolbar */}
+      {/* Top Bar */}
       <div style={{
-        padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center",
-        background: "rgba(12, 34, 25, 0.75)", backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(214, 182, 107, 0.2)"
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        padding: "14px 20px", background: "rgba(12, 34, 25, 0.96)",
+        borderBottom: `1.5px solid ${T.borderGold}`, flexWrap: "wrap", gap: 10
       }}>
-        {/* Left: Language & Blackout Controls */}
-        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <button
-            onClick={() => setLang("tamil")}
-            style={{
-              padding: "6px 16px", borderRadius: 20, border: "none",
-              background: lang === "tamil" ? "#D6B66B" : "rgba(255,255,255,0.12)",
-              color: lang === "tamil" ? "#0C2219" : "#FAF6EE",
-              fontWeight: 800, fontSize: "0.82rem", cursor: "pointer"
-            }}
-          >
-            தமிழ் Tamil
-          </button>
-          {song.englishLyrics && (
-            <button
-              onClick={() => setLang("english")}
-              style={{
-                padding: "6px 16px", borderRadius: 20, border: "none",
-                background: lang === "english" ? "#D6B66B" : "rgba(255,255,255,0.12)",
-                color: lang === "english" ? "#0C2219" : "#FAF6EE",
-                fontWeight: 800, fontSize: "0.82rem", cursor: "pointer"
-              }}
-            >
-              English
-            </button>
-          )}
-          <button
-            onClick={() => setIsBlackout(v => !v)}
-            title="Press 'B' key to blackout projector screen for prayer"
-            style={{
-              padding: "6px 14px", borderRadius: 20,
-              border: "1px solid rgba(255,255,255,0.25)",
-              background: isBlackout ? "#EF4444" : "rgba(0,0,0,0.4)",
-              color: "#fff", fontWeight: 700, fontSize: "0.78rem", cursor: "pointer"
-            }}
-          >
-            {isBlackout ? "Un-Blackout (B)" : "Blackout (B)"}
-          </button>
-        </div>
-
-        {/* Center: Slide indicator */}
-        <div style={{ color: "#D6B66B", fontSize: "0.9rem", fontWeight: 700, letterSpacing: 1 }}>
-          ✝ {song.title} &nbsp;•&nbsp; Slide {slideIdx + 1} of {rawSlides.length}
-        </div>
-
-        {/* Right: Font Controls & Close */}
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <div style={{ display: "flex", gap: 6, background: "rgba(255,255,255,0.1)", borderRadius: 16, padding: "3px 8px" }}>
-            <button onClick={() => setFontSizeMultiplier(m => Math.max(0.8, m - 0.1))} style={{ background: "none", border: "none", color: "#FAF6EE", cursor: "pointer" }}><FaMinus size={11} /></button>
-            <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "#D6B66B", minWidth: 32, textAlign: "center" }}>{Math.round(fontSizeMultiplier * 100)}%</span>
-            <button onClick={() => setFontSizeMultiplier(m => Math.min(1.4, m + 0.1))} style={{ background: "none", border: "none", color: "#FAF6EE", cursor: "pointer" }}><FaPlus size={11} /></button>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ color: T.gold, fontSize: "1.3rem" }}>✝</span>
+          <div>
+            <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#FAF6EE", letterSpacing: 0.5 }}>
+              {song.title}
+            </div>
+            <div style={{ fontSize: "0.68rem", color: T.goldLt, letterSpacing: 1.5, textTransform: "uppercase" }}>
+              CHRIST'S TABERNACLE · SANCTUARY PROJECTION
+            </div>
           </div>
-          <button
-            onClick={onClose}
-            style={{
-              background: "rgba(239, 68, 68, 0.8)", border: "none", color: "#fff",
-              width: 36, height: 36, borderRadius: "50%", cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center"
-            }}
-          >
-            <FaTimes size={14} />
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ display: "flex", background: "rgba(255,255,255,0.08)", borderRadius: 20, padding: 3 }}>
+            <button onClick={() => setLang("tamil")} style={{
+              padding: "4px 12px", borderRadius: 16, border: "none",
+              background: lang === "tamil" ? T.gold : "transparent",
+              color: lang === "tamil" ? "#112218" : "#FAF6EE",
+              fontWeight: 800, fontSize: "0.75rem", cursor: "pointer"
+            }}>தமிழ்</button>
+            <button onClick={() => setLang("english")} style={{
+              padding: "4px 12px", borderRadius: 16, border: "none",
+              background: lang === "english" ? T.gold : "transparent",
+              color: lang === "english" ? "#112218" : "#FAF6EE",
+              fontWeight: 800, fontSize: "0.75rem", cursor: "pointer"
+            }}>English</button>
+          </div>
+
+          <span style={{ fontSize: "0.82rem", color: T.goldLt, fontWeight: 700 }}>
+            {slideIdx + 1}/{slides.length}
+          </span>
+
+          <button onClick={onClose} style={{
+            background: "rgba(200, 29, 37, 0.8)", border: "none", color: "#fff",
+            padding: "6px 14px", borderRadius: 8, cursor: "pointer",
+            fontWeight: 800, fontSize: "0.8rem", display: "flex", alignItems: "center", gap: 5
+          }}>
+            <FaTimes size={12}/> Exit
           </button>
         </div>
       </div>
 
-      {/* Slide Body */}
-      {!isBlackout && (
-        <div style={{
-          flex: 1, display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center",
-          padding: "60px 80px", textAlign: "center", position: "relative"
-        }}>
-          {/* Subtle Church Watermark */}
-          <div style={{ fontSize: "2rem", color: "rgba(214, 182, 107, 0.28)", marginBottom: 16 }}>✝</div>
-
-          {slideTag && (
-            <div style={{
-              display: "inline-block", padding: "5px 22px", borderRadius: 30,
-              background: "rgba(214, 182, 107, 0.15)", border: "1px solid rgba(214, 182, 107, 0.4)",
-              color: "#E8CC8F", fontSize: `clamp(0.85rem, 1.6vw, 1.15rem)`,
-              fontWeight: 800, textTransform: "uppercase", letterSpacing: 3, marginBottom: 30
-            }}>
-              — {slideTag} —
-            </div>
-          )}
-
-          <div style={{ maxWidth: 1100 }}>
-            {slideLines.map((line, idx) => (
-              <div
-                key={idx}
-                style={{
-                  fontSize: `clamp(2rem, ${4.2 * fontSizeMultiplier}vw, 4.4rem)`,
-                  fontWeight: 700,
-                  lineHeight: 1.55,
-                  color: "#FAF6EE",
-                  textShadow: "0 4px 24px rgba(0,0,0,0.7)",
-                  marginBottom: 10,
-                  fontFamily: "'Noto Sans Tamil', 'Inter', sans-serif"
-                }}
-              >
-                {line}
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom Church Footer Tag */}
-          <div style={{
-            position: "absolute", bottom: 44, color: "rgba(214, 182, 107, 0.5)",
-            fontSize: "0.85rem", letterSpacing: 2, textTransform: "uppercase"
-          }}>
-            ✝ Christ's Tabernacle — Sanctuary Worship ✝
-          </div>
-        </div>
-      )}
-
-      {/* Bottom Slide Controller Navigation */}
+      {/* Main Slide Content */}
       <div style={{
-        padding: "16px 28px", display: "flex", justifyContent: "center", alignItems: "center", gap: 20,
-        background: "rgba(12, 34, 25, 0.75)", borderTop: "1px solid rgba(214, 182, 107, 0.2)"
+        flex: 1, display: "flex", flexDirection: "column",
+        justifyContent: "center", alignItems: "center",
+        padding: "24px 20px", textAlign: "center",
+        background: `radial-gradient(circle at 50% 50%, rgba(138, 37, 82, 0.28) 0%, rgba(15, 2, 8, 0.98) 85%)`
       }}>
-        <button
-          onClick={goPrev} disabled={slideIdx === 0}
-          style={{
-            padding: "10px 24px", borderRadius: 10,
-            background: slideIdx === 0 ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.18)",
-            color: "#FAF6EE", border: "1px solid rgba(255,255,255,0.25)",
-            fontWeight: 800, fontSize: "0.88rem", cursor: slideIdx === 0 ? "not-allowed" : "pointer"
-          }}
-        >
-          ← Prev Slide
+        <div style={{ maxWidth: 1050 }}>
+          <div style={{ color: T.gold, fontSize: "1.8rem", marginBottom: 16, opacity: 0.85 }}>✝</div>
+          {currentLines.map((line, idx) => (
+            <div key={idx} style={{
+              fontSize: "clamp(1.5rem, 3.5vw, 3.2rem)",
+              fontWeight: 700, lineHeight: 1.6,
+              color: "#FAF6EE", textShadow: "0 4px 20px rgba(0,0,0,0.8)",
+              marginBottom: 10
+            }}>
+              {line}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Controls */}
+      <div style={{
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        padding: "12px 20px", background: "rgba(12, 34, 25, 0.96)",
+        borderTop: `1px solid rgba(214, 182, 107, 0.25)`
+      }}>
+        <button onClick={() => setSlideIdx(i => Math.max(0, i - 1))} disabled={slideIdx === 0} style={{
+          padding: "8px 18px", borderRadius: 8, border: `1.5px solid ${T.gold}`,
+          background: slideIdx === 0 ? "rgba(255,255,255,0.05)" : T.gold,
+          color: slideIdx === 0 ? "rgba(255,255,255,0.3)" : "#2C1A0E",
+          fontWeight: 800, fontSize: "0.84rem", cursor: slideIdx === 0 ? "not-allowed" : "pointer",
+          display: "flex", alignItems: "center", gap: 6
+        }}>
+          <FaChevronLeft size={11}/> Previous
         </button>
 
-        {/* Slide Dots / Scrubber */}
+        {/* Slide Dots */}
         <div style={{ display: "flex", gap: 6 }}>
-          {rawSlides.map((_, i) => (
-            <div
-              key={i}
-              onClick={() => setSlideIdx(i)}
-              style={{
-                width: i === slideIdx ? 26 : 8, height: 8, borderRadius: 4,
-                background: i === slideIdx ? "#D6B66B" : "rgba(255,255,255,0.25)",
-                cursor: "pointer", transition: "all 0.2s"
-              }}
-            />
+          {slides.map((_, i) => (
+            <div key={i} onClick={() => setSlideIdx(i)} style={{
+              width: i === slideIdx ? 20 : 8, height: 8, borderRadius: 4,
+              background: i === slideIdx ? T.gold : "rgba(255,255,255,0.25)",
+              cursor: "pointer", transition: "all 0.2s"
+            }}/>
           ))}
         </div>
 
-        <button
-          onClick={goNext} disabled={slideIdx === rawSlides.length - 1}
-          style={{
-            padding: "10px 24px", borderRadius: 10,
-            background: slideIdx === rawSlides.length - 1 ? "rgba(255,255,255,0.06)" : "#184332",
-            color: "#D6B66B", border: "1px solid #D6B66B",
-            fontWeight: 800, fontSize: "0.88rem", cursor: slideIdx === rawSlides.length - 1 ? "not-allowed" : "pointer"
-          }}
-        >
-          Next Slide →
+        <button onClick={() => setSlideIdx(i => Math.min(slides.length - 1, i + 1))} disabled={slideIdx === slides.length - 1} style={{
+          padding: "8px 18px", borderRadius: 8, border: `1.5px solid ${T.gold}`,
+          background: slideIdx === slides.length - 1 ? "rgba(255,255,255,0.05)" : T.gold,
+          color: slideIdx === slides.length - 1 ? "rgba(255,255,255,0.3)" : "#2C1A0E",
+          fontWeight: 800, fontSize: "0.84rem", cursor: slideIdx === slides.length - 1 ? "not-allowed" : "pointer",
+          display: "flex", alignItems: "center", gap: 6
+        }}>
+          Next <FaChevronRight size={11}/>
         </button>
       </div>
     </div>
@@ -625,246 +410,75 @@ function SanctuaryPresenterModal({ song, onClose }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PPT VISUAL FRONT COVER MOCKUP COMPONENT
+   UNIFIED CLEAN LYRICS BOX (Single Box, No Pallavi/Saranam Labels)
 ═══════════════════════════════════════════════════════════════ */
-function PPTDeckPreview({ song, onPresenterClick, onDownloadClick }) {
-  const lyricsPreview = (song.lyrics || song.englishLyrics || "")
-    .replace(/\[.*?\]/g, "")
-    .split("\n")
-    .map(l => l.trim())
-    .filter(Boolean)
-    .slice(0, 3);
-
-  return (
-    <div style={{
-      background: "linear-gradient(145deg, #0C2219 0%, #184332 60%, #122D24 100%)",
-      borderRadius: 16,
-      border: "1.5px solid rgba(214, 182, 107, 0.35)",
-      overflow: "hidden",
-      boxShadow: "0 10px 30px rgba(12, 34, 25, 0.25)",
-      position: "relative"
-    }}>
-      {/* 16:9 Slide Screen Ratio */}
-      <div style={{
-        aspectRatio: "16 / 9",
-        padding: "20px 24px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        position: "relative",
-        background: "radial-gradient(circle at 50% 20%, rgba(214,182,107,0.12) 0%, rgba(12,34,25,0.95) 75%)"
-      }}>
-        {/* Slide Top Bar */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, color: "#D6B66B", fontSize: "0.72rem", fontWeight: 800, letterSpacing: 1.5 }}>
-            <FaFilePowerpoint size={14} color="#F59E0B" />
-            <span>CHURCH SLIDE DECK (16:9)</span>
-          </div>
-          <span style={{
-            background: "rgba(214, 182, 107, 0.2)", color: "#E8CC8F",
-            fontSize: "0.68rem", fontWeight: 800, padding: "2px 8px", borderRadius: 12,
-            border: "1px solid rgba(214, 182, 107, 0.3)"
-          }}>
-            READY FOR PROJECTION
-          </span>
-        </div>
-
-        {/* Slide Center Worship Preview */}
-        <div style={{ textAlign: "center", margin: "auto 0" }}>
-          <div style={{ fontSize: "1.1rem", color: "#D6B66B", marginBottom: 4 }}>✝</div>
-          <div style={{
-            fontSize: "1.05rem", fontWeight: 800, color: "#FAF6EE",
-            lineHeight: 1.3, marginBottom: 8, fontFamily: "'Playfair Display', serif"
-          }}>
-            {song.title}
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-            {lyricsPreview.map((line, i) => (
-              <div key={i} style={{ fontSize: "0.75rem", color: "rgba(250, 246, 238, 0.8)", fontStyle: "italic" }}>
-                "{line}"
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Slide Bottom Bar */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(214, 182, 107, 0.2)", paddingTop: 8 }}>
-          <span style={{ fontSize: "0.68rem", color: "#A88A42", letterSpacing: 1 }}>CHRIST'S TABERNACLE</span>
-          <span style={{ fontSize: "0.68rem", color: "#E8CC8F" }}>{song.language} Repertoire</span>
-        </div>
-      </div>
-
-      {/* Action Footer Beneath Slide */}
-      <div style={{
-        padding: "14px 18px", background: "rgba(12, 34, 25, 0.9)",
-        borderTop: "1px solid rgba(214, 182, 107, 0.25)",
-        display: "flex", gap: 10
-      }}>
-        <button
-          onClick={onPresenterClick}
-          style={{
-            flex: 1, padding: "9px 12px", borderRadius: 8, border: "none",
-            background: "linear-gradient(135deg, #D6B66B 0%, #A88A42 100%)",
-            color: "#0C2219", fontWeight: 800, fontSize: "0.82rem",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-            cursor: "pointer", boxShadow: "0 2px 10px rgba(214, 182, 107, 0.3)"
-          }}
-        >
-          <FaDesktop size={12} /> Presenter View
-        </button>
-
-        {song.pptUrl ? (
-          <button
-            onClick={onDownloadClick}
-            style={{
-              flex: 1, padding: "9px 12px", borderRadius: 8,
-              background: "rgba(255,255,255,0.08)", border: "1px solid #D6B66B",
-              color: "#FAF6EE", fontWeight: 700, fontSize: "0.82rem",
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-              cursor: "pointer"
-            }}
-          >
-            <FaDownload size={11} color="#D6B66B" /> Download PPT
-          </button>
-        ) : (
-          <div style={{
-            flex: 1, padding: "9px 8px", borderRadius: 8,
-            background: "rgba(255,255,255,0.04)", border: "1px dashed rgba(255,255,255,0.2)",
-            color: "#7A9288", fontSize: "0.78rem", fontWeight: 600,
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 4
-          }}>
-            No PPT File
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-
-
-/* ═══════════════════════════════════════════════════════════════
-   OVERALL SINGLE BOX LYRICS RENDERER (NO PALLAVI / SARANAM TAGS)
-═══════════════════════════════════════════════════════════════ */
-function StanzaLyricsView({ lyricsText, fontSizeMultiplier = 1, title, onCopy }) {
+function StanzaLyricsView({ lyricsText, fontSizeMultiplier = 1, onCopy, title }) {
   const [copied, setCopied] = useState(false);
 
-  if (!lyricsText) {
-    return (
-      <div style={{
-        textAlign: "center", padding: "50px 24px", color: "#7A9288",
-        background: "#FFFFFF", borderRadius: 16, border: "1.5px dashed #EDE5D8"
-      }}>
-        No lyrics entered for this section yet.
-      </div>
-    );
-  }
+  if (!lyricsText) return (
+    <div style={{
+      textAlign: "center", padding: "50px 24px", color: T.textMuted,
+      background: T.bgCard, borderRadius: 16, border: `1.5px dashed ${T.border}`
+    }}>
+      No lyrics entered for this section yet.
+    </div>
+  );
 
-  // Filter out any Pallavi, Saranam, Chorus, Verse bracketed or section header markers
-  const cleanLines = lyricsText
-    .split("\n")
-    .filter(line => {
-      const trimmed = line.trim();
-      if (!trimmed) return true; // keep blank line for stanza separation
-      // Strip bracketed headers like [பல்லவி], [பல்லவி - Chorus], [சரணம் 1], [Chorus], [Verse 1]
-      if (/^\[.*?\]$/.test(trimmed)) return false;
-      // Strip unbracketed labels like பல்லவி:, சரணம் 1:, Chorus:, Verse 1:
-      if (/^(பல்லவி|சரணம்\s*\d*|chorus|verse\s*\d*|bridge|intro|outro)[:\s-]*$/i.test(trimmed)) return false;
-      return true;
-    });
-
-  // Re-join and split by paragraphs (consecutive blank lines)
-  const fullCleanText = cleanLines.join("\n").trim();
-  const paragraphs = fullCleanText
-    .split(/\n\s*\n/)
-    .map(p => p.trim())
-    .filter(Boolean)
-    .map(para => para.split("\n").map(l => l.trim()).filter(Boolean));
+  // Clean away any Pallavi, Saranam, Chorus, Verse header tags
+  const cleanLines = lyricsText.split("\n").filter(line => {
+    const t = line.trim();
+    if (!t) return true;
+    if (/^\[.*?\]$/.test(t)) return false;
+    if (/^(பல்லவி|சரணம்\s*\d*|chorus|verse\s*\d*|bridge|intro|outro)[:\s-]*$/i.test(t)) return false;
+    return true;
+  });
+  const fullText = cleanLines.join("\n").trim();
+  const paragraphs = fullText.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => p.split("\n").map(l => l.trim()).filter(Boolean));
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(fullCleanText);
+    navigator.clipboard.writeText(fullText);
     setCopied(true);
-    if (onCopy) onCopy(fullCleanText);
+    if (onCopy) onCopy(fullText);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div
-      style={{
-        background: "#FFFFFF",
-        border: "1.5px solid #EDE5D8",
-        borderRadius: 18,
-        padding: "32px 38px",
-        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.04)",
-        position: "relative"
-      }}
-    >
-      {/* Box Header Toolbar */}
+    <div className="ct-lyrics-box">
+      {/* Box Header */}
       <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingBottom: 16,
-        marginBottom: 24,
-        borderBottom: "1.5px solid #F0E8DC"
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        paddingBottom: 16, marginBottom: 24, borderBottom: `1.5px solid ${T.bgMuted}`,
+        flexWrap: "wrap", gap: 10
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ color: "#D6B66B", fontSize: "1.2rem", fontWeight: 700 }}>✝</span>
-          <span style={{
-            fontSize: "0.88rem",
-            fontWeight: 800,
-            color: "#184332",
-            letterSpacing: 1.2,
-            textTransform: "uppercase"
-          }}>
+          <span style={{ color: T.gold, fontSize: "1.3rem", fontWeight: 700 }}>✝</span>
+          <span style={{ fontSize: "0.92rem", fontWeight: 800, color: T.primary, letterSpacing: 1.2, textTransform: "uppercase" }}>
             {title || "Sanctuary Worship Lyrics"}
           </span>
         </div>
 
-        <button
-          onClick={handleCopy}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            background: copied ? "#16A34A" : "#FAF6EE",
-            border: `1.5px solid ${copied ? "#16A34A" : "#EDE5D8"}`,
-            color: copied ? "#FFFFFF" : "#184332",
-            padding: "7px 16px",
-            borderRadius: 8,
-            fontSize: "0.82rem",
-            fontWeight: 700,
-            cursor: "pointer",
-            transition: "all 0.15s ease",
-            boxShadow: "0 1px 4px rgba(0,0,0,0.04)"
-          }}
-        >
-          {copied ? <><FaCheck size={11} /> Copied to Clipboard!</> : <><FaCopy size={11} color="#A88A42" /> Copy Full Lyrics</>}
+        <button onClick={handleCopy} style={{
+          display: "inline-flex", alignItems: "center", gap: 6,
+          background: copied ? T.green : T.bg,
+          border: `1.5px solid ${copied ? T.green : T.border}`,
+          color: copied ? "#fff" : T.primary,
+          padding: "7px 16px", borderRadius: 8,
+          fontSize: "0.82rem", fontWeight: 800, cursor: "pointer", transition: "all 0.15s"
+        }}>
+          {copied ? <><FaCheck size={11}/> Copied!</> : <><FaCopy size={11} color={T.gold}/> Copy Lyrics</>}
         </button>
       </div>
 
-      {/* Continuous Lyrics inside the single unified box */}
+      {/* Pure Lyrics Content with Clean Stanzas */}
       <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         {paragraphs.map((paraLines, pIdx) => (
-          <div
-            key={pIdx}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 6
-            }}
-          >
+          <div key={pIdx} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {paraLines.map((line, lIdx) => (
-              <div
-                key={lIdx}
-                style={{
-                  fontSize: `${1.1 * fontSizeMultiplier}rem`,
-                  fontWeight: 600,
-                  lineHeight: 1.9,
-                  color: "#184332",
-                  fontFamily: "'Noto Sans Tamil', 'Inter', -apple-system, sans-serif"
-                }}
-              >
+              <div key={lIdx} style={{
+                fontSize: `clamp(1rem, ${1.12 * fontSizeMultiplier}rem, 1.35rem)`,
+                fontWeight: 600, lineHeight: 1.9, color: T.textDk,
+                fontFamily: "'Noto Sans Tamil', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif"
+              }}>
                 {line}
               </div>
             ))}
@@ -872,40 +486,111 @@ function StanzaLyricsView({ lyricsText, fontSizeMultiplier = 1, title, onCopy })
         ))}
       </div>
 
-      {/* Box Footer Note */}
+      {/* Box Footer Scripture */}
       <div style={{
-        marginTop: 32,
-        paddingTop: 16,
-        borderTop: "1px dashed #EDE5D8",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: 8,
-        fontSize: "0.78rem",
-        color: "#7A9288"
+        marginTop: 32, paddingTop: 16, borderTop: `1px dashed ${T.border}`,
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        flexWrap: "wrap", gap: 8, fontSize: "0.8rem", color: T.textMuted
       }}>
-        <span style={{ color: "#A88A42", fontWeight: 700 }}>
-          ✝ Christ's Tabernacle — Sacred Hymnal
-        </span>
-        <span>
-          "Let everything that has breath praise the LORD." — Psalm 150:6
-        </span>
+        <span style={{ color: T.gold, fontWeight: 800 }}>✝ Christ's Tabernacle — Sacred Hymnal</span>
+        <span style={{ fontStyle: "italic" }}>"Let everything that has breath praise the LORD." — Psalm 150:6</span>
       </div>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   SONG DETAIL VIEW COMPONENT
+   PPT SLIDE DECK PREVIEW
 ═══════════════════════════════════════════════════════════════ */
-function SongDetailView({ song, songs, onBack, onSelectSong }) {
-  const [activeTab, setActiveTab] = useState("tamil"); // "tamil" | "english" | "dual"
+function PPTDeckPreview({ song, onPresenterClick, onDownloadClick }) {
+  const lyricsPreview = (song.lyrics || song.englishLyrics || "").replace(/\[.*?\]/g, "").split("\n").map(l => l.trim()).filter(Boolean).slice(0, 3);
+  return (
+    <div style={{
+      background: `linear-gradient(145deg, ${T.primaryDk} 0%, ${T.primary} 60%, ${T.primaryDk} 100%)`,
+      borderRadius: 16, border: `1.5px solid ${T.borderGold}`,
+      overflow: "hidden", boxShadow: `0 10px 30px rgba(138, 37, 82, 0.2)`
+    }}>
+      <div style={{
+        aspectRatio: "16/9", padding: "18px 20px",
+        display: "flex", flexDirection: "column", justifyContent: "space-between",
+        background: `radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.14) 0%, rgba(44, 26, 14, 0.95) 75%)`
+      }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 5, color: T.gold, fontSize: "0.68rem", fontWeight: 800, letterSpacing: 1.5 }}>
+            <FaFilePowerpoint size={12} color="#F59E0B"/> CHURCH SLIDE DECK
+          </div>
+          <span style={{ background: "rgba(212, 175, 55, 0.2)", color: T.goldLt, fontSize: "0.62rem", fontWeight: 800, padding: "2px 7px", borderRadius: 10 }}>
+            READY FOR PROJECTION
+          </span>
+        </div>
+
+        <div style={{ textAlign: "center", margin: "auto 0" }}>
+          <div style={{ color: T.gold, marginBottom: 4 }}>✝</div>
+          <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#FAF6EE", lineHeight: 1.3, marginBottom: 6, fontFamily: "'Playfair Display', serif" }}>
+            {song.title}
+          </div>
+          {lyricsPreview.map((l, i) => (
+            <div key={i} style={{ fontSize: "0.7rem", color: "rgba(250, 246, 238, 0.85)", fontStyle: "italic" }}>
+              "{l}"
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid rgba(212, 175, 55, 0.25)", paddingTop: 6 }}>
+          <span style={{ fontSize: "0.62rem", color: T.goldLt, letterSpacing: 1 }}>CHRIST'S TABERNACLE</span>
+          <span style={{ fontSize: "0.62rem", color: T.goldLt }}>{song.language} Repertoire</span>
+        </div>
+      </div>
+
+      <div style={{ padding: "12px 16px", background: "rgba(12, 34, 25, 0.95)", borderTop: "1px solid rgba(212, 175, 55, 0.25)", display: "flex", gap: 8 }}>
+        <button onClick={onPresenterClick} style={{
+          flex: 1, padding: "9px 12px", borderRadius: 8, border: "none",
+          background: `linear-gradient(135deg, ${T.gold} 0%, #A67C1E 100%)`,
+          color: "#112218", fontWeight: 900, fontSize: "0.82rem",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 6, cursor: "pointer"
+        }}>
+          <FaDesktop size={11}/> Presenter View
+        </button>
+
+        {song.pptUrl ? (
+          <button onClick={onDownloadClick} style={{
+            flex: 1, padding: "9px 12px", borderRadius: 8,
+            background: "rgba(255,255,255,0.08)", border: `1px solid ${T.gold}`,
+            color: "#FAF6EE", fontWeight: 800, fontSize: "0.82rem",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 6, cursor: "pointer"
+          }}>
+            <FaDownload size={10} color={T.gold}/> Download
+          </button>
+        ) : (
+          <div style={{
+            flex: 1, padding: "8px", borderRadius: 8,
+            background: "rgba(255,255,255,0.04)", border: "1px dashed rgba(255,255,255,0.2)",
+            color: T.textMuted, fontSize: "0.76rem", display: "flex", alignItems: "center", justifyContent: "center"
+          }}>
+            No PPT
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SONG DETAIL VIEW (No Hero Banner — Fully Responsive)
+═══════════════════════════════════════════════════════════════ */
+function SongDetailView({
+  song, songs, onBack, onSelectSong,
+  favorites, onToggleFavorite,
+  onLetterSelect, onChordSelect, selectedChordKey
+}) {
+  const [activeTab, setActiveTab] = useState("tamil");
   const [showPresenter, setShowPresenter] = useState(false);
   const [showChords, setShowChords] = useState(false);
   const [chordsSemitones, setChordsSemitones] = useState(0);
-  const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);
+  const [fontMult, setFontMult] = useState(1);
   const [toastMsg, setToastMsg] = useState("");
+
+  const isFav = favorites.includes(song._id || song.id);
 
   const showToast = (msg) => {
     setToastMsg(msg);
@@ -913,33 +598,17 @@ function SongDetailView({ song, songs, onBack, onSelectSong }) {
   };
 
   const handleShare = async () => {
-    const shareUrl = typeof window !== "undefined"
-      ? `${window.location.origin}/songs/lyrics/${song._id || song.id}`
-      : "";
-
-    const shareData = {
-      title: `${song.title} — Christ's Tabernacle Worship`,
-      text: `🎶 Worship with "${song.title}" at Christ's Tabernacle Prayer & Worship Centre\n${shareUrl}`,
-      url: shareUrl,
+    const url = `${window.location.origin}/songs/lyrics/${song._id || song.id}`;
+    const data = {
+      title: `${song.title} — Christ's Tabernacle`,
+      text: `🎶 "${song.title}"\n${url}`,
+      url
     };
-
-    if (typeof navigator !== "undefined" && navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch {
-        // User closed or dismissed share sheet
-      }
-    } else if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(shareUrl);
-      showToast("Direct song link copied to clipboard!");
-    }
-  };
-
-  const handleCopyAll = () => {
-    const text = activeTab === "tamil" ? song.lyrics : (song.englishLyrics || song.lyrics);
-    if (text) {
-      navigator.clipboard.writeText(text);
-      showToast("Full lyrics copied to clipboard!");
+    if (navigator.share) {
+      try { await navigator.share(data); } catch {}
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+      showToast("Link copied to clipboard!");
     }
   };
 
@@ -951,633 +620,452 @@ function SongDetailView({ song, songs, onBack, onSelectSong }) {
       a.target = "_blank";
       a.click();
     } else {
-      showToast("No PowerPoint file attached to this song yet.");
+      showToast("No PowerPoint attached for this hymn.");
     }
   };
 
   const embedUrl = getYouTubeEmbedUrl(song.youtubeUrl);
   const watchUrl = getYouTubeWatchUrl(song.youtubeUrl);
+  const related = songs.filter(s => (s._id || s.id) !== (song._id || song.id)).slice(0, 4);
+  const favSongs = songs.filter(s => favorites.includes(s._id || s.id));
 
-  // Filter other recommended songs in setlist
-  const relatedSongs = songs
-    .filter(s => (s._id || s.id) !== (song._id || song.id))
-    .slice(0, 4);
+  // Extract Tamil vs English Title
+  const titleMatch = song.title.match(/^(.*?)\s*\((.*?)\)$/);
+  const mainTitle = titleMatch ? titleMatch[1] : song.title;
+  const subTitle = titleMatch ? titleMatch[2] : null;
 
   return (
-    <div style={{ maxWidth: 1380, margin: "0 auto" }}>
-      {showPresenter && (
-        <SanctuaryPresenterModal song={song} onClose={() => setShowPresenter(false)} />
-      )}
+    <div style={{ maxWidth: 1380, margin: "0 auto", padding: "0 16px 60px" }}>
+      {showPresenter && <SanctuaryPresenterModal song={song} onClose={() => setShowPresenter(false)}/>}
 
-      {/* Toast Notification */}
+      {/* Floating Toast Notification */}
       {toastMsg && (
         <div style={{
-          position: "fixed", bottom: 30, right: 30, zIndex: 9999,
-          background: "#184332", color: "#D6B66B", padding: "12px 24px",
-          borderRadius: 12, boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
-          fontWeight: 800, fontSize: "0.9rem", display: "flex", alignItems: "center", gap: 10,
-          border: "1px solid #D6B66B"
+          position: "fixed", bottom: 28, right: 28, zIndex: 9999,
+          background: T.primaryDk, color: "#fff",
+          padding: "12px 22px", borderRadius: 10,
+          border: `1.5px solid ${T.gold}`,
+          boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+          fontSize: "0.88rem", fontWeight: 700,
+          display: "flex", alignItems: "center", gap: 8
         }}>
-          <FaCheck color="#D6B66B" /> {toastMsg}
+          <FaCheck color={T.gold}/> {toastMsg}
         </div>
       )}
 
-      {/* Top Breadcrumb Navigation */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
-        <button
-          onClick={onBack}
-          style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            padding: "9px 20px", borderRadius: 30,
-            background: "#FFFFFF", border: "1.5px solid #EDE5D8",
-            color: "#184332", fontWeight: 800, fontSize: "0.85rem",
-            cursor: "pointer", transition: "all 0.15s",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.03)"
-          }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = "#D6B66B"}
-          onMouseLeave={e => e.currentTarget.style.borderColor = "#EDE5D8"}
-        >
-          <FaChevronLeft size={11} color="#A88A42" />
-          <span>Back to Worship Repertoire</span>
+      {/* Top A-Z Alphabet Navigation Bar */}
+      <div className="ct-az-bar" style={{
+        background: T.primaryDk, borderRadius: 12, padding: "8px 12px",
+        margin: "18px 0 24px",
+        boxShadow: `0 4px 16px rgba(12, 34, 25, 0.2)`
+      }}>
+        {ALPHABET.map(letter => (
+          <button key={letter} onClick={() => onLetterSelect(letter)} className="ct-az-btn" style={{
+            padding: "5px 10px", borderRadius: 6, border: "none", fontWeight: 800,
+            fontSize: letter === "All" ? "0.74rem" : "0.84rem", cursor: "pointer",
+            transition: "all 0.15s",
+            background: "rgba(255,255,255,0.08)",
+            color: "#FAF6EE", minWidth: letter === "All" ? 36 : 28
+          }}>
+            {letter}
+          </button>
+        ))}
+      </div>
+
+      {/* Breadcrumb Row */}
+      <div style={{
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        flexWrap: "wrap", gap: 12, marginBottom: 20
+      }}>
+        <button onClick={onBack} style={{
+          display: "inline-flex", alignItems: "center", gap: 6,
+          background: T.bgCard, border: `1.5px solid ${T.border}`,
+          borderRadius: 8, padding: "7px 16px", color: T.primary,
+          fontWeight: 800, fontSize: "0.84rem", cursor: "pointer",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.04)"
+        }}>
+          <FaChevronLeft size={11}/> Back to Repertoire
         </button>
 
-        <div style={{ fontSize: "0.84rem", color: "#7A9288" }}>
-          <span style={{ cursor: "pointer", color: "#184332", fontWeight: 700 }} onClick={onBack}>Songs</span>
-          <span style={{ margin: "0 8px" }}>/</span>
-          <span style={{ color: "#A88A42", fontWeight: 700 }}>Lyrics</span>
-          <span style={{ margin: "0 8px" }}>/</span>
-          <span style={{ color: "#4A6355" }}>{song.title}</span>
+        <div style={{ fontSize: "0.82rem", color: T.textMuted }}>
+          <span onClick={onBack} style={{ cursor: "pointer", color: T.primary, fontWeight: 700 }}>Songs</span>
+          {" / "}
+          <span onClick={onBack} style={{ cursor: "pointer", color: T.primary, fontWeight: 700 }}>Lyrics</span>
+          {" / "}
+          <span style={{ fontWeight: 800, color: T.textDk }}>{song.title}</span>
         </div>
       </div>
 
-      {/* Distinctive Sanctuary Songsheet Header (NO Hero Banner Section) */}
-      <div style={{
-        marginBottom: 28,
-        padding: "4px 0 24px",
-        borderBottom: "1.5px solid #EDE5D8",
-        position: "relative"
-      }}>
-        {/* Eyebrow Pill Row */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 14 }}>
-          <span style={{
-            background: "#FAF6EE",
-            color: "#A88A42",
-            border: "1.5px solid #EDE5D8",
-            fontSize: "0.74rem",
-            fontWeight: 800,
-            padding: "4px 14px",
-            borderRadius: 20,
-            letterSpacing: 1.2,
-            textTransform: "uppercase",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6
+      {/* Two-Column Responsive Layout: Left Song Details & Lyrics | Right Sidebar */}
+      <div className="ct-songs-grid-layout">
+
+        {/* ── LEFT COLUMN ── */}
+        <div>
+          {/* Action Row */}
+          <div className="ct-detail-actions" style={{
+            background: T.bgCard, borderRadius: 14, padding: "12px 18px",
+            border: `1.5px solid ${T.border}`, marginBottom: 20,
+            boxShadow: "0 2px 10px rgba(0,0,0,0.03)"
           }}>
-            <span style={{ color: "#D6B66B" }}>†</span> {song.language || "Tamil"} Worship Hymn
-          </span>
+            <div className="ct-detail-actions-group" style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+              {/* Full Screen Button */}
+              <button onClick={() => setShowPresenter(true)} style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                padding: "8px 14px", borderRadius: 8, border: `1.5px solid ${T.green}`,
+                background: "#E8F5E9", color: "#1B5E20",
+                fontWeight: 800, fontSize: "0.82rem", cursor: "pointer"
+              }}>
+                <FaExpand size={11}/> Full Screen ▾
+              </button>
 
-          {song.theme && (
-            <span style={{
-              background: "#EAF2EE",
-              color: "#184332",
-              border: "1px solid #D1E2D8",
-              fontSize: "0.76rem",
-              fontWeight: 700,
-              padding: "4px 12px",
-              borderRadius: 20
-            }}>
-              • {song.theme}
-            </span>
-          )}
+              {/* Presenter View */}
+              <button onClick={() => setShowPresenter(true)} style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                padding: "8px 14px", borderRadius: 8, border: "none",
+                background: `linear-gradient(135deg, ${T.primary} 0%, ${T.primaryLt} 100%)`,
+                color: "#FAF6EE", fontWeight: 800, fontSize: "0.82rem", cursor: "pointer"
+              }}>
+                <FaDesktop size={11}/> Presenter
+              </button>
 
-          {song.key && (
-            <span style={{
-              background: "#FAF5FF",
-              border: "1px solid #DDD6FE",
-              color: "#6D28D9",
-              fontSize: "0.76rem",
-              fontWeight: 800,
-              padding: "4px 12px",
-              borderRadius: 20,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 5
-            }}>
-              🎵 Key: <strong>{song.key}</strong>
-            </span>
-          )}
+              {/* Chords Toggle */}
+              {song.chords && (
+                <button onClick={() => setShowChords(v => !v)} style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "8px 14px", borderRadius: 8,
+                  background: showChords ? T.purple : T.purpleLt,
+                  border: `1.5px solid ${T.purple}`,
+                  color: showChords ? "#fff" : T.purple,
+                  fontWeight: 800, fontSize: "0.82rem", cursor: "pointer"
+                }}>
+                  <FaGuitar size={11}/> {showChords ? "Hide Chords" : "Chords"}
+                </button>
+              )}
 
-          {song.tempo && (
-            <span style={{ fontSize: "0.8rem", color: "#7A9288", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4 }}>
-              ⏱ {song.tempo}
-            </span>
-          )}
+              {/* Print */}
+              <button onClick={() => window.print()} style={{
+                display: "inline-flex", alignItems: "center", gap: 5,
+                padding: "8px 14px", borderRadius: 8,
+                background: T.bg, border: `1.5px solid ${T.border}`,
+                color: T.textDk, fontWeight: 700, fontSize: "0.82rem", cursor: "pointer"
+              }}>
+                <FaPrint size={11} color={T.gold}/> Print
+              </button>
 
-          {song.duration && (
-            <span style={{ fontSize: "0.8rem", color: "#7A9288", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4 }}>
-              ⌛ {song.duration}
-            </span>
-          )}
-
-          {song.views != null && (
-            <span style={{ fontSize: "0.8rem", color: "#7A9288", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 4 }}>
-              👁 {song.views} views
-            </span>
-          )}
-        </div>
-
-        {/* Title & Author */}
-        <div style={{ marginBottom: 20 }}>
-          <h1 style={{
-            fontSize: "clamp(2rem, 3.8vw, 2.85rem)",
-            fontWeight: 800,
-            lineHeight: 1.2,
-            margin: "0 0 10px",
-            color: "#0C2219",
-            fontFamily: "'Playfair Display', Georgia, serif",
-            letterSpacing: "-0.015em"
-          }}>
-            {song.title}
-          </h1>
-          {song.author && (
-            <div style={{
-              fontSize: "0.96rem",
-              color: "#4A6355",
-              fontWeight: 600,
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              fontFamily: "'Cinzel', Georgia, serif"
-            }}>
-              <span style={{ color: "#D6B66B", fontSize: "1.1rem" }}>✍</span>
-              <span>Composed &amp; Written by <strong style={{ color: "#184332" }}>{song.author}</strong></span>
+              {/* Native Device Share */}
+              <button onClick={handleShare} style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                padding: "8px 16px", borderRadius: 8, border: "none",
+                background: T.primaryDk, color: T.goldLt,
+                fontWeight: 800, fontSize: "0.82rem", cursor: "pointer"
+              }}>
+                <FaShareAlt size={11} color={T.gold}/> Share
+              </button>
             </div>
-          )}
-        </div>
 
-        {/* ═══ UNIQUE SANCTUARY ACTION DOCK ═══ */}
-        <div style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 10,
-          alignItems: "center",
-          background: "#FFFFFF",
-          padding: "12px 18px",
-          borderRadius: 14,
-          border: "1.5px solid #EDE5D8",
-          boxShadow: "0 4px 18px rgba(12, 34, 25, 0.04)"
-        }}>
-          {/* Presenter Mode */}
-          <button
-            onClick={() => setShowPresenter(true)}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "10px 22px", borderRadius: 8, border: "none",
-              background: "linear-gradient(135deg, #D6B66B 0%, #A88A42 100%)",
-              color: "#0C2219", fontWeight: 800, fontSize: "0.86rem",
-              cursor: "pointer", boxShadow: "0 3px 12px rgba(214, 182, 107, 0.35)",
-              transition: "transform 0.15s"
-            }}
-          >
-            <FaDesktop size={13} /> Sanctuary Presenter
-          </button>
+            {/* Favorite & Font Controls */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <button onClick={() => onToggleFavorite(song._id || song.id)} style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                padding: "8px 14px", borderRadius: 8,
+                background: isFav ? "#FEE2E2" : T.bg,
+                border: `1.5px solid ${isFav ? T.crimson : T.border}`,
+                color: isFav ? T.crimson : T.textMid,
+                fontWeight: 800, fontSize: "0.82rem", cursor: "pointer"
+              }}>
+                {isFav ? <FaHeart size={12} color={T.crimson}/> : <FaRegHeart size={12}/>}
+                {isFav ? "Saved" : "Favorite"}
+              </button>
 
-          {/* Download PPT Deck */}
-          {song.pptUrl ? (
-            <button
-              onClick={handleDownloadPPT}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "10px 20px", borderRadius: 8,
-                background: "#FEF3C7", border: "1.5px solid #F59E0B",
-                color: "#B45309", fontWeight: 800, fontSize: "0.86rem",
-                cursor: "pointer", transition: "all 0.15s"
-              }}
-            >
-              <FaFilePowerpoint size={14} color="#D97706" /> Download PPT Deck
-            </button>
-          ) : (
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              padding: "10px 16px", borderRadius: 8,
-              background: "#F9FAFB", border: "1px dashed #D1D5DB",
-              color: "#9CA3AF", fontWeight: 600, fontSize: "0.82rem"
-            }}>
-              <FaFilePowerpoint size={12} /> No PPT Attached
-            </span>
-          )}
-
-          {/* Musical Chords Toggle */}
-          {song.chords && (
-            <button
-              onClick={() => setShowChords(v => !v)}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "10px 20px", borderRadius: 8,
-                background: showChords ? "#7C3AED" : "#F5F3FF",
-                border: "1.5px solid #8B5CF6",
-                color: showChords ? "#FFFFFF" : "#6D28D9",
-                fontWeight: 800, fontSize: "0.86rem",
-                cursor: "pointer", transition: "all 0.15s"
-              }}
-            >
-              <FaGuitar size={13} /> Chords {showChords ? "Active" : "View"}
-            </button>
-          )}
-
-          {/* Print Sheet */}
-          <button
-            onClick={() => handlePrintSong(song)}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "10px 18px", borderRadius: 8,
-              background: "#FFFFFF", border: "1.5px solid #EDE5D8",
-              color: "#184332", fontWeight: 700, fontSize: "0.86rem",
-              cursor: "pointer", transition: "all 0.15s"
-            }}
-          >
-            <FaPrint size={13} color="#A88A42" /> Print Sheet
-          </button>
-
-          {/* YouTube Video */}
-          {watchUrl && (
-            <a
-              href={watchUrl} target="_blank" rel="noreferrer"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "10px 20px", borderRadius: 8,
-                background: "#DC2626", border: "none",
-                color: "#FFFFFF", fontWeight: 800, fontSize: "0.86rem",
-                textDecoration: "none", boxShadow: "0 3px 10px rgba(220, 38, 38, 0.25)",
-                cursor: "pointer"
-              }}
-            >
-              <FaYoutube size={14} /> Watch on YouTube
-            </a>
-          )}
-
-          {/* Direct Device Native Share */}
-          <button
-            onClick={handleShare}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "10px 20px", borderRadius: 8,
-              background: "#184332", border: "none",
-              color: "#FAF6EE", fontWeight: 800, fontSize: "0.86rem",
-              cursor: "pointer", transition: "all 0.15s",
-              boxShadow: "0 3px 10px rgba(24, 67, 50, 0.2)"
-            }}
-          >
-            <FaShareAlt size={13} color="#D6B66B" /> Share
-          </button>
-        </div>
-      </div>
-
-      {/* Transposed Chords Box (When Active) */}
-      {showChords && song.chords && (
-        <div style={{
-          background: "#FAF5FF", border: "2px solid #C4B5FD",
-          borderRadius: 16, padding: "24px 28px", marginBottom: 28,
-          boxShadow: "0 8px 24px rgba(109, 40, 217, 0.08)"
-        }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 12 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 8, background: "#7C3AED", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <FaGuitar size={16} />
+              <div style={{
+                display: "flex", alignItems: "center", gap: 5,
+                background: T.bg, borderRadius: 8, padding: "3px 8px",
+                border: `1px solid ${T.border}`, fontSize: "0.75rem", fontWeight: 700, color: T.textMid
+              }}>
+                <span>Font:</span>
+                <button onClick={() => setFontMult(m => Math.max(0.85, m - 0.1))} style={{ background: "none", border: "none", cursor: "pointer", fontWeight: 900 }}>-</button>
+                <span>{Math.round(fontMult * 100)}%</span>
+                <button onClick={() => setFontMult(m => Math.min(1.4, m + 0.1))} style={{ background: "none", border: "none", cursor: "pointer", fontWeight: 900 }}>+</button>
               </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 800, color: "#5B21B6" }}>
-                  Musical Chords &amp; Score
-                </h3>
-                <div style={{ fontSize: "0.78rem", color: "#7C3AED" }}>
-                  Original Key: <strong>{song.key || "Standard"}</strong> {chordsSemitones !== 0 && `(Transposed: ${chordsSemitones > 0 ? `+${chordsSemitones}` : chordsSemitones})`}
+            </div>
+          </div>
+
+          {/* Song Big Heading Header */}
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", marginBottom: 10 }}>
+              <span style={{
+                background: song.language?.toLowerCase() === "tamil" ? T.bgMuted : T.purpleLt,
+                color: song.language?.toLowerCase() === "tamil" ? T.primary : T.purple,
+                fontSize: "0.76rem", fontWeight: 800, padding: "3px 10px", borderRadius: 12
+              }}>
+                {song.language} Repertoire
+              </span>
+              {song.key && (
+                <span style={{
+                  background: T.bg, color: T.goldDk,
+                  fontSize: "0.76rem", fontWeight: 800, padding: "3px 10px", borderRadius: 12, border: `1px solid ${T.border}`
+                }}>
+                  🎵 Key: {song.key}
+                </span>
+              )}
+              {song.theme && (
+                <span style={{
+                  background: "#F3F4F6", color: "#4B5563",
+                  fontSize: "0.76rem", fontWeight: 700, padding: "3px 10px", borderRadius: 12
+                }}>
+                  {song.theme}
+                </span>
+              )}
+            </div>
+
+            <h1 style={{
+              margin: "0 0 6px", fontSize: "clamp(1.6rem, 3.2vw, 2.5rem)",
+              color: T.textDk, fontWeight: 800, lineHeight: 1.25,
+              fontFamily: "'Playfair Display', Georgia, serif"
+            }}>
+              {mainTitle}
+            </h1>
+            {subTitle && (
+              <h2 style={{
+                margin: "0 0 10px", fontSize: "clamp(1.1rem, 2vw, 1.5rem)",
+                color: T.primary, fontWeight: 700, lineHeight: 1.3
+              }}>
+                {subTitle}
+              </h2>
+            )}
+
+            {song.author && (
+              <div style={{ fontSize: "0.9rem", color: T.textMuted, fontWeight: 600 }}>
+                ✍ Composed &amp; Written by <span style={{ color: T.textDk, fontWeight: 800 }}>{song.author}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Language Toggle Pills */}
+          <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+            <button onClick={() => setActiveTab("tamil")} style={{
+              padding: "7px 18px", borderRadius: 20,
+              background: activeTab === "tamil" ? T.primary : T.bgCard,
+              color: activeTab === "tamil" ? "#FAF6EE" : T.textMid,
+              border: `1.5px solid ${activeTab === "tamil" ? T.primary : T.border}`,
+              fontWeight: 800, fontSize: "0.84rem", cursor: "pointer"
+            }}>
+              தமிழ் Tamil
+            </button>
+            {song.englishLyrics && (
+              <button onClick={() => setActiveTab("english")} style={{
+                padding: "7px 18px", borderRadius: 20,
+                background: activeTab === "english" ? T.primary : T.bgCard,
+                color: activeTab === "english" ? "#FAF6EE" : T.textMid,
+                border: `1.5px solid ${activeTab === "english" ? T.primary : T.border}`,
+                fontWeight: 800, fontSize: "0.84rem", cursor: "pointer"
+              }}>
+                English Translation
+              </button>
+            )}
+          </div>
+
+          {/* Chords Transposer Section (if enabled) */}
+          {showChords && song.chords && (
+            <div style={{
+              background: T.purpleLt, borderRadius: 16, padding: "20px 24px",
+              border: `1.5px solid ${T.purple}`, marginBottom: 24
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 7, color: T.purple, fontWeight: 800, fontSize: "0.9rem" }}>
+                  <FaGuitar size={14}/> Musical Chords (Transpose)
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "0.82rem" }}>
+                  <span>Key Shift:</span>
+                  <button onClick={() => setChordsSemitones(s => s - 1)} style={{ padding: "3px 8px", borderRadius: 5, border: "1px solid #C4B5FD", background: "#fff", cursor: "pointer", fontWeight: 800 }}>-</button>
+                  <span style={{ fontWeight: 800, minWidth: 28, textAlign: "center" }}>{chordsSemitones > 0 ? `+${chordsSemitones}` : chordsSemitones}</span>
+                  <button onClick={() => setChordsSemitones(s => s + 1)} style={{ padding: "3px 8px", borderRadius: 5, border: "1px solid #C4B5FD", background: "#fff", cursor: "pointer", fontWeight: 800 }}>+</button>
+                  <button onClick={() => setChordsSemitones(0)} style={{ marginLeft: 6, fontSize: "0.75rem", background: "none", border: "none", color: T.purple, cursor: "pointer", fontWeight: 700 }}>Reset</button>
                 </div>
               </div>
-            </div>
-
-            {/* Transpose Controls */}
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#6D28D9" }}>Transpose:</span>
-              <button
-                onClick={() => setChordsSemitones(s => s - 1)}
-                style={{ padding: "4px 10px", borderRadius: 6, border: "1px solid #C4B5FD", background: "#fff", color: "#5B21B6", fontWeight: 800, cursor: "pointer" }}
-              >
-                -1
-              </button>
-              <button
-                onClick={() => setChordsSemitones(0)}
-                style={{ padding: "4px 10px", borderRadius: 6, border: "1px solid #C4B5FD", background: chordsSemitones === 0 ? "#7C3AED" : "#fff", color: chordsSemitones === 0 ? "#fff" : "#5B21B6", fontWeight: 800, cursor: "pointer" }}
-              >
-                Reset
-              </button>
-              <button
-                onClick={() => setChordsSemitones(s => s + 1)}
-                style={{ padding: "4px 10px", borderRadius: 6, border: "1px solid #C4B5FD", background: "#fff", color: "#5B21B6", fontWeight: 800, cursor: "pointer" }}
-              >
-                +1
-              </button>
-              <button
-                onClick={() => setShowChords(false)}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "#6B7280", marginLeft: 8 }}
-              >
-                <FaTimes />
-              </button>
-            </div>
-          </div>
-
-          <pre style={{
-            margin: 0, fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-            fontSize: "0.95rem", lineHeight: 1.9, color: "#4C1D95",
-            whiteSpace: "pre-wrap", background: "#FFFFFF", padding: "18px 22px",
-            borderRadius: 12, border: "1px solid #DDD6FE"
-          }}>
-            {transposeChordsText(song.chords, chordsSemitones)}
-          </pre>
-        </div>
-      )}
-
-      {/* Main Grid: Left Lyrics Area & Right Sanctuary Sidebar */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 32, alignItems: "start" }}>
-
-        {/* ════ LEFT COLUMN: LYRICS ════ */}
-        <div>
-          {/* Lyrics Bar Controls */}
-          <div style={{
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-            background: "#FFFFFF", padding: "12px 20px", borderRadius: 16,
-            border: "1.5px solid #EDE5D8", marginBottom: 20, flexWrap: "wrap", gap: 12
-          }}>
-            {/* Language Tabs */}
-            <div style={{ display: "flex", gap: 6 }}>
-              <button
-                onClick={() => setActiveTab("tamil")}
-                style={{
-                  padding: "8px 18px", borderRadius: 20, border: "none",
-                  background: activeTab === "tamil" ? "#184332" : "#FAF6EE",
-                  color: activeTab === "tamil" ? "#FAF6EE" : "#4A6355",
-                  fontWeight: 800, fontSize: "0.85rem", cursor: "pointer",
-                  transition: "all 0.15s"
-                }}
-              >
-                தமிழ் Tamil Lyrics
-              </button>
-
-              {song.englishLyrics && (
-                <button
-                  onClick={() => setActiveTab("english")}
-                  style={{
-                    padding: "8px 18px", borderRadius: 20, border: "none",
-                    background: activeTab === "english" ? "#184332" : "#FAF6EE",
-                    color: activeTab === "english" ? "#FAF6EE" : "#4A6355",
-                    fontWeight: 800, fontSize: "0.85rem", cursor: "pointer",
-                    transition: "all 0.15s"
-                  }}
-                >
-                  English Lyrics
-                </button>
-              )}
-
-              {song.englishLyrics && (
-                <button
-                  onClick={() => setActiveTab("dual")}
-                  style={{
-                    padding: "8px 16px", borderRadius: 20, border: "none",
-                    background: activeTab === "dual" ? "#184332" : "#FAF6EE",
-                    color: activeTab === "dual" ? "#FAF6EE" : "#4A6355",
-                    fontWeight: 800, fontSize: "0.85rem", cursor: "pointer",
-                    display: "flex", alignItems: "center", gap: 6,
-                    transition: "all 0.15s"
-                  }}
-                >
-                  <FaColumns size={12} /> Bilingual Side-by-Side
-                </button>
-              )}
-            </div>
-
-            {/* Font Resizer & Copy All */}
-            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#FAF6EE", padding: "4px 10px", borderRadius: 14 }}>
-                <span style={{ fontSize: "0.76rem", fontWeight: 700, color: "#7A9288" }}>Font:</span>
-                <button onClick={() => setFontSizeMultiplier(m => Math.max(0.85, m - 0.1))} style={{ background: "none", border: "none", color: "#184332", cursor: "pointer", fontWeight: 800 }}><FaMinus size={10} /></button>
-                <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#184332", minWidth: 28, textAlign: "center" }}>{Math.round(fontSizeMultiplier * 100)}%</span>
-                <button onClick={() => setFontSizeMultiplier(m => Math.min(1.35, m + 0.1))} style={{ background: "none", border: "none", color: "#184332", cursor: "pointer", fontWeight: 800 }}><FaPlus size={10} /></button>
-              </div>
-
-              <button
-                onClick={handleCopyAll}
-                style={{
-                  display: "flex", alignItems: "center", gap: 6,
-                  padding: "7px 14px", borderRadius: 10,
-                  background: "#FAF6EE", border: "1px solid #EDE5D8",
-                  color: "#184332", fontWeight: 700, fontSize: "0.82rem",
-                  cursor: "pointer"
-                }}
-              >
-                <FaCopy size={12} color="#A88A42" /> Copy Full Lyrics
-              </button>
-            </div>
-          </div>
-
-          {/* Active Lyrics Container */}
-          {activeTab === "dual" ? (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
-              <StanzaLyricsView
-                lyricsText={song.lyrics}
-                fontSizeMultiplier={fontSizeMultiplier}
-                title="தமிழ் வரிகள் (Tamil Lyrics)"
-                onCopy={() => showToast("Tamil lyrics copied to clipboard")}
-              />
-              <StanzaLyricsView
-                lyricsText={song.englishLyrics}
-                fontSizeMultiplier={fontSizeMultiplier}
-                title="English Lyrics / Translation"
-                onCopy={() => showToast("English lyrics copied to clipboard")}
-              />
-            </div>
-          ) : (
-            <StanzaLyricsView
-              lyricsText={activeTab === "tamil" ? song.lyrics : song.englishLyrics}
-              fontSizeMultiplier={fontSizeMultiplier}
-              title={activeTab === "tamil" ? "தமிழ் வரிகள் (Tamil Lyrics)" : "English Lyrics"}
-              onCopy={() => showToast("Lyrics copied to clipboard")}
-            />
-          )}
-
-          {/* Tags Section */}
-          {song.tags && song.tags.length > 0 && (
-            <div style={{
-              marginTop: 28, padding: "18px 24px", background: "#FFFFFF",
-              borderRadius: 16, border: "1px solid #EDE5D8",
-              display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center"
-            }}>
-              <FaTag size={13} color="#A88A42" />
-              <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "#184332", marginRight: 6 }}>Repertoire Tags:</span>
-              {song.tags.map(tag => (
-                <span
-                  key={tag}
-                  style={{
-                    background: "#FAF6EE", color: "#184332",
-                    fontSize: "0.78rem", fontWeight: 700, padding: "3px 12px",
-                    borderRadius: 20, border: "1px solid #EDE5D8"
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
+              <pre style={{
+                margin: 0, fontFamily: "monospace", fontSize: "0.94rem",
+                color: "#4C1D95", lineHeight: 1.7, whiteSpace: "pre-wrap", overflowX: "auto"
+              }}>
+                {transposeChordsText(song.chords, chordsSemitones)}
+              </pre>
             </div>
           )}
 
-          {/* Submission / Correction Note */}
-          <div style={{
-            marginTop: 20, background: "#FAF6EE", borderRadius: 14,
-            padding: "18px 22px", border: "1.5px solid #EDE5D8",
-            display: "flex", alignItems: "center", gap: 16
-          }}>
-            <div style={{ width: 38, height: 38, borderRadius: 10, background: "#EAF2EE", color: "#184332", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <FaExclamationCircle size={18} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, color: "#184332", fontSize: "0.9rem" }}>Notice a typo or missing musical chord?</div>
-              <div style={{ fontSize: "0.8rem", color: "#4A6355" }}>Help the Tabernacle Worship Team maintain sacred accuracy in the church hymnal.</div>
-            </div>
-            <a
-              href="mailto:contact@christstabernacle.org?subject=Correction%20for%20Song"
-              style={{
-                padding: "8px 16px", borderRadius: 8, background: "#184332",
-                color: "#FAF6EE", fontWeight: 700, fontSize: "0.8rem", textDecoration: "none"
-              }}
-            >
-              Report Typo
-            </a>
-          </div>
-        </div>
+          {/* Unified Stanza Lyrics View (Single Box, No Pallavi/Saranam labels) */}
+          <StanzaLyricsView
+            lyricsText={activeTab === "tamil" ? song.lyrics : (song.englishLyrics || song.lyrics)}
+            fontSizeMultiplier={fontMult}
+            onCopy={() => showToast("Lyrics copied!")}
+            title={`${song.title} — Lyrics`}
+          />
 
-        {/* ════ RIGHT SIDEBAR: MEDIA & METADATA ════ */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-
-          {/* PPT Front Page Mockup Deck */}
-          <div>
-            <div style={{
-              fontSize: "0.78rem", fontWeight: 800, color: "#184332",
-              textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 10
-            }}>
-              📊 Sanctuary Slide Deck
-            </div>
-            <PPTDeckPreview
-              song={song}
-              onPresenterClick={() => setShowPresenter(true)}
-              onDownloadClick={handleDownloadPPT}
-            />
-          </div>
-
-          {/* YouTube Video Player Embed */}
+          {/* YouTube Video Section */}
           {embedUrl && (
             <div style={{
-              background: "#FFFFFF", borderRadius: 16, overflow: "hidden",
-              border: "1.5px solid #EDE5D8", boxShadow: "0 6px 20px rgba(0,0,0,0.04)"
+              marginTop: 32, background: T.bgCard, borderRadius: 16,
+              border: `1.5px solid ${T.border}`, overflow: "hidden",
+              boxShadow: "0 6px 20px rgba(0,0,0,0.04)"
             }}>
               <div style={{
-                background: "#0C2219", padding: "8px 16px", display: "flex",
-                alignItems: "center", gap: 8, color: "#FAF6EE"
+                padding: "14px 20px", background: `linear-gradient(135deg, ${T.primaryDk} 0%, ${T.primary} 100%)`,
+                color: "#FAF6EE", display: "flex", justifyContent: "space-between", alignItems: "center"
               }}>
-                <FaYoutube color="#EF4444" size={18} />
-                <span style={{ fontSize: "0.8rem", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  Official Worship Video
-                </span>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: "0.9rem" }}>
+                  <FaYoutube color="#EF4444" size={17}/> Official Worship Video
+                </div>
+                {watchUrl && (
+                  <a href={watchUrl} target="_blank" rel="noopener noreferrer" style={{ color: T.goldLt, fontSize: "0.78rem", fontWeight: 700, textDecoration: "none" }}>
+                    Watch on YouTube ↗
+                  </a>
+                )}
               </div>
-              <iframe
-                src={embedUrl}
-                title={song.title}
-                width="100%"
-                height="200"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                style={{ display: "block" }}
-              />
+              <div style={{ aspectRatio: "16/9" }}>
+                <iframe
+                  src={embedUrl}
+                  title={song.title}
+                  width="100%" height="100%"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
             </div>
           )}
+        </div>
 
-          {/* Song Technical Info Card */}
+        {/* ── RIGHT SIDEBAR ── */}
+        <div className="ct-songs-sidebar">
+
+          {/* Slide Deck Preview */}
+          <PPTDeckPreview
+            song={song}
+            onPresenterClick={() => setShowPresenter(true)}
+            onDownloadClick={handleDownloadPPT}
+          />
+
+          {/* YOUR FAVOURITES Card (Reference: tamilchristiansongs.in) */}
           <div style={{
-            background: "#FFFFFF", borderRadius: 16, padding: "20px 22px",
-            border: "1.5px solid #EDE5D8", boxShadow: "0 2px 10px rgba(0,0,0,0.02)"
+            background: T.bgCard, borderRadius: 16, padding: "18px 20px",
+            border: `1.5px solid ${T.border}`, boxShadow: "0 4px 16px rgba(0,0,0,0.03)"
           }}>
             <div style={{
-              fontSize: "0.78rem", fontWeight: 800, color: "#A88A42",
-              textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 14,
-              borderBottom: "1px solid #FAF6EE", paddingBottom: 8
+              fontSize: "0.78rem", fontWeight: 800, color: T.primary,
+              textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12,
+              paddingBottom: 8, borderBottom: `1.5px solid ${T.bgMuted}`,
+              display: "flex", alignItems: "center", gap: 7
             }}>
-              Hymn Details &amp; Arrangement
+              <FaHeart color={T.crimson} size={12}/> Your Favourites
             </div>
 
+            {favSongs.length === 0 ? (
+              <div style={{ color: T.textMuted, fontSize: "0.85rem", fontStyle: "italic", padding: "6px 0" }}>
+                Your favorites will be here.
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {favSongs.map(fav => (
+                  <div key={fav._id || fav.id} onClick={() => onSelectSong(fav)} style={{
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    padding: "7px 10px", borderRadius: 8, background: T.bg,
+                    cursor: "pointer", border: `1px solid ${T.border}`, transition: "all 0.15s"
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = T.gold}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = T.border}>
+                    <span style={{ fontSize: "0.82rem", fontWeight: 700, color: T.textDk, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {fav.title}
+                    </span>
+                    <FaChevronRight size={9} color={T.gold}/>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* CHORDS A-Z 7-Column Grid (Reference: tamilchristiansongs.in) */}
+          <div style={{
+            background: T.bgCard, borderRadius: 16, padding: "18px 20px",
+            border: `1.5px solid ${T.border}`, boxShadow: "0 4px 16px rgba(0,0,0,0.03)"
+          }}>
+            <div style={{
+              fontSize: "0.78rem", fontWeight: 800, color: T.primary,
+              textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12,
+              paddingBottom: 8, borderBottom: `1.5px solid ${T.bgMuted}`,
+              display: "flex", alignItems: "center", gap: 7
+            }}>
+              <FaGuitar size={13} color={T.primary}/> Chords A–Z
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 5 }}>
+              {CHORDS_KEYS_GRID.map(ch => (
+                <button key={ch} onClick={() => onChordSelect(ch)} style={{
+                  padding: "6px 2px", borderRadius: 6,
+                  border: `1px solid ${selectedChordKey === ch ? T.primary : T.border}`,
+                  background: selectedChordKey === ch ? T.primary : T.bg,
+                  color: selectedChordKey === ch ? "#FAF6EE" : T.textDk,
+                  fontWeight: 800, fontSize: "0.8rem", cursor: "pointer",
+                  transition: "all 0.15s", textAlign: "center"
+                }}>
+                  {ch}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Hymn Details Table */}
+          <div style={{
+            background: T.bgCard, borderRadius: 16, padding: "20px 22px",
+            border: `1.5px solid ${T.border}`
+          }}>
+            <div style={{
+              fontSize: "0.78rem", fontWeight: 800, color: T.goldDk,
+              textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 14,
+              borderBottom: `1px solid ${T.bg}`, paddingBottom: 8
+            }}>
+              Hymn Details
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {[
-                { label: "Original Key", value: song.key },
-                { label: "Tempo / Meter", value: song.tempo },
-                { label: "Author / Choir", value: song.author },
-                { label: "Theme Category", value: song.theme },
+                { label: "Key", value: song.key },
+                { label: "Tempo", value: song.tempo },
+                { label: "Author", value: song.author },
+                { label: "Theme", value: song.theme },
                 { label: "Language", value: song.language },
-                { label: "PowerPoint Deck", value: song.pptUrl ? "Available ✓" : "Pending" },
-                { label: "Chords Sheet", value: song.chords ? "Included ✓" : "Pending" },
-              ].filter(item => item.value).map(item => (
-                <div key={item.label} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.84rem", paddingBottom: 6, borderBottom: "1px solid #FAF6EE" }}>
-                  <span style={{ color: "#7A9288", fontWeight: 600 }}>{item.label}</span>
-                  <span style={{ color: item.value.includes("✓") ? "#16A34A" : "#184332", fontWeight: 700 }}>
-                    {item.value}
-                  </span>
+                { label: "PPT", value: song.pptUrl ? "Available ✓" : "Pending" },
+                { label: "Chords", value: song.chords ? "Included ✓" : "Pending" }
+              ].filter(i => i.value).map(item => (
+                <div key={item.label} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.84rem", paddingBottom: 6, borderBottom: `1px solid ${T.bg}` }}>
+                  <span style={{ color: T.textMuted, fontWeight: 600 }}>{item.label}</span>
+                  <span style={{ color: item.value?.includes?.("✓") ? T.green : T.textDk, fontWeight: 700 }}>{item.value}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Worship Setlist Recommendations */}
-          <div style={{
-            background: "#FAF6EE", borderRadius: 16, padding: "20px 22px",
-            border: "1.5px solid #EDE5D8"
-          }}>
-            <div style={{
-              fontSize: "0.78rem", fontWeight: 800, color: "#184332",
-              textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 14
-            }}>
-              Suggested For Worship Set
+          {/* Suggested Set */}
+          <div style={{ background: T.bg, borderRadius: 16, padding: "20px 22px", border: `1.5px solid ${T.border}` }}>
+            <div style={{ fontSize: "0.78rem", fontWeight: 800, color: T.primary, textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 14 }}>
+              Suggested Worship Set
             </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {relatedSongs.map(rel => {
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {related.map(rel => {
                 const thumb = getYouTubeThumbnail(rel.youtubeUrl);
                 return (
-                  <div
-                    key={rel._id || rel.id}
-                    onClick={() => onSelectSong(rel)}
-                    style={{
-                      display: "flex", gap: 12, alignItems: "center", cursor: "pointer",
-                      padding: "8px 10px", borderRadius: 10, background: "#FFFFFF",
-                      border: "1px solid #EDE5D8", transition: "all 0.15s"
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.borderColor = "#D6B66B"}
-                    onMouseLeave={e => e.currentTarget.style.borderColor = "#EDE5D8"}
-                  >
-                    <div style={{
-                      width: 44, height: 44, borderRadius: 8, overflow: "hidden",
-                      background: "#0C2219", flexShrink: 0, display: "flex",
-                      alignItems: "center", justifyContent: "center"
-                    }}>
-                      {thumb ? (
-                        <img src={thumb} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      ) : (
-                        <FaMusic size={16} color="#D6B66B" />
-                      )}
+                  <div key={rel._id || rel.id} onClick={() => onSelectSong(rel)} style={{
+                    display: "flex", gap: 10, alignItems: "center", cursor: "pointer",
+                    padding: "8px", borderRadius: 10, background: T.bgCard,
+                    border: `1px solid ${T.border}`, transition: "all 0.15s"
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = T.gold}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = T.border}>
+                    <div style={{ width: 42, height: 42, borderRadius: 7, overflow: "hidden", background: T.primaryDk, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      {thumb ? <img src={thumb} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }}/> : <FaMusic size={15} color={T.gold}/>}
                     </div>
-
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{
-                        fontSize: "0.85rem", fontWeight: 700, color: "#184332",
-                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"
-                      }}>
+                      <div style={{ fontSize: "0.84rem", fontWeight: 700, color: T.primary, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {rel.title}
                       </div>
-                      <div style={{ fontSize: "0.72rem", color: "#A88A42", fontWeight: 600 }}>
+                      <div style={{ fontSize: "0.7rem", color: T.goldDk, fontWeight: 600 }}>
                         {rel.key ? `Key: ${rel.key}` : rel.language}
                       </div>
                     </div>
@@ -1594,8 +1082,149 @@ function SongDetailView({ song, songs, onBack, onSelectSong }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   MAIN PUBLIC EXPORT: LYRICS COMPONENT
-   Routes: /songs/lyrics & /songs/lyrics/:id
+   SONG CARD COMPONENT (Fully Responsive for Phone & Desktop)
+═══════════════════════════════════════════════════════════════ */
+function SongCard({ song, onOpen, onShare, isFavorite, onToggleFavorite }) {
+  const thumb = getYouTubeThumbnail(song.youtubeUrl);
+  const snippet = (song.lyrics || song.englishLyrics || "").replace(/\[.*?\]/g, "").replace(/\n+/g, " ").trim().slice(0, 135);
+
+  return (
+    <div onClick={() => onOpen(song)} className="ct-song-card-item">
+      {/* Thumbnail */}
+      <div className="ct-song-card-thumb" style={{
+        width: 130, height: 80, borderRadius: 10,
+        overflow: "hidden", flexShrink: 0, background: T.primaryDk,
+        position: "relative", border: `1px solid rgba(212, 175, 55, 0.3)`
+      }}>
+        {thumb ? (
+          <>
+            <img src={thumb} alt={song.title} style={{ width: "100%", height: "100%", objectFit: "cover" }}/>
+            <div style={{
+              position: "absolute", inset: 0, background: "rgba(0,0,0,0.22)",
+              display: "flex", alignItems: "center", justifyContent: "center"
+            }}>
+              <div style={{
+                width: 26, height: 26, borderRadius: "50%",
+                background: "rgba(200, 29, 37, 0.92)",
+                display: "flex", alignItems: "center", justifyContent: "center", color: "#fff"
+              }}>
+                <FaPlay size={9} style={{ marginLeft: 2 }}/>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div style={{
+            width: "100%", height: "100%",
+            background: `linear-gradient(135deg, ${T.primaryDk} 0%, ${T.primary} 100%)`,
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            color: T.gold, gap: 4
+          }}>
+            <div style={{ fontSize: "1.2rem" }}>✝</div>
+            <div style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: 1, color: T.goldLt }}>
+              SANCTUARY
+            </div>
+          </div>
+        )}
+        {song.pptUrl && (
+          <div style={{
+            position: "absolute", bottom: 4, right: 4,
+            background: "#F59E0B", color: "#2C1A0E",
+            fontSize: "0.6rem", fontWeight: 900, padding: "1px 5px", borderRadius: 4
+          }}>
+            PPT
+          </div>
+        )}
+      </div>
+
+      {/* Info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
+          <h3 style={{
+            margin: 0, fontSize: "1.02rem", fontWeight: 800, color: T.textDk,
+            lineHeight: 1.3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+            fontFamily: "'Playfair Display', Georgia, serif"
+          }}>
+            {song.title}
+          </h3>
+          <span style={{
+            background: song.language?.toLowerCase() === "tamil" ? T.bgMuted : T.purpleLt,
+            color: song.language?.toLowerCase() === "tamil" ? T.primary : T.purple,
+            fontSize: "0.7rem", fontWeight: 800, padding: "2px 8px", borderRadius: 10, flexShrink: 0
+          }}>
+            {song.language}
+          </span>
+        </div>
+
+        <p style={{
+          margin: "0 0 8px", fontSize: "0.85rem", color: T.textMid,
+          fontStyle: "italic", lineHeight: 1.5,
+          overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical"
+        }}>
+          "{snippet}"
+        </p>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, fontSize: "0.74rem" }}>
+          {song.author && (
+            <span style={{ color: T.textMuted, fontWeight: 600 }}>
+              ✍ {song.author}
+            </span>
+          )}
+          {song.key && (
+            <span style={{
+              background: T.bg, color: T.goldDk, fontWeight: 700,
+              padding: "2px 8px", borderRadius: 10, border: `1px solid ${T.border}`
+            }}>
+              🎵 {song.key}
+            </span>
+          )}
+          {song.chords && (
+            <span style={{
+              background: T.purpleLt, color: T.purple, fontWeight: 800,
+              padding: "2px 8px", borderRadius: 10
+            }}>
+              🎸 Chords
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="ct-song-card-actions" style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+        <button onClick={e => { e.stopPropagation(); onToggleFavorite(song._id || song.id); }} style={{
+          padding: "8px 10px", borderRadius: 8,
+          background: isFavorite ? "#FEE2E2" : T.bg,
+          border: `1.5px solid ${isFavorite ? T.crimson : T.border}`,
+          color: isFavorite ? T.crimson : T.textMid,
+          cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center"
+        }} title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}>
+          {isFavorite ? <FaHeart size={13} color={T.crimson}/> : <FaRegHeart size={13}/>}
+        </button>
+
+        <button onClick={e => { e.stopPropagation(); onShare(song); }} style={{
+          padding: "8px 12px", borderRadius: 8, background: T.bg,
+          border: `1.5px solid ${T.border}`, color: T.textDk,
+          fontWeight: 700, fontSize: "0.82rem", cursor: "pointer",
+          display: "flex", alignItems: "center", gap: 5
+        }}>
+          <FaShareAlt size={11} color={T.gold}/> Share
+        </button>
+
+        <button onClick={e => { e.stopPropagation(); onOpen(song); }} style={{
+          padding: "8px 16px", borderRadius: 8, border: "none",
+          background: T.primary, color: T.goldLt,
+          fontWeight: 900, fontSize: "0.82rem", cursor: "pointer",
+          display: "flex", alignItems: "center", gap: 6,
+          boxShadow: `0 2px 8px rgba(138, 37, 82, 0.25)`
+        }}>
+          View <FaChevronRight size={10}/>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN LYRICS REPERTOIRE COMPONENT
 ═══════════════════════════════════════════════════════════════ */
 export default function Lyrics() {
   const { id } = useParams();
@@ -1605,454 +1234,571 @@ export default function Lyrics() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [langFilter, setLangFilter] = useState("All");
-  const [pptFilterOnly, setPptFilterOnly] = useState(false);
-  const [chordsFilterOnly, setChordsFilterOnly] = useState(false);
+  const [letterFilter, setLetterFilter] = useState("All");
+  const [chordsOnly, setChordsOnly] = useState(false);
+  const [selectedChordKey, setSelectedChordKey] = useState(null);
 
-  // Native device share handler
+  // Favorites state persisted in localStorage
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("ct_fav_songs") || "[]");
+    } catch {
+      return [];
+    }
+  });
+
+  const toggleFavorite = (songId) => {
+    setFavorites(prev => {
+      const next = prev.includes(songId) ? prev.filter(x => x !== songId) : [...prev, songId];
+      try { localStorage.setItem("ct_fav_songs", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
+
   const handleShareSong = async (songToShare) => {
-    const shareUrl = typeof window !== "undefined"
-      ? `${window.location.origin}/songs/lyrics/${songToShare._id || songToShare.id}`
-      : "";
-
-    const shareData = {
-      title: `${songToShare.title} — Christ's Tabernacle Worship`,
-      text: `🎶 Worship with "${songToShare.title}" at Christ's Tabernacle Prayer & Worship Centre\n${shareUrl}`,
-      url: shareUrl,
+    const url = `${window.location.origin}/songs/lyrics/${songToShare._id || songToShare.id}`;
+    const data = {
+      title: `${songToShare.title} — Christ's Tabernacle`,
+      text: `🎶 "${songToShare.title}"\n${url}`,
+      url
     };
-
-    if (typeof navigator !== "undefined" && navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        // User closed native share
-      }
-    } else if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(shareUrl);
+    if (navigator.share) {
+      try { await navigator.share(data); } catch {}
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
       alert("Song link copied to clipboard!");
     }
   };
 
-  // Load all songs once
   useEffect(() => {
     getPublicSongs()
-      .then(data => {
-        setSongs(data && data.length > 0 ? data : DEFAULT_SONGS);
-      })
-      .catch(() => {
-        setSongs(DEFAULT_SONGS);
-      })
+      .then(data => setSongs(data && data.length > 0 ? data : DEFAULT_SONGS))
+      .catch(() => setSongs(DEFAULT_SONGS))
       .finally(() => setLoading(false));
   }, []);
 
-  // When id param exists, find matching song
-  const activeSong = id
-    ? songs.find(s => String(s._id) === String(id) || String(s.id) === String(id))
-    : null;
+  const activeSong = id ? songs.find(s => String(s._id) === String(id) || String(s.id) === String(id)) : null;
 
-  // Navigate to song details (updates URL to /songs/lyrics/:id)
   const openSong = (song) => {
     navigate(`/songs/lyrics/${song._id || song.id}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  // Back to songs listing
   const handleBackToList = () => {
     navigate("/songs/lyrics");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Filter songs
-  const filtered = songs.filter(s => {
-    const matchLang = langFilter === "All" || s.language?.toLowerCase() === langFilter.toLowerCase();
-    const q = search.toLowerCase().trim();
-    const matchSearch = !q ||
-      s.title?.toLowerCase().includes(q) ||
-      s.lyrics?.toLowerCase().includes(q) ||
-      s.englishLyrics?.toLowerCase().includes(q) ||
-      s.author?.toLowerCase().includes(q) ||
-      s.theme?.toLowerCase().includes(q);
-
-    const matchPpt = !pptFilterOnly || !!s.pptUrl;
-    const matchChords = !chordsFilterOnly || !!s.chords;
-
-    return matchLang && matchSearch && matchPpt && matchChords;
-  });
-
-  const extractSnippet = (text, len = 120) => {
-    if (!text) return "";
-    return text.replace(/\[.*?\]/g, "").replace(/\n+/g, " ").trim().slice(0, len) + (text.length > len ? "…" : "");
+  const handleChordSelect = (key) => {
+    if (selectedChordKey === key) {
+      setSelectedChordKey(null);
+      setSearch("");
+    } else {
+      setSelectedChordKey(key);
+      setSearch(key);
+      setLetterFilter("All");
+    }
   };
 
-  /* ═══════════════════════════════════════════════════════════
-     VIEW 1: SONG DETAIL VIEW (/songs/lyrics/:id)
-  ═══════════════════════════════════════════════════════════ */
-  if (id) {
-    if (loading) {
-      return (
-        <div style={{ textAlign: "center", padding: "100px 20px" }}>
-          <div style={{ fontSize: "2rem", color: "#D6B66B", animation: "pulse 1.2s infinite" }}>✝</div>
-          <div style={{ marginTop: 16, fontSize: "1rem", color: "#184332", fontWeight: 700 }}>
-            Loading Sanctuary Song Sheet...
-          </div>
-        </div>
-      );
-    }
+  const filtered = songs
+    .filter(s => {
+      const matchLang = langFilter === "All" || s.language?.toLowerCase() === langFilter.toLowerCase();
+      const q = search.toLowerCase().trim();
+      const matchSearch = !q ||
+        s.title?.toLowerCase().includes(q) ||
+        s.lyrics?.toLowerCase().includes(q) ||
+        s.englishLyrics?.toLowerCase().includes(q) ||
+        s.author?.toLowerCase().includes(q) ||
+        s.key?.toLowerCase().includes(q);
+      const matchChords = !chordsOnly || !!s.chords;
+      const matchLetter = letterFilter === "All" ||
+        (letterFilter === "த" ? s.title?.includes("த") : s.title?.[0]?.toUpperCase() === letterFilter);
+      return matchLang && matchSearch && matchChords && matchLetter;
+    })
+    .sort((a, b) => a.title?.localeCompare(b.title));
 
-    if (!activeSong) {
-      return (
-        <div style={{ textAlign: "center", padding: "100px 20px" }}>
-          <FaMusic size={42} color="#D6B66B" style={{ marginBottom: 16, opacity: 0.6 }} />
-          <h2 style={{ fontSize: "1.5rem", color: "#184332", marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>
-            Song Not Found in Repertoire
-          </h2>
-          <p style={{ color: "#7A9288", marginBottom: 24 }}>
-            The song you are looking for may have been updated or moved.
-          </p>
-          <button
-            onClick={handleBackToList}
-            style={{
-              padding: "10px 24px", borderRadius: 30, background: "#184332",
-              color: "#FAF6EE", border: "none", fontWeight: 800, cursor: "pointer"
-            }}
-          >
-            ← Browse All Songs
-          </button>
-        </div>
-      );
-    }
+  const favSongs = songs.filter(s => favorites.includes(s._id || s.id));
 
-    return (
-      <SongDetailView
-        song={activeSong}
-        songs={songs}
-        onBack={handleBackToList}
-        onSelectSong={openSong}
-      />
-    );
-  }
-
-  /* ═══════════════════════════════════════════════════════════
-     VIEW 2: SONG LISTING VIEW (/songs/lyrics)
-  ═══════════════════════════════════════════════════════════ */
   return (
-    <div style={{ maxWidth: 1260, margin: "0 auto" }}>
+    <>
+      {/* ── RESPONSIVE STYLE SHEET ── */}
+      <style>{`
+        .ct-songs-grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 340px;
+          gap: 30px;
+          align-items: start;
+        }
+        .ct-songs-sidebar {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+        .ct-song-card-item {
+          background: #FFFFFF;
+          border-radius: 16px;
+          border: 1.5px solid ${T.border};
+          padding: 16px 20px;
+          display: flex;
+          gap: 18px;
+          align-items: center;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .ct-song-card-item:hover {
+          border-color: ${T.gold};
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(138, 37, 82, 0.1);
+        }
+        .ct-lyrics-box {
+          background: #FFFFFF;
+          border: 1.5px solid ${T.border};
+          border-radius: 18px;
+          padding: 34px 40px;
+          box-shadow: 0 8px 30px rgba(138, 37, 82, 0.06);
+          position: relative;
+        }
+        .ct-detail-actions {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .ct-az-bar {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          justify-content: center;
+        }
 
-      {/* Sanctuary Search & Header Bar */}
-      <div style={{
-        background: "linear-gradient(135deg, #0C2219 0%, #184332 100%)",
-        borderRadius: 20,
-        padding: "36px 36px 30px",
-        marginBottom: 32,
-        color: "#FAF6EE",
-        border: "1.5px solid rgba(214, 182, 107, 0.3)",
-        boxShadow: "0 10px 30px rgba(12, 34, 25, 0.15)"
-      }}>
-        <div style={{ maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
-          <div style={{ color: "#D6B66B", fontSize: "0.78rem", fontWeight: 800, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>
-            † Christ's Tabernacle Hymnal †
+        /* ── Tablet & Small Laptops (<= 992px) ── */
+        @media (max-width: 992px) {
+          .ct-songs-grid-layout {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
+          .ct-songs-sidebar {
+            position: static !important;
+          }
+        }
+
+        /* ── Phones & Handhelds (<= 640px) ── */
+        @media (max-width: 640px) {
+          .ct-song-card-item {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            padding: 14px 16px !important;
+            gap: 12px !important;
+          }
+          .ct-song-card-thumb {
+            width: 100% !important;
+            height: 150px !important;
+          }
+          .ct-song-card-actions {
+            width: 100% !important;
+            justify-content: space-between !important;
+            padding-top: 8px !important;
+            border-top: 1px dashed ${T.border} !important;
+          }
+          .ct-lyrics-box {
+            padding: 20px 16px !important;
+            border-radius: 14px !important;
+          }
+          .ct-detail-actions {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .ct-detail-actions-group {
+            width: 100% !important;
+          }
+          .ct-detail-actions-group > button {
+            flex: 1 1 45% !important;
+            justify-content: center !important;
+            padding: 8px 10px !important;
+          }
+          .ct-az-bar {
+            gap: 3px !important;
+            padding: 8px 6px !important;
+          }
+          .ct-az-btn {
+            padding: 5px 7px !important;
+            font-size: 0.74rem !important;
+            min-width: 26px !important;
+          }
+        }
+      `}</style>
+
+      {/* ── 1. DETAIL VIEW (/songs/lyrics/:id) ── */}
+      {id ? (
+        loading ? (
+          <div style={{ textAlign: "center", padding: "100px 20px" }}>
+            <div style={{ fontSize: "2rem", color: T.gold, animation: "pulse 1.2s infinite" }}>✝</div>
+            <div style={{ marginTop: 16, fontSize: "1.05rem", color: T.primary, fontWeight: 700 }}>
+              Loading Hymn Sheet...
+            </div>
           </div>
-          <h2 style={{ fontSize: "clamp(1.5rem, 2.6vw, 2.2rem)", fontWeight: 800, margin: "0 0 12px", fontFamily: "'Playfair Display', serif" }}>
-            Search Worship Songs &amp; PowerPoint Slides
-          </h2>
-          <p style={{ color: "#EAF2EE", fontSize: "0.92rem", lineHeight: 1.6, margin: "0 0 24px" }}>
-            Access verified Tamil &amp; English lyrics, transposable musical chords, and presentation slide decks for Sunday services.
-          </p>
-
-          {/* Search Input Box */}
-          <div style={{
-            display: "flex", alignItems: "center", gap: 12,
-            background: "#FFFFFF", borderRadius: 40, padding: "8px 22px",
-            boxShadow: "0 8px 28px rgba(0,0,0,0.25)", border: "2px solid #D6B66B"
-          }}>
-            <FaSearch color="#184332" size={16} />
-            <input
-              type="text"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Search by Tamil title, English words, author (e.g. Gersson), or lyrics..."
-              style={{
-                flex: 1, border: "none", outline: "none", fontSize: "0.98rem",
-                color: "#184332", background: "transparent", fontWeight: 600
-              }}
-            />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "#7A9288", display: "flex" }}
-              >
-                <FaTimes size={14} />
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Filter Tabs & Quick Action Badges */}
-      <div style={{
-        display: "flex", justifyContent: "space-between", alignItems: "center",
-        marginBottom: 24, flexWrap: "wrap", gap: 14
-      }}>
-        {/* Language Tabs */}
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          {[
-            { key: "All", label: "All Songs" },
-            { key: "Tamil", label: "தமிழ் Tamil" },
-            { key: "English", label: "English" },
-          ].map(lang => (
-            <button
-              key={lang.key}
-              onClick={() => setLangFilter(lang.key)}
-              style={{
-                padding: "8px 20px", borderRadius: 24,
-                background: langFilter === lang.key ? "#184332" : "#FFFFFF",
-                color: langFilter === lang.key ? "#FAF6EE" : "#4A6355",
-                fontWeight: 800, fontSize: "0.85rem", cursor: "pointer",
-                boxShadow: langFilter === lang.key ? "0 4px 14px rgba(24,67,50,0.25)" : "0 1px 4px rgba(0,0,0,0.06)",
-                border: `1.5px solid ${langFilter === lang.key ? "#184332" : "#EDE5D8"}`,
-                transition: "all 0.15s"
-              }}
-            >
-              {lang.label}
+        ) : !activeSong ? (
+          <div style={{ textAlign: "center", padding: "100px 20px" }}>
+            <FaMusic size={42} color={T.gold} style={{ marginBottom: 16, opacity: 0.6 }}/>
+            <h2 style={{ fontSize: "1.5rem", color: T.primary, marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>
+              Hymn Not Found
+            </h2>
+            <p style={{ color: T.textMuted, marginBottom: 24 }}>
+              The song you are looking for may have been moved or updated.
+            </p>
+            <button onClick={handleBackToList} style={{
+              padding: "10px 24px", borderRadius: 30, background: T.primary,
+              color: "#FAF6EE", border: "none", fontWeight: 800, cursor: "pointer"
+            }}>
+              ← Browse Repertoire
             </button>
-          ))}
-        </div>
-
-        {/* Feature Toggles (PPT / Chords) */}
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <button
-            onClick={() => setPptFilterOnly(v => !v)}
-            style={{
-              display: "flex", alignItems: "center", gap: 6,
-              padding: "7px 14px", borderRadius: 20,
-              background: pptFilterOnly ? "#F59E0B" : "#FFFFFF",
-              color: pptFilterOnly ? "#0C2219" : "#4A6355",
-              border: `1.5px solid ${pptFilterOnly ? "#F59E0B" : "#EDE5D8"}`,
-              fontWeight: 700, fontSize: "0.8rem", cursor: "pointer"
-            }}
-          >
-            <FaFilePowerpoint size={12} color={pptFilterOnly ? "#0C2219" : "#F59E0B"} />
-            With PPT Deck
-          </button>
-
-          <button
-            onClick={() => setChordsFilterOnly(v => !v)}
-            style={{
-              display: "flex", alignItems: "center", gap: 6,
-              padding: "7px 14px", borderRadius: 20,
-              background: chordsFilterOnly ? "#7C3AED" : "#FFFFFF",
-              color: chordsFilterOnly ? "#FFFFFF" : "#4A6355",
-              border: `1.5px solid ${chordsFilterOnly ? "#7C3AED" : "#EDE5D8"}`,
-              fontWeight: 700, fontSize: "0.8rem", cursor: "pointer"
-            }}
-          >
-            <FaGuitar size={12} color={chordsFilterOnly ? "#FFFFFF" : "#7C3AED"} />
-            With Chords
-          </button>
-
-          <span style={{ fontSize: "0.84rem", color: "#7A9288", fontWeight: 700, marginLeft: 6 }}>
-            {filtered.length} song{filtered.length !== 1 ? "s" : ""}
-          </span>
-        </div>
-      </div>
-
-      {/* Repertoire Song List Cards */}
-      {loading ? (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {[1, 2, 3, 4].map(i => (
-            <div key={i} style={{ background: "#fff", borderRadius: 16, height: 120, border: "1px solid #EDE5D8", animation: "pulse 1.4s infinite" }} />
-          ))}
-        </div>
-      ) : filtered.length === 0 ? (
-        <div style={{
-          background: "#FFFFFF", borderRadius: 20, padding: "80px 20px",
-          textAlign: "center", border: "1.5px solid #EDE5D8"
-        }}>
-          <FaMusic size={40} color="#D6B66B" style={{ opacity: 0.5, marginBottom: 16 }} />
-          <h3 style={{ margin: "0 0 8px", fontSize: "1.2rem", fontWeight: 800, color: "#184332", fontFamily: "'Playfair Display', serif" }}>
-            No Matching Worship Songs Found
-          </h3>
-          <p style={{ margin: 0, color: "#7A9288" }}>
-            Try adjusting your search keywords or toggle off filter options.
-          </p>
-        </div>
+          </div>
+        ) : (
+          <SongDetailView
+            song={activeSong}
+            songs={songs}
+            onBack={handleBackToList}
+            onSelectSong={openSong}
+            favorites={favorites}
+            onToggleFavorite={toggleFavorite}
+            onLetterSelect={(l) => { setLetterFilter(l); handleBackToList(); }}
+            onChordSelect={(c) => { handleChordSelect(c); handleBackToList(); }}
+            selectedChordKey={selectedChordKey}
+          />
+        )
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {filtered.map((song) => {
-            const thumb = getYouTubeThumbnail(song.youtubeUrl);
-            const snippet = extractSnippet(song.lyrics || song.englishLyrics, 140);
+        /* ── 2. REPERTOIRE LISTING VIEW ── */
+        <div style={{ maxWidth: 1380, margin: "0 auto", padding: "0 16px 60px" }}>
 
-            return (
-              <div
-                key={song._id || song.id}
-                onClick={() => openSong(song)}
-                style={{
-                  background: "#FFFFFF",
-                  borderRadius: 16,
-                  border: "1.5px solid #EDE5D8",
-                  padding: "18px 24px",
-                  display: "flex",
-                  gap: 20,
-                  alignItems: "center",
-                  cursor: "pointer",
-                  transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.02)",
-                  position: "relative"
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = "#D6B66B";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(24, 67, 50, 0.08)";
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "#EDE5D8";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.02)";
-                }}
-              >
-                {/* Left Visual Box: YouTube Thumbnail or PPT Slide Preview */}
-                <div style={{
-                  width: 140, height: 86, borderRadius: 12, overflow: "hidden",
-                  flexShrink: 0, background: "#0C2219", position: "relative",
-                  border: "1px solid rgba(214,182,107,0.3)"
+          {/* Hero Header with Search */}
+          <div style={{
+            background: `linear-gradient(135deg, ${T.primaryDk} 0%, #133929 40%, ${T.primary} 100%)`,
+            borderRadius: 22, padding: "34px 28px 28px", marginBottom: 22,
+            color: "#FAF6EE", border: `1.5px solid ${T.borderGold}`,
+            boxShadow: `0 12px 36px rgba(12, 34, 25, 0.2)`
+          }}>
+            <div style={{ maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
+              <div style={{
+                color: T.goldLt, fontSize: "0.82rem", fontWeight: 800,
+                letterSpacing: 2.2, textTransform: "uppercase", marginBottom: 8
+              }}>
+                ✝ Christ's Tabernacle Sacred Hymnal ✝
+              </div>
+              <h1 style={{
+                fontSize: "clamp(1.5rem, 2.8vw, 2.3rem)", fontWeight: 800,
+                margin: "0 0 10px", fontFamily: "'Playfair Display', serif"
+              }}>
+                Worship Songs &amp; Chords Repertoire
+              </h1>
+              <p style={{ color: "rgba(250, 246, 238, 0.9)", fontSize: "0.92rem", lineHeight: 1.6, margin: "0 0 22px" }}>
+                Browse Tamil &amp; English worship songs alphabetically, chords A–Z, lyrics sheets, and projection slide decks.
+              </p>
+
+              <div style={{
+                display: "flex", alignItems: "center", gap: 12,
+                background: "#fff", borderRadius: 40, padding: "8px 20px",
+                boxShadow: "0 8px 30px rgba(0,0,0,0.3)", border: `2px solid ${T.gold}`
+              }}>
+                <FaSearch color={T.primary} size={16}/>
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="Search title, Tamil lyrics, composer, or chord..."
+                  style={{
+                    flex: 1, border: "none", outline: "none", fontSize: "0.96rem",
+                    color: T.primary, background: "transparent", fontWeight: 600, minWidth: 0
+                  }}
+                />
+                {search && (
+                  <button onClick={() => setSearch("")} style={{ background: "none", border: "none", cursor: "pointer", color: T.textMuted, display: "flex" }}>
+                    <FaTimes size={14}/>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* A-Z Letter Nav Bar */}
+          <div className="ct-az-bar" style={{
+            background: T.primaryDk, borderRadius: 12, padding: "10px 14px",
+            marginBottom: 24,
+            boxShadow: `0 4px 18px rgba(12, 34, 25, 0.2)`
+          }}>
+            {ALPHABET.map(letter => {
+              const isSelected = letterFilter === letter;
+              return (
+                <button key={letter} onClick={() => { setLetterFilter(letter); setSearch(""); }} className="ct-az-btn" style={{
+                  padding: "6px 12px", borderRadius: 6, border: "none", fontWeight: 800,
+                  fontSize: letter === "All" || letter === "த" ? "0.8rem" : "0.88rem",
+                  cursor: "pointer", transition: "all 0.15s",
+                  background: isSelected ? T.gold : "rgba(255,255,255,0.08)",
+                  color: isSelected ? "#112218" : "#FAF6EE",
+                  minWidth: letter === "All" ? 42 : 32
                 }}>
-                  {thumb ? (
-                    <>
-                      <img src={thumb} alt={song.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      <div style={{
-                        position: "absolute", inset: 0, background: "rgba(0,0,0,0.25)",
-                        display: "flex", alignItems: "center", justifyContent: "center"
-                      }}>
-                        <div style={{ width: 28, height: 28, borderRadius: "50%", background: "rgba(220,38,38,0.9)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}>
-                          <FaPlay size={10} style={{ marginLeft: 2 }} />
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div style={{
-                      width: "100%", height: "100%",
-                      background: "linear-gradient(135deg, #0C2219 0%, #184332 100%)",
-                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                      color: "#D6B66B", gap: 4
-                    }}>
-                      <div style={{ fontSize: "1.2rem" }}>✝</div>
-                      <div style={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 1, color: "#E8CC8F" }}>
-                        SANCTUARY
-                      </div>
-                    </div>
-                  )}
+                  {letter}
+                </button>
+              );
+            })}
+          </div>
 
-                  {/* Corner Badge */}
-                  {song.pptUrl && (
-                    <div style={{
-                      position: "absolute", bottom: 4, right: 4,
-                      background: "#F59E0B", color: "#0C2219",
-                      fontSize: "0.62rem", fontWeight: 900, padding: "1px 5px",
-                      borderRadius: 4
+          {/* Two-Column Responsive Layout */}
+          <div className="ct-songs-grid-layout">
+
+            {/* ── LEFT: Filter Sub-bar & Songs List ── */}
+            <div>
+              {/* Sub-bar Filter (Language pills & Chords toggle) */}
+              <div style={{
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                marginBottom: 20, flexWrap: "wrap", gap: 10
+              }}>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  {[
+                    { key: "All", label: "All Songs" },
+                    { key: "Tamil", label: "தமிழ் Tamil" },
+                    { key: "English", label: "English" }
+                  ].map(lang => (
+                    <button key={lang.key} onClick={() => setLangFilter(lang.key)} style={{
+                      padding: "7px 16px", borderRadius: 22,
+                      background: langFilter === lang.key ? T.primary : T.bgCard,
+                      color: langFilter === lang.key ? "#FAF6EE" : T.textMid,
+                      fontWeight: 800, fontSize: "0.82rem", cursor: "pointer",
+                      border: `1.5px solid ${langFilter === lang.key ? T.primary : T.border}`,
+                      boxShadow: langFilter === lang.key ? `0 4px 14px rgba(24, 67, 50, 0.25)` : "0 1px 4px rgba(0,0,0,0.06)"
                     }}>
-                      PPT
-                    </div>
-                  )}
+                      {lang.label}
+                    </button>
+                  ))}
                 </div>
 
-                {/* Center: Title & Lyrics Preview */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                    <h3 style={{
-                      margin: 0, fontSize: "1.1rem", fontWeight: 800,
-                      color: "#184332", lineHeight: 1.3,
-                      whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                      fontFamily: "'Playfair Display', Georgia, serif"
-                    }}>
-                      {song.title}
-                    </h3>
-
-                    <span style={{
-                      background: song.language?.toLowerCase() === "tamil" ? "#EAF2EE" : "#F5F3FF",
-                      color: song.language?.toLowerCase() === "tamil" ? "#184332" : "#6D28D9",
-                      fontSize: "0.72rem", fontWeight: 800, padding: "2px 8px", borderRadius: 12,
-                      flexShrink: 0
-                    }}>
-                      {song.language}
-                    </span>
-                  </div>
-
-                  <p style={{
-                    margin: "0 0 10px", fontSize: "0.85rem", color: "#4A6355",
-                    fontStyle: "italic", lineHeight: 1.5,
-                    overflow: "hidden", display: "-webkit-box",
-                    WebkitLineClamp: 2, WebkitBoxOrient: "vertical"
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <button onClick={() => setChordsOnly(v => !v)} style={{
+                    display: "flex", alignItems: "center", gap: 6,
+                    padding: "7px 14px", borderRadius: 18,
+                    background: chordsOnly ? T.purple : T.bgCard,
+                    color: chordsOnly ? "#fff" : T.textMid,
+                    border: `1.5px solid ${chordsOnly ? T.purple : T.border}`,
+                    fontWeight: 800, fontSize: "0.8rem", cursor: "pointer"
                   }}>
-                    "{snippet}"
-                  </p>
-
-                  {/* Badges */}
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8, fontSize: "0.76rem" }}>
-                    {song.author && (
-                      <span style={{ color: "#7A9288", fontWeight: 600 }}>
-                        ✍ {song.author}
-                      </span>
-                    )}
-                    {song.key && (
-                      <span style={{ background: "#FAF6EE", color: "#A88A42", fontWeight: 700, padding: "1px 8px", borderRadius: 10, border: "1px solid #EDE5D8" }}>
-                        🎵 Key: {song.key}
-                      </span>
-                    )}
-                    {song.pptUrl && (
-                      <span style={{ background: "#FEF3C7", color: "#92400E", fontWeight: 800, padding: "1px 8px", borderRadius: 10 }}>
-                        📊 PPT Ready
-                      </span>
-                    )}
-                    {song.chords && (
-                      <span style={{ background: "#F5F3FF", color: "#6D28D9", fontWeight: 800, padding: "1px 8px", borderRadius: 10 }}>
-                        🎸 Chords
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Right: Actions */}
-                <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleShareSong(song);
-                    }}
-                    title="Share this song via device"
-                    style={{
-                      padding: "9px 14px", borderRadius: 10,
-                      background: "#FAF6EE", border: "1.5px solid #EDE5D8",
-                      color: "#184332", fontWeight: 700,
-                      fontSize: "0.84rem", cursor: "pointer",
-                      display: "flex", alignItems: "center", gap: 6,
-                      transition: "all 0.15s"
-                    }}
-                  >
-                    <FaShareAlt size={12} color="#A88A42" />
-                    <span>Share</span>
+                    <FaGuitar size={11} color={chordsOnly ? "#fff" : T.purple}/> Chords Only
                   </button>
 
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openSong(song);
-                    }}
-                    style={{
-                      padding: "9px 18px", borderRadius: 10, border: "none",
-                      background: "#184332", color: "#D6B66B", fontWeight: 800,
-                      fontSize: "0.84rem", cursor: "pointer",
-                      display: "flex", alignItems: "center", gap: 6,
-                      boxShadow: "0 2px 8px rgba(24,67,50,0.2)"
-                    }}
-                  >
-                    <span>View Lyrics</span>
-                    <FaChevronRight size={11} />
-                  </button>
+                  <span style={{ fontSize: "0.84rem", color: T.textMuted, fontWeight: 800 }}>
+                    {filtered.length} song{filtered.length !== 1 ? "s" : ""}
+                  </span>
                 </div>
               </div>
-            );
-          })}
+
+              {/* Songs List */}
+              {loading ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} style={{ background: T.bgCard, borderRadius: 14, height: 110, border: `1px solid ${T.border}`, opacity: 0.5 }}/>
+                  ))}
+                </div>
+              ) : filtered.length === 0 ? (
+                <div style={{
+                  background: T.bgCard, borderRadius: 18, padding: "70px 20px",
+                  textAlign: "center", border: `1.5px solid ${T.border}`
+                }}>
+                  <FaMusic size={40} color={T.gold} style={{ opacity: 0.5, marginBottom: 14 }}/>
+                  <h3 style={{ margin: "0 0 8px", fontSize: "1.2rem", fontWeight: 800, color: T.primary, fontFamily: "'Playfair Display', serif" }}>
+                    No Songs Found
+                  </h3>
+                  <p style={{ margin: "0 0 16px", color: T.textMuted }}>
+                    Try adjusting your search query, alphabet letter, or language filters.
+                  </p>
+                  <button onClick={() => { setSearch(""); setLetterFilter("All"); setLangFilter("All"); setChordsOnly(false); }} style={{
+                    padding: "8px 20px", borderRadius: 20, background: T.primary,
+                    color: "#FAF6EE", border: "none", fontWeight: 800, cursor: "pointer"
+                  }}>
+                    Reset All Filters
+                  </button>
+                </div>
+              ) : !search && letterFilter === "All" ? (
+                // Grouped Alphabetically by Letter
+                (() => {
+                  const groups = {};
+                  filtered.forEach(s => {
+                    const l = s.title?.[0]?.toUpperCase() || "#";
+                    if (!groups[l]) groups[l] = [];
+                    groups[l].push(s);
+                  });
+                  return Object.keys(groups).sort().map(letter => (
+                    <div key={letter} style={{ marginBottom: 16 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10, marginTop: 12 }}>
+                        <div style={{
+                          width: 36, height: 36, borderRadius: 8,
+                          background: T.primary, color: "#FAF6EE",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontWeight: 900, fontSize: "1.1rem", flexShrink: 0
+                        }}>
+                          {letter}
+                        </div>
+                        <div style={{ flex: 1, height: 1.5, background: T.border }}/>
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                        {groups[letter].map(s => (
+                          <SongCard
+                            key={s._id || s.id}
+                            song={s}
+                            onOpen={openSong}
+                            onShare={handleShareSong}
+                            isFavorite={favorites.includes(s._id || s.id)}
+                            onToggleFavorite={toggleFavorite}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ));
+                })()
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  {filtered.map(s => (
+                    <SongCard
+                      key={s._id || s.id}
+                      song={s}
+                      onOpen={openSong}
+                      onShare={handleShareSong}
+                      isFavorite={favorites.includes(s._id || s.id)}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* ── RIGHT SIDEBAR ── */}
+            <div className="ct-songs-sidebar">
+
+              {/* YOUR FAVOURITES Card (Reference: tamilchristiansongs.in) */}
+              <div style={{
+                background: T.bgCard, borderRadius: 16, padding: "18px 20px",
+                border: `1.5px solid ${T.border}`, boxShadow: "0 4px 16px rgba(0,0,0,0.03)"
+              }}>
+                <div style={{
+                  fontSize: "0.78rem", fontWeight: 800, color: T.primary,
+                  textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12,
+                  paddingBottom: 8, borderBottom: `1.5px solid ${T.bgMuted}`,
+                  display: "flex", alignItems: "center", gap: 7
+                }}>
+                  <FaHeart color={T.crimson} size={12}/> Your Favourites
+                </div>
+
+                {favSongs.length === 0 ? (
+                  <div style={{ color: T.textMuted, fontSize: "0.85rem", fontStyle: "italic", padding: "6px 0" }}>
+                    Your favorites will be here.
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {favSongs.map(fav => (
+                      <div key={fav._id || fav.id} onClick={() => openSong(fav)} style={{
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                        padding: "7px 10px", borderRadius: 8, background: T.bg,
+                        cursor: "pointer", border: `1px solid ${T.border}`, transition: "all 0.15s"
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.borderColor = T.gold}
+                      onMouseLeave={e => e.currentTarget.style.borderColor = T.border}>
+                        <span style={{ fontSize: "0.82rem", fontWeight: 700, color: T.textDk, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {fav.title}
+                        </span>
+                        <FaChevronRight size={9} color={T.gold}/>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* CHORDS A-Z (Reference: tamilchristiansongs.in) */}
+              <div style={{
+                background: T.bgCard, borderRadius: 16, padding: "18px 20px",
+                border: `1.5px solid ${T.border}`, boxShadow: "0 4px 16px rgba(0,0,0,0.03)"
+              }}>
+                <div style={{
+                  fontSize: "0.78rem", fontWeight: 800, color: T.primary,
+                  textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12,
+                  paddingBottom: 8, borderBottom: `1.5px solid ${T.bgMuted}`,
+                  display: "flex", alignItems: "center", gap: 7
+                }}>
+                  <FaGuitar size={13} color={T.primary}/> Chords A–Z
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 5 }}>
+                  {CHORDS_KEYS_GRID.map(ch => (
+                    <button key={ch} onClick={() => handleChordSelect(ch)} style={{
+                      padding: "6px 2px", borderRadius: 6,
+                      border: `1px solid ${selectedChordKey === ch ? T.primary : T.border}`,
+                      background: selectedChordKey === ch ? T.primary : T.bg,
+                      color: selectedChordKey === ch ? "#FAF6EE" : T.textDk,
+                      fontWeight: 800, fontSize: "0.8rem", cursor: "pointer",
+                      transition: "all 0.15s", textAlign: "center"
+                    }}>
+                      {ch}
+                    </button>
+                  ))}
+                </div>
+
+                {selectedChordKey && (
+                  <button onClick={() => { setSelectedChordKey(null); setSearch(""); }} style={{
+                    marginTop: 12, width: "100%", padding: "7px", borderRadius: 8,
+                    border: `1px solid ${T.border}`, background: T.bgMuted,
+                    color: T.primary, fontWeight: 700, fontSize: "0.78rem", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 6
+                  }}>
+                    <FaTimes size={10}/> Clear Chord Filter ({selectedChordKey})
+                  </button>
+                )}
+              </div>
+
+              {/* Scripture Encouragement */}
+              <div style={{
+                background: `linear-gradient(135deg, ${T.primary} 0%, ${T.primaryLt} 100%)`,
+                borderRadius: 16, padding: "20px", color: "#FAF6EE",
+                border: `1.5px solid ${T.borderGold}`, textAlign: "center"
+              }}>
+                <div style={{ color: T.goldLt, fontSize: "1.5rem", marginBottom: 8 }}>✝</div>
+                <p style={{
+                  margin: "0 0 10px", fontSize: "0.94rem", lineHeight: 1.7,
+                  fontStyle: "italic", fontFamily: "'Playfair Display', serif"
+                }}>
+                  "Sing to the LORD a new song; sing to the LORD, all the earth."
+                </p>
+                <div style={{ fontSize: "0.76rem", color: T.goldLt, fontWeight: 800, letterSpacing: 1 }}>
+                  — Psalm 96:1
+                </div>
+              </div>
+
+              {/* Repertoire Stats */}
+              <div style={{ background: T.bg, borderRadius: 16, padding: "18px 20px", border: `1.5px solid ${T.border}` }}>
+                <div style={{
+                  fontSize: "0.76rem", fontWeight: 800, color: T.primary,
+                  textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12
+                }}>
+                  Repertoire Stats
+                </div>
+                {[
+                  { label: "Total Hymns", value: songs.length },
+                  { label: "Tamil Songs", value: songs.filter(s => s.language?.toLowerCase() === "tamil").length },
+                  { label: "English Songs", value: songs.filter(s => s.language?.toLowerCase() === "english").length },
+                  { label: "With Chords", value: songs.filter(s => !!s.chords).length },
+                  { label: "With PPT Deck", value: songs.filter(s => !!s.pptUrl).length },
+                ].map(stat => (
+                  <div key={stat.label} style={{
+                    display: "flex", justifyContent: "space-between",
+                    paddingBottom: 6, borderBottom: `1px solid ${T.border}`,
+                    marginBottom: 6, fontSize: "0.82rem"
+                  }}>
+                    <span style={{ color: T.textMuted, fontWeight: 600 }}>{stat.label}</span>
+                    <span style={{ color: T.primary, fontWeight: 800 }}>{stat.value}</span>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

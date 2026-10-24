@@ -60,7 +60,7 @@ export default function Footer() {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at 50% 0%, rgba(214,182,107,0.12) 0%, transparent 55%);
+          background: radial-gradient(ellipse at 50% 0%, rgba(214, 182, 107, 0.14) 0%, transparent 55%);
           pointer-events: none;
         }
         .ct-footer-cta::before {
@@ -70,7 +70,7 @@ export default function Footer() {
           left: 50%;
           transform: translateX(-50%);
           font-size: 140px;
-          color: rgba(214, 182, 107, 0.05);
+          color: rgba(214, 182, 107, 0.06);
           pointer-events: none;
           font-family: var(--font-serif);
         }
@@ -92,7 +92,7 @@ export default function Footer() {
         }
         .ct-footer-cta h2 span { color: var(--gold-bright); }
         .ct-footer-cta p {
-          color: rgba(250, 246, 238, 0.78);
+          color: rgba(250, 246, 238, 0.88);
           font-size: 0.98rem;
           margin: 0 auto 30px;
           max-width: 580px;
@@ -114,7 +114,7 @@ export default function Footer() {
           color: var(--ivory);
           padding: 70px 24px 40px;
           font-family: var(--font-sans);
-          border-top: 1px solid rgba(214, 182, 107, 0.25);
+          border-top: 1px solid rgba(214, 182, 107, 0.3);
         }
         .ct-footer-inner {
           max-width: 1200px;
@@ -164,7 +164,7 @@ export default function Footer() {
 
         /* Service Times Box */
         .ct-footer-times-box {
-          background: rgba(9, 28, 19, 0.7);
+          background: rgba(11, 34, 23, 0.78);
           border: 1px solid var(--border-gold-subtle);
           border-radius: 12px;
           padding: 16px 18px;
@@ -186,8 +186,8 @@ export default function Footer() {
           justify-content: space-between;
           font-size: 0.8rem;
           padding: 5px 0;
-          border-bottom: 1px dashed rgba(214, 182, 107, 0.15);
-          color: rgba(250, 246, 238, 0.85);
+          border-bottom: 1px dashed rgba(214, 182, 107, 0.2);
+          color: rgba(250, 246, 238, 0.9);
         }
         .ct-footer-time-row:last-child { border-bottom: none; }
         .ct-footer-time-val { color: var(--gold-light); font-weight: 600; }
@@ -221,7 +221,7 @@ export default function Footer() {
         }
         .ct-footer-list a {
           font-size: 0.86rem;
-          color: rgba(250, 246, 238, 0.75);
+          color: rgba(250, 246, 238, 0.8);
           text-decoration: none;
           transition: all 0.2s ease;
           display: inline-flex;
@@ -235,7 +235,7 @@ export default function Footer() {
 
         /* Col 4: Scripture & Promise */
         .ct-footer-promise-card {
-          background: rgba(214, 182, 107, 0.08);
+          background: rgba(214, 182, 107, 0.09);
           border: 1px solid var(--border-gold);
           border-radius: 14px;
           padding: 20px;
@@ -260,10 +260,10 @@ export default function Footer() {
         /* ── Bottom Bar ── */
         .ct-footer-bottom {
           background: linear-gradient(90deg, #091E15 0%, #113626 50%, #091E15 100%);
-          border-top: 1px solid rgba(214, 182, 107, 0.18);
+          border-top: 1px solid rgba(214, 182, 107, 0.22);
           padding: 22px 24px;
           font-size: 0.8rem;
-          color: rgba(250, 246, 238, 0.7);
+          color: rgba(250, 246, 238, 0.75);
         }
         .ct-footer-bottom-inner {
           max-width: 1200px;

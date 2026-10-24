@@ -69,7 +69,7 @@
   border: 1px solid var(--border-subtle);
 }
 .ct-modal-close:hover {
-  background: var(--blush-dark);
+  background: var(--green);
   color: var(--white);
 }
 

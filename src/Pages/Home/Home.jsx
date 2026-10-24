@@ -245,14 +245,14 @@ export default function Home() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: rgba(232, 183, 183, 0.15);
-          border: 1px solid var(--border-blush);
+          background: rgba(24, 67, 50, 0.08);
+          border: 1px solid var(--border-gold);
           border-radius: 50px;
           padding: 7px 22px;
           font-size: 0.74rem;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: var(--blush-dark);
+          color: var(--green);
           font-weight: 700;
           margin-bottom: 22px;
         }
@@ -337,7 +337,7 @@ export default function Home() {
           font-weight: 700;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: var(--blush-dark);
+          color: var(--gold-dark);
           display: block;
           margin-bottom: 4px;
         }
@@ -350,8 +350,8 @@ export default function Home() {
         /* ── Pillars Section ── */
         .home-pillars {
           background: 
-            radial-gradient(circle at 85% 15%, rgba(214, 182, 107, 0.18) 0%, transparent 45%),
-            radial-gradient(circle at 12% 85%, rgba(48, 128, 98, 0.35) 0%, transparent 50%),
+            radial-gradient(circle at 85% 15%, rgba(214, 182, 107, 0.22) 0%, transparent 45%),
+            radial-gradient(circle at 12% 85%, rgba(50, 132, 100, 0.3) 0%, transparent 50%),
             linear-gradient(140deg, #0C2419 0%, #133929 18%, #184332 42%, #1E5540 68%, #276D52 88%, #328464 100%);
           padding: 85px 24px;
           font-family: var(--font-sans);
@@ -365,7 +365,7 @@ export default function Home() {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at 50% 0%, rgba(214,182,107,0.12) 0%, transparent 60%);
+          background: radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.14) 0%, transparent 60%);
           pointer-events: none;
         }
         .home-pillars-grid {
@@ -375,8 +375,8 @@ export default function Home() {
           margin-top: 48px;
         }
         .home-pillar-card {
-          background: linear-gradient(155deg, rgba(255, 255, 255, 0.12) 0%, rgba(24, 67, 50, 0.45) 50%, rgba(12, 36, 25, 0.82) 100%);
-          border: 1.5px solid rgba(214, 182, 107, 0.35);
+          background: linear-gradient(155deg, rgba(255, 255, 255, 0.12) 0%, rgba(138, 37, 82, 0.45) 50%, rgba(61, 10, 30, 0.85) 100%);
+          border: 1.5px solid rgba(212, 175, 55, 0.35);
           border-radius: 18px;
           padding: 38px 30px;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
@@ -387,9 +387,9 @@ export default function Home() {
         }
         .home-pillar-card:hover {
           transform: translateY(-6px);
-          background: linear-gradient(155deg, rgba(255, 255, 255, 0.2) 0%, rgba(30, 84, 64, 0.55) 50%, rgba(12, 36, 25, 0.9) 100%);
+          background: linear-gradient(155deg, rgba(255, 255, 255, 0.2) 0%, rgba(186, 61, 103, 0.55) 50%, rgba(61, 10, 30, 0.9) 100%);
           border-color: var(--gold);
-          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38), 0 0 20px rgba(214, 182, 107, 0.2);
+          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38), 0 0 20px rgba(212, 175, 55, 0.25);
         }
         .home-pillar-icon {
           font-size: 2.5rem;
@@ -434,10 +434,12 @@ export default function Home() {
           color: var(--white);
         }
 
-        /* ── Welcome & Story Section ── */
+        /* ── Welcome & Story Section (Sanctuary Green) ── */
         .home-welcome {
-          padding: 90px 24px;
-          background: var(--ivory);
+          padding: 95px 24px;
+          background: linear-gradient(180deg, #091E15 0%, #0F2E20 50%, #091E15 100%);
+          border-top: 1px solid rgba(214,182,107,0.25);
+          border-bottom: 1px solid rgba(214,182,107,0.25);
         }
         .home-welcome-grid {
           display: grid;
@@ -449,8 +451,8 @@ export default function Home() {
           position: relative;
           border-radius: 20px;
           overflow: hidden;
-          box-shadow: var(--shadow-lg);
-          border: 2px solid var(--border-gold);
+          box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+          border: 2px solid rgba(214,182,107,0.4);
         }
         .home-welcome-img {
           width: 100%;
@@ -466,21 +468,21 @@ export default function Home() {
           position: absolute;
           bottom: 20px;
           left: 20px;
-          background: var(--grad-sanctuary-dark);
+          background: linear-gradient(135deg, #123425 0%, #091E15 100%);
           color: var(--ivory);
-          border: 1px solid var(--gold);
+          border: 1.5px solid var(--gold);
           border-radius: 12px;
           padding: 12px 20px;
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.5);
         }
 
-        /* ── Mission Purpose Strip ── */
+        /* ── Mission Purpose Strip (Sanctuary Green) ── */
         .home-mission {
-          background: var(--white);
+          background: linear-gradient(160deg, #0B2218 0%, #113425 50%, #0A1E15 100%);
           padding: 85px 24px;
           text-align: center;
-          border-top: 1px solid var(--border-gold-subtle);
-          border-bottom: 1px solid var(--border-gold-subtle);
+          border-top: 1px solid rgba(214,182,107,0.25);
+          border-bottom: 1px solid rgba(214,182,107,0.25);
         }
         .home-mission-tags {
           display: flex;
@@ -490,19 +492,23 @@ export default function Home() {
           margin: 30px 0 40px;
         }
         .home-mission-tag {
-          background: var(--ivory);
-          color: var(--green);
+          background: rgba(214,182,107,0.1);
+          color: var(--gold-bright);
           font-size: 0.8rem;
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
           padding: 10px 24px;
           border-radius: 50px;
-          border: 2px solid var(--green);
-          box-shadow: var(--shadow-sm);
+          border: 1.5px solid rgba(214,182,107,0.35);
+          box-shadow: 0 4px 14px rgba(0,0,0,0.25);
           transition: all 0.22s ease;
         }
         .home-mission-tag:hover {
+          background: rgba(214,182,107,0.2);
+          border-color: var(--gold);
+          transform: translateY(-2px);
+        }
           background: var(--grad-green-accent);
           color: var(--gold-bright);
         }
@@ -581,9 +587,9 @@ export default function Home() {
         /* ── Weekly Promise Banner ── */
         .home-promise {
           background: 
-            radial-gradient(ellipse at 50% 0%, rgba(214, 182, 107, 0.22) 0%, transparent 60%),
+            radial-gradient(ellipse at 50% 0%, rgba(214, 182, 107, 0.25) 0%, transparent 60%),
             radial-gradient(ellipse at 85% 100%, rgba(50, 132, 100, 0.3) 0%, transparent 50%),
-            linear-gradient(145deg, #0B2217 0%, #123626 22%, #184332 48%, #1F5741 75%, #2A7256 100%);
+            linear-gradient(145deg, #0C2419 0%, #133929 22%, #184332 48%, #1E5540 75%, #0C2419 100%);
           padding: 68px 24px;
           color: var(--ivory);
           text-align: center;
@@ -596,7 +602,7 @@ export default function Home() {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at 50% 100%, rgba(214,182,107,0.14) 0%, transparent 60%);
+          background: radial-gradient(ellipse at 50% 100%, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
           pointer-events: none;
         }
         .home-promise-inner {
@@ -1114,15 +1120,15 @@ export default function Home() {
         <div className="ct-container">
           <div className="home-welcome-grid">
             <div>
-              <span className="ct-badge">† Welcome to the Sanctuary †</span>
-              <h2 id="welcome-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--green-dark)", margin: "14px 0 18px", lineHeight: 1.25 }}>
+              <span className="ct-badge ct-badge-dark">† Welcome to the Sanctuary †</span>
+              <h2 id="welcome-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--ivory)", margin: "14px 0 18px", lineHeight: 1.25 }}>
                 A Sanctuary Built by Faith, <br />
                 <span className="ct-gold-text">Sustained by Prayer</span>
               </h2>
-              <p style={{ color: "var(--text-muted)", fontSize: "1.02rem", lineHeight: 1.8, marginBottom: 18 }}>
+              <p style={{ color: "rgba(250, 246, 238, 0.88)", fontSize: "1.02rem", lineHeight: 1.8, marginBottom: 18 }}>
                 In 1991, Eva. Glory Devapiriyam answered God's divine calling to minister the Gospel with 15 faithful believers in a humble house. Over decades of miraculous healing, fervent prayer, and unshakeable dedication, the ministry flourished into Christ's Tabernacle Church under Pastor Saravanan Immanuel.
               </p>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.96rem", lineHeight: 1.75, marginBottom: 28 }}>
+              <p style={{ color: "rgba(250, 246, 238, 0.8)", fontSize: "0.96rem", lineHeight: 1.75, marginBottom: 28 }}>
                 Today, Christ's Tabernacle stands as an oasis of spiritual renewal in Chennai and beyond — where the broken find healing, captives receive deliverance, and worshippers glorify the King of Kings.
               </p>
 
@@ -1183,19 +1189,19 @@ export default function Home() {
                     activeSanctuaryView === "vision"
                       ? jesusSaravananImg
                       : activeSanctuaryView === "pastor"
-                      ? saravanan3Img
-                      : activeSanctuaryView === "fellowship"
-                      ? outdoorFellowshipImg
-                      : modernSanctuaryImg
+                        ? saravanan3Img
+                        : activeSanctuaryView === "fellowship"
+                          ? outdoorFellowshipImg
+                          : modernSanctuaryImg
                   }
                   alt={
                     activeSanctuaryView === "vision"
                       ? "Pastor Saravanan Immanuel receiving the holy calling from Jesus Christ"
                       : activeSanctuaryView === "pastor"
-                      ? "Senior Pastor Saravanan Immanuel ministering at the altar"
-                      : activeSanctuaryView === "fellowship"
-                      ? "Christ's Tabernacle congregation gathered in praise"
-                      : "Christ's Tabernacle Modern Sanctuary Altar"
+                        ? "Senior Pastor Saravanan Immanuel ministering at the altar"
+                        : activeSanctuaryView === "fellowship"
+                          ? "Christ's Tabernacle congregation gathered in praise"
+                          : "Christ's Tabernacle Modern Sanctuary Altar"
                   }
                   className="home-welcome-img"
                   style={{ objectFit: activeSanctuaryView === "vision" ? "contain" : "cover", background: activeSanctuaryView === "vision" ? "#0C2219" : "transparent" }}
@@ -1207,19 +1213,19 @@ export default function Home() {
                   {activeSanctuaryView === "vision"
                     ? "Divine Calling & Apostolic Vision"
                     : activeSanctuaryView === "pastor"
-                    ? "Pastor Saravanan Immanuel"
-                    : activeSanctuaryView === "fellowship"
-                    ? "Joyful Praise Fellowship"
-                    : "Sacred Altar of Worship"}
+                      ? "Pastor Saravanan Immanuel"
+                      : activeSanctuaryView === "fellowship"
+                        ? "Joyful Praise Fellowship"
+                        : "Sacred Altar of Worship"}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: "rgba(250, 246, 238, 0.75)", marginTop: 2 }}>
                   {activeSanctuaryView === "vision"
                     ? "Ordained & Sent to Preach the Full Gospel of Jesus Christ"
                     : activeSanctuaryView === "pastor"
-                    ? "Senior Pastor & Founder • Christ's Tabernacle"
-                    : activeSanctuaryView === "fellowship"
-                    ? "United in Worship, Fasting & Kingdom Prayer"
-                    : "Serving Christ & Healing Generations Since 1991"}
+                      ? "Senior Pastor & Founder • Christ's Tabernacle"
+                      : activeSanctuaryView === "fellowship"
+                        ? "United in Worship, Fasting & Kingdom Prayer"
+                        : "Serving Christ & Healing Generations Since 1991"}
                 </div>
               </div>
             </div>
@@ -1288,7 +1294,7 @@ export default function Home() {
                 />
                 <span style={{
                   position: "absolute", top: 14, left: 14,
-                  background: "rgba(12, 34, 25, 0.85)", color: "#E8CC8F",
+                  background: "rgba(12, 34, 25, 0.88)", color: "#E8CC8F",
                   border: "1px solid #D6B66B", fontSize: "0.72rem",
                   fontWeight: 800, padding: "4px 12px", borderRadius: 20
                 }}>
@@ -1330,8 +1336,8 @@ export default function Home() {
                 />
                 <span style={{
                   position: "absolute", top: 14, left: 14,
-                  background: "rgba(24, 67, 50, 0.85)", color: "#FAF6EE",
-                  border: "1px solid rgba(214, 182, 107, 0.4)", fontSize: "0.72rem",
+                  background: "rgba(24, 67, 50, 0.88)", color: "#FAF6EE",
+                  border: "1px solid rgba(214, 182, 107, 0.5)", fontSize: "0.72rem",
                   fontWeight: 800, padding: "4px 12px", borderRadius: 20
                 }}>
                   ✝ Senior Pastor
@@ -1375,7 +1381,7 @@ export default function Home() {
                 />
                 <span style={{
                   position: "absolute", top: 14, left: 14,
-                  background: "#DC2626", color: "#FFFFFF",
+                  background: "#C81D25", color: "#FFFFFF",
                   fontSize: "0.72rem", fontWeight: 800, padding: "4px 12px", borderRadius: 20
                 }}>
                   🎉 Milestone Jubilee
