@@ -168,7 +168,7 @@ export default function HeroManager() {
           <h3 style={{ color: '#122D24', margin: '0 0 6px' }}>No Hero Slides Yet</h3>
           <p>Add your first sanctuary hero slide to display on the public homepage banner.</p>
           <button
-            onClick={openCreateModal}
+            onClick={() => navigate('/admin/hero/new')}
             style={{
               padding: '10px 20px',
               background: '#184332',
@@ -212,14 +212,11 @@ export default function HeroManager() {
                 <img
                   src={slide.image}
                   alt={slide.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e) => {
-                    e.target.src =
-                      'https://images.unsplash.com/photo-1544427920-c49ccfb85579?auto=format&fit=crop&w=600&q=80';
+                    e.target.style.display = 'none';
+                    e.target.parentElement.style.background = '#E2E8F0';
+                    e.target.parentElement.innerHTML += '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94A3B8;font-size:0.8rem;font-weight:600;padding:12px;text-align:center">No image available</div>';
                   }}
                 />
                 <span

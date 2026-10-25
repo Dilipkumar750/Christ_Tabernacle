@@ -124,11 +124,14 @@ const QUICK_EXPLORE = [
   },
 ];
 
+const FALLBACKS = [heroBanner1, heroBanner2, heroBanner3];
+
 export default function Home() {
   const [slides, setSlides] = useState(BANNER_SLIDES);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [activeSanctuaryView, setActiveSanctuaryView] = useState("modern");
+  const [slideImgErrors, setSlideImgErrors] = useState({});
   const touchStartXRef = useRef(null);
 
   // Fetch dynamic hero slides from backend API
@@ -138,6 +141,7 @@ export default function Home() {
         const dynamicSlides = await getPublicHeroSlides();
         if (dynamicSlides && dynamicSlides.length > 0) {
           setSlides(dynamicSlides);
+          setSlideImgErrors({}); // Reset errors when slides are refreshed
         }
       } catch {
         // Fallback to static slides silently
@@ -973,10 +977,11 @@ export default function Home() {
                 aria-hidden={idx !== currentSlide}
               >
                 <img
-                  src={slide.image}
+                  src={slideImgErrors[idx] ? FALLBACKS[idx % FALLBACKS.length] : (slide.image || FALLBACKS[idx % FALLBACKS.length])}
                   alt={slide.alt || slide.title}
                   className="home-banner-img"
                   loading={idx === 0 ? "eager" : "lazy"}
+                  onError={() => setSlideImgErrors((prev) => ({ ...prev, [idx]: true }))}
                 />
                 <div className="home-banner-gradient-overlay" />
                 <div className="home-banner-content-strip">
