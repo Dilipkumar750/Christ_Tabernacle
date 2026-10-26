@@ -10,6 +10,8 @@ import {
   FaCheck,
   FaTimes,
   FaSync,
+  FaUserFriends,
+  FaUserPlus,
 } from 'react-icons/fa';
 
 export default function AdminDashboard() {
@@ -74,12 +76,14 @@ export default function AdminDashboard() {
     testimonials: { total: 0, approved: 0, pending: 0 },
     gallery: { total: 0 },
     lyrics: { total: 0 },
+    members: { total: 0, active: 0 },
   };
 
   const recent = data?.recent || {
     testimonials: [],
     photos: [],
     songs: [],
+    members: [],
   };
 
   return (
@@ -160,15 +164,75 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* 4 Stat Metric Cards (White Cards, Deep Green Numbers) */}
+      {/* 5 Stat Metric Cards (Members, Hero, Testimonies, Photos, Lyrics) */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: 20,
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: 18,
           marginBottom: 36,
         }}
       >
+        {/* Card 0: Church Members */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1.5px solid #E2E8F0',
+            borderRadius: 14,
+            padding: '22px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <span style={{ fontSize: '0.78rem', color: '#166534', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
+                Church Members
+              </span>
+              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
+                {stats.members?.total || 0}
+              </div>
+            </div>
+            <div
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 10,
+                background: '#EAF3EE',
+                color: '#184332',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.25rem',
+              }}
+            >
+              <FaUserFriends />
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: 18,
+              paddingTop: 14,
+              borderTop: '1px solid #F1F5F9',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: 8,
+              fontSize: '0.84rem',
+            }}
+          >
+            <span style={{ color: '#15803D', fontWeight: 600 }}>
+              ● {stats.members?.active !== undefined ? `${stats.members.active} Active` : 'Active Congregation'}
+            </span>
+            <Link to="/admin/members" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
+              View All →
+            </Link>
+          </div>
+        </div>
+
         {/* Card 1: Hero Banners */}
         <div
           style={{
@@ -413,7 +477,7 @@ export default function AdminDashboard() {
         </h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
           <Link
-            to="/admin/hero?action=new"
+            to="/admin/members/new"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -426,6 +490,26 @@ export default function AdminDashboard() {
               fontSize: '0.88rem',
               textDecoration: 'none',
               boxShadow: '0 4px 12px rgba(24, 67, 50, 0.2)',
+            }}
+          >
+            <FaUserPlus /> <span>+ Add New Member</span>
+          </Link>
+
+          <Link
+            to="/admin/hero?action=new"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '12px 20px',
+              background: '#FFFFFF',
+              border: '1.5px solid #184332',
+              color: '#184332',
+              borderRadius: 8,
+              fontWeight: 700,
+              fontSize: '0.88rem',
+              textDecoration: 'none',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
             }}
           >
             <FaPlus /> <span>New Hero Banner</span>

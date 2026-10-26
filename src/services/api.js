@@ -342,3 +342,75 @@ export const deleteSong = async (id) => {
   if (!res.ok) throw new Error(data.message || 'Failed to delete song');
   return data;
 };
+
+/* ========================================================
+   CHURCH MEMBERS APIS
+======================================================== */
+export const createMember = async (memberData) => {
+  const res = await fetch(`${API_BASE}/members`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(memberData),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to submit member details');
+  return data;
+};
+
+export const getAllMembersAdmin = async (search = '', status = '', gender = '', baptized = '') => {
+  const params = new URLSearchParams();
+  if (search) params.append('search', search);
+  if (status) params.append('status', status);
+  if (gender) params.append('gender', gender);
+  if (baptized) params.append('baptized', baptized);
+
+  const res = await fetch(`${API_BASE}/members?${params.toString()}`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch church members');
+  return data.data || [];
+};
+
+export const getMemberById = async (id) => {
+  const res = await fetch(`${API_BASE}/members/${id}`, {
+    headers: getAuthHeaders(),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch member details');
+  return data.data;
+};
+
+export const updateMember = async (id, memberData) => {
+  const res = await fetch(`${API_BASE}/members/${id}`, {
+    method: 'PUT',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(memberData),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to update member');
+  return data.data;
+};
+
+export const deleteMember = async (id) => {
+  const res = await fetch(`${API_BASE}/members/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to delete member');
+  return data;
+};
+
+export const toggleMemberStatus = async (id) => {
+  const res = await fetch(`${API_BASE}/members/${id}/toggle-status`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to toggle member status');
+  return data.data;
+};
+

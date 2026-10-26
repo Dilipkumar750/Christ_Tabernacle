@@ -27,6 +27,7 @@ import Transformation from './Pages/Prayers/Transformation';
 import Discipleship from './Pages/Prayers/Discipleship';
 import SundaySchool from './Pages/Prayers/SundaySchool';
 import Contact from './Pages/Contact/Contact';
+import JoinMembership from './Pages/JoinMembership';
 
 // Admin System
 import { AdminAuthProvider } from './Admin/AdminAuthContext';
@@ -34,6 +35,8 @@ import ProtectedRoute from './Admin/ProtectedRoute';
 import AdminLayout from './Admin/AdminLayout';
 import AdminLogin from './Admin/AdminLogin';
 import AdminDashboard from './Admin/AdminDashboard';
+import MemberManager from './Admin/MemberManager';
+import MemberForm from './Admin/MemberForm';
 import HeroManager from './Admin/HeroManager';
 import HeroForm from './Admin/HeroForm';
 import TestimonialManager from './Admin/TestimonialManager';
@@ -97,6 +100,8 @@ function AppContent() {
           </Route>
 
           <Route path="/contact" element={<Contact />} />
+          <Route path="/join-membership" element={<JoinMembership />} />
+          <Route path="/add-member" element={<JoinMembership />} />
 
           {/* Direct Route Aliases for smooth navigation across all sections */}
           <Route path="/journey" element={<Navigate to="/about/journey" replace />} />
@@ -131,6 +136,9 @@ function AppContent() {
             }
           >
             <Route index element={<AdminDashboard />} />
+            <Route path="members" element={<MemberManager />} />
+            <Route path="members/new" element={<MemberForm />} />
+            <Route path="members/edit/:id" element={<MemberForm />} />
             <Route path="hero" element={<HeroManager />} />
             <Route path="hero/new" element={<HeroForm />} />
             <Route path="hero/edit/:id" element={<HeroForm />} />

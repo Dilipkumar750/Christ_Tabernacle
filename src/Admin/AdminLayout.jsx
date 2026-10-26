@@ -13,6 +13,8 @@ import {
   FaTimes,
   FaCross,
   FaServer,
+  FaUserFriends,
+  FaUserPlus,
 } from 'react-icons/fa';
 
 export default function AdminLayout() {
@@ -27,6 +29,7 @@ export default function AdminLayout() {
 
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: <FaTachometerAlt />, exact: true },
+    { name: 'Church Members', path: '/admin/members', icon: <FaUserFriends /> },
     { name: 'Hero Banners', path: '/admin/hero', icon: <FaImages /> },
     { name: 'Testimonials', path: '/admin/testimonials', icon: <FaComments /> },
     { name: 'Photo Gallery', path: '/admin/gallery', icon: <FaCameraRetro /> },
@@ -350,7 +353,29 @@ export default function AdminLayout() {
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <Link
+              to="/admin/members/new"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '8px 14px',
+                background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
+                border: 'none',
+                borderRadius: 8,
+                color: '#FFFFFF',
+                fontSize: '0.84rem',
+                fontWeight: 700,
+                textDecoration: 'none',
+                transition: 'all 0.2s',
+                boxShadow: '0 2px 6px rgba(24, 67, 50, 0.2)',
+              }}
+            >
+              <FaUserPlus style={{ fontSize: '0.78rem' }} />
+              <span>+ Add Member</span>
+            </Link>
+
             <Link
               to="/"
               target="_blank"

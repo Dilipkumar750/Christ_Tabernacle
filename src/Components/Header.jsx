@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import logoImg from "../assets/logo.jpeg";
-import { FaCross } from "react-icons/fa";
-import { MdLiveTv } from "react-icons/md";
+import { FaCross, FaUserPlus } from "react-icons/fa";
 
 /* ── Navigation Structure ── */
 const NAV = [
@@ -219,6 +218,7 @@ function MobileNavItem({ item, onClose }) {
 
 /* ── Main Header ── */
 export default function Header() {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [tickerIdx, setTickerIdx] = useState(0);
@@ -490,43 +490,33 @@ export default function Header() {
           background: var(--gold-dark);
         }
 
-        /* ── Live Stream / CTA Button ── */
-        .ct-live-btn {
+        /* ── Add Member Button ── */
+        .ct-member-btn {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          background: var(--grad-gold);
-          color: #122D24;
+          gap: 7px;
+          background: linear-gradient(135deg, #184332 0%, #122D24 100%);
+          color: #D6B66B;
+          font-family: var(--font-sans);
           font-size: 0.78rem;
           font-weight: 700;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.05em;
           text-transform: uppercase;
           text-decoration: none;
-          padding: 9px 18px;
+          padding: 8px 16px;
           border-radius: 50px;
-          border: 1px solid rgba(214, 182, 107, 0.5);
+          border: 1.5px solid #D6B66B;
           white-space: nowrap;
           flex-shrink: 0;
-          box-shadow: 0 4px 18px rgba(214, 182, 107, 0.35);
-          transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
+          cursor: pointer;
+          box-shadow: 0 4px 14px rgba(24, 67, 50, 0.25);
+          transition: transform 0.25s, box-shadow 0.25s, background 0.25s, color 0.25s;
         }
-        .ct-live-btn:hover {
+        .ct-member-btn:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(214, 182, 107, 0.45);
-          filter: brightness(1.05);
-        }
-        .ct-live-dot {
-          width: 8px;
-          height: 8px;
-          background: var(--crimson);
-          border-radius: 50%;
-          animation: pulse-dot 1.4s infinite;
-          flex-shrink: 0;
-          box-shadow: 0 0 8px rgba(158, 27, 36, 0.6);
-        }
-        @keyframes pulse-dot {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.35; transform: scale(0.65); }
+          background: #D6B66B;
+          color: #122D24;
+          box-shadow: 0 6px 18px rgba(214, 182, 107, 0.45);
         }
 
         /* ── Mobile Hamburger ── */
@@ -677,31 +667,40 @@ export default function Header() {
         }
 
         /* ── Responsive Breakpoints ── */
-        @media (max-width: 1024px) {
+        @media (max-width: 1280px) {
+          .ct-header-inner { padding: 0 16px; gap: 10px; }
+          .ct-nav-list { gap: 1px; }
+          .ct-nav-link { padding: 8px 8px; font-size: 0.8rem; }
+          .ct-logo-name { font-size: 0.95rem; }
+          .ct-logo-sub { font-size: 0.52rem; letter-spacing: 0.12em; }
+          .ct-member-btn { padding: 7px 12px; font-size: 0.74rem; }
+        }
+        @media (max-width: 1140px) {
           .ct-nav-list { display: none; }
           .ct-hamburger { display: flex; }
           .ct-overlay { display: block; }
-          .ct-header-inner { padding: 0 18px; height: 68px; }
+          .ct-header-inner { padding: 0 16px; height: 68px; }
         }
         @media (max-width: 768px) {
-          .ct-header-inner { padding: 0 16px; height: 64px; }
-          .ct-logo-name { font-size: 0.98rem; }
-          .ct-logo-sub { font-size: 0.55rem; }
-          .ct-live-btn { padding: 8px 14px; font-size: 0.74rem; }
+          .ct-header-inner { padding: 0 14px; height: 64px; }
+          .ct-logo-icon { width: 42px; height: 42px; }
+          .ct-logo-name { font-size: 0.92rem; }
+          .ct-logo-sub { font-size: 0.52rem; }
+          .ct-member-btn { padding: 6px 11px; font-size: 0.72rem; }
         }
-        @media (max-width: 540px) {
-          .ct-header-inner { padding: 0 12px; height: 60px; gap: 6px; }
-          .ct-logo { gap: 8px; }
-          .ct-logo-icon { width: 38px; height: 38px; }
-          .ct-logo-name { font-size: 0.9rem; letter-spacing: 0.02em; }
+        @media (max-width: 480px) {
+          .ct-header-inner { padding: 0 10px; height: 58px; gap: 6px; }
+          .ct-logo { gap: 6px; }
+          .ct-logo-icon { width: 36px; height: 36px; }
+          .ct-logo-name { font-size: 0.85rem; letter-spacing: 0.01em; }
           .ct-logo-sub { display: none; }
-          .ct-live-btn { padding: 6px 10px; font-size: 0.7rem; gap: 5px; }
-          .ct-ticker { font-size: 0.72rem; padding: 6px 12px; min-height: 28px; }
+          .ct-member-btn { padding: 5px 9px; font-size: 0.68rem; gap: 4px; }
+          .ct-ticker { font-size: 0.7rem; padding: 6px 10px; min-height: 26px; }
         }
-        @media (max-width: 380px) {
-          .ct-logo-name { font-size: 0.82rem; }
-          .ct-live-btn span:last-child { display: none; } /* Show pulsing dot only */
-          .ct-live-btn { padding: 6px 8px; }
+        @media (max-width: 360px) {
+          .ct-logo-name { font-size: 0.78rem; }
+          .ct-member-btn span { display: none; }
+          .ct-member-btn { padding: 7px; border-radius: 50%; }
         }
       `}</style>
 
@@ -740,13 +739,18 @@ export default function Header() {
             </ul>
           </nav>
 
-          {/* Live Stream CTA Button */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <Link to="/prayers/sunday-services" className="ct-live-btn" aria-label="Watch Live Service">
-              <span className="ct-live-dot" aria-hidden="true" />
-              <MdLiveTv style={{ fontSize: "1rem" }} />
-              <span>Live Service</span>
-            </Link>
+          {/* Action Buttons: Add Member & Mobile Hamburger */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+            {/* Add Member Button */}
+            <button
+              onClick={() => navigate('/join-membership')}
+              className="ct-member-btn"
+              aria-label="Add Church Member"
+              id="header-add-member-btn"
+            >
+              <FaUserPlus style={{ fontSize: "0.85rem" }} />
+              <span>Add Member</span>
+            </button>
 
             {/* Mobile Hamburger Toggle */}
             <button
@@ -799,6 +803,19 @@ export default function Header() {
         </ul>
 
         <div className="ct-drawer-footer">
+          <button
+            type="button"
+            className="ct-member-btn"
+            onClick={() => {
+              closeMenu();
+              navigate('/join-membership');
+            }}
+            style={{ width: "100%", textAlign: "center", justifyContent: "center", marginBottom: 10, padding: "11px 16px" }}
+          >
+            <FaUserPlus />
+            <span>+ Add / Join Member</span>
+          </button>
+
           <Link
             to="/contact"
             className="ct-btn-gold"
@@ -812,6 +829,7 @@ export default function Header() {
           </p>
         </div>
       </div>
+
     </>
   );
 }
