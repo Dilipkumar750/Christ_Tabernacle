@@ -109,8 +109,8 @@ const QUICK_EXPLORE = [
     tag: "Fellowship",
   },
   {
-    title: "Media Gallery",
-    desc: "Browse church photo albums, baptism memories, and video archives.",
+    title: "Photo Gallery",
+    desc: "Browse church photo albums, baptism memories, and cherished congregation moments.",
     icon: "📷",
     path: "/media/photos",
     tag: "Gallery",

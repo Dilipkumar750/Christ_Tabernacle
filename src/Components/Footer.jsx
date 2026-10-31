@@ -29,7 +29,6 @@ const RESOURCES = [
   { label: "Bible Study Notes", path: "/sermons/bible-study" },
   { label: "Worship Videos & Lyrics", path: "/songs/lyrics" },
   { label: "Photo Gallery", path: "/media/photos" },
-  { label: "Video Messages", path: "/media/videos" },
 ];
 
 const SERVICE_TIMES = [

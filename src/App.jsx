@@ -12,9 +12,7 @@ import Vision from './Pages/About/Vision';
 import Mission from './Pages/About/Mission';
 import Faith from './Pages/About/Faith';
 import Testimonials from './Pages/Testimonials/Testimonials';
-import Media from './Pages/Media/Media';
 import Photos from './Pages/Media/Photos';
-import Videos from './Pages/Media/Videos';
 import Songs from './Pages/Songs/Songs';
 import Lyrics from './Pages/Songs/Lyrics';
 import Sermons from './Pages/Sermons/Sermons';
@@ -70,11 +68,8 @@ function AppContent() {
 
           <Route path="/testimonies" element={<Testimonials />} />
 
-          {/* Media */}
-          <Route path="/media" element={<Media />}>
-            <Route path="photos" element={<Photos />} />
-            <Route path="videos" element={<Videos />} />
-          </Route>
+          <Route path="/media/photos" element={<Photos />} />
+          <Route path="/media" element={<Photos />} />
 
           {/* Songs — with /songs/lyrics and /songs/lyrics/:id routing */}
           <Route path="/songs" element={<Songs />}>
@@ -111,7 +106,8 @@ function AppContent() {
           <Route path="/faith" element={<Navigate to="/about/faith" replace />} />
           <Route path="/testimonials" element={<Navigate to="/testimonies" replace />} />
           <Route path="/photos" element={<Navigate to="/media/photos" replace />} />
-          <Route path="/videos" element={<Navigate to="/media/videos" replace />} />
+          <Route path="/gallery" element={<Navigate to="/media/photos" replace />} />
+          <Route path="/videos" element={<Navigate to="/media/photos" replace />} />
           <Route path="/lyrics" element={<Navigate to="/songs/lyrics" replace />} />
           <Route path="/biblestudy" element={<Navigate to="/sermons/bible-study" replace />} />
           <Route path="/sundaysermons" element={<Navigate to="/sermons/sunday" replace />} />

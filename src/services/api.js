@@ -1,5 +1,5 @@
-// const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000/api';
-const API_BASE ='https://christ-tabernacle-backend-six.vercel.app';
+const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000/api';
+// const API_BASE ='https://christ-tabernacle-backend-six.vercel.app';
 
 // Helper for authorized headers
 const getAuthHeaders = () => {
@@ -223,9 +223,18 @@ export const toggleApproveTestimonial = async (id) => {
 /* ========================================================
    PHOTOS / GALLERY APIS
 ======================================================== */
-export const getPublicPhotos = async (category = '') => {
+export const getPublicPhotos = async (filter = '') => {
   const params = new URLSearchParams();
-  if (category) params.append('category', category);
+  if (typeof filter === 'string' && filter && filter !== 'All') {
+    if (/^\d{4}$/.test(filter)) {
+      params.append('year', filter);
+    } else {
+      params.append('category', filter);
+    }
+  } else if (typeof filter === 'object' && filter !== null) {
+    if (filter.year && filter.year !== 'All') params.append('year', filter.year);
+    if (filter.category && filter.category !== 'All') params.append('category', filter.category);
+  }
 
   const res = await fetch(`${API_BASE}/photos?${params.toString()}`);
   const data = await res.json();
@@ -233,9 +242,18 @@ export const getPublicPhotos = async (category = '') => {
   return data.data || [];
 };
 
-export const getAllPhotosAdmin = async (category = '') => {
+export const getAllPhotosAdmin = async (filter = '') => {
   const params = new URLSearchParams();
-  if (category) params.append('category', category);
+  if (typeof filter === 'string' && filter && filter !== 'All') {
+    if (/^\d{4}$/.test(filter)) {
+      params.append('year', filter);
+    } else {
+      params.append('category', filter);
+    }
+  } else if (typeof filter === 'object' && filter !== null) {
+    if (filter.year && filter.year !== 'All') params.append('year', filter.year);
+    if (filter.category && filter.category !== 'All') params.append('category', filter.category);
+  }
 
   const res = await fetch(`${API_BASE}/photos/all?${params.toString()}`, {
     headers: getAuthHeaders(),

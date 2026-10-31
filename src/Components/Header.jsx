@@ -18,14 +18,7 @@ const NAV = [
     ],
   },
   { label: "Testimonies", path: "/testimonies" },
-  {
-    label: "Media",
-    path: "/media",
-    children: [
-      { label: "Photo Gallery", path: "/media/photos" },
-      { label: "Video Archive", path: "/media/videos" },
-    ],
-  },
+  { label: "Gallery", path: "/media/photos" },
   { label: "Songs", path: "/songs/lyrics" },
   {
     label: "Sermons",

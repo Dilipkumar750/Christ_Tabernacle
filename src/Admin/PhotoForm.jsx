@@ -43,9 +43,11 @@ function compressImage(file, maxWidthPx = 1600, quality = 0.82) {
 
 const defaultDate = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
+const currentYear = String(new Date().getFullYear());
+
 const EMPTY = {
   title: "", category: "Sanctuary", image: "", caption: "",
-  date: defaultDate, isFeatured: false, order: 1,
+  date: defaultDate, year: currentYear, isFeatured: false, order: 1,
 };
 
 export default function PhotoForm() {
@@ -73,6 +75,7 @@ export default function PhotoForm() {
             title: photo.title || "", category: photo.category || "Sanctuary",
             image: photo.image || "", caption: photo.caption || "",
             date: photo.date || defaultDate,
+            year: photo.year || (photo.date ? (photo.date.match(/\b(19\d{2}|20\d{2})\b/)?.[0] || currentYear) : currentYear),
             isFeatured: photo.isFeatured || false, order: photo.order || 1,
           });
           if ((photo.image || "").startsWith("http")) {
@@ -310,11 +313,23 @@ export default function PhotoForm() {
             />
           </div>
 
-          {/* Date + Order + Featured */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 28 }}>
+          {/* Date + Year + Order + Featured */}
+          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr 1fr 1fr", gap: 16, marginBottom: 28 }}>
             <div>
               <label style={LS}>Date / Month</label>
-              <input type="text" value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} placeholder="e.g. October 2026" style={IS} />
+              <input type="text" value={formData.date} onChange={(e) => {
+                const val = e.target.value;
+                const match = val.match(/\b(19\d{2}|20\d{2})\b/);
+                setFormData((prev) => ({
+                  ...prev,
+                  date: val,
+                  year: match ? match[1] : prev.year,
+                }));
+              }} placeholder="e.g. October 2026" style={IS} />
+            </div>
+            <div>
+              <label style={LS}>Year</label>
+              <input type="text" value={formData.year || ''} onChange={(e) => setFormData({ ...formData, year: e.target.value })} placeholder="e.g. 2026" style={IS} />
             </div>
             <div>
               <label style={LS}>Display Order</label>
@@ -323,7 +338,7 @@ export default function PhotoForm() {
             <div style={{ display: "flex", alignItems: "center", gap: 10, paddingTop: 26 }}>
               <input type="checkbox" id="photoFeatured" checked={formData.isFeatured} onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })} style={{ width: 20, height: 20, accentColor: "#184332", cursor: "pointer" }} />
               <label htmlFor="photoFeatured" style={{ fontSize: "0.94rem", color: "#122D24", fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
-                <FaStar style={{ color: "#D97706" }} /> Feature Photo
+                <FaStar style={{ color: "#D97706" }} /> Feature
               </label>
             </div>
           </div>
