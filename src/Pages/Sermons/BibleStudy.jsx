@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 
 const BIBLE_STUDIES = [
   {
@@ -88,185 +88,75 @@ export default function BibleStudy() {
   const [activeStudy, setActiveStudy] = useState(BIBLE_STUDIES[0]);
 
   return (
-    <>
-      <style>{`
-        .study-layout {
-          display: grid;
-          grid-template-columns: 340px 1fr;
-          gap: 32px;
-          align-items: start;
-        }
-
-        .study-sidebar {
-          background: var(--white);
-          border-radius: 18px;
-          border: 1.5px solid var(--border-gold-subtle);
-          padding: 24px;
-          box-shadow: var(--shadow-sm);
-        }
-        .study-sidebar h3 {
-          font-family: var(--font-serif);
-          font-size: 1.15rem;
-          color: var(--green-dark);
-          margin: 0 0 16px;
-        }
-        .study-nav-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .study-nav-item {
-          padding: 14px 16px;
-          border-radius: 12px;
-          border: 1px solid var(--border-subtle);
-          background: var(--ivory);
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .study-nav-item:hover {
-          border-color: var(--gold);
-          background: var(--white);
-        }
-        .study-nav-item.active {
-          border-color: var(--gold);
-          background: var(--grad-sanctuary);
-          color: var(--ivory);
-        }
-        .study-nav-title {
-          font-weight: 700;
-          font-size: 0.9rem;
-          margin-bottom: 4px;
-          display: block;
-        }
-        .study-nav-sub {
-          font-size: 0.74rem;
-          opacity: 0.8;
-          display: block;
-        }
-
-        /* Detail */
-        .study-detail {
-          background: var(--white);
-          border-radius: 20px;
-          border: 1.5px solid var(--border-gold);
-          padding: 38px 34px;
-          box-shadow: var(--shadow-md);
-        }
-        .study-detail-title {
-          font-family: var(--font-serif);
-          font-size: clamp(1.4rem, 3vw, 1.85rem);
-          color: var(--green-dark);
-          margin: 8px 0 6px;
-          font-weight: 700;
-        }
-        .study-author-line {
-          font-size: 0.84rem;
-          color: var(--gold-dark);
-          font-weight: 700;
-          margin-bottom: 22px;
-        }
-
-        .study-sections-wrap {
-          margin: 28px 0;
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-        }
-        .study-sec-card {
-          background: var(--ivory);
-          border: 1px solid var(--border-gold-subtle);
-          border-radius: 14px;
-          padding: 22px 24px;
-        }
-        .study-sec-card h4 {
-          font-family: var(--font-serif);
-          font-size: 1.1rem;
-          color: var(--green);
-          margin: 0 0 8px;
-        }
-        .study-sec-card p {
-          font-size: 0.92rem;
-          color: var(--text-muted);
-          line-height: 1.75;
-          margin: 0;
-        }
-
-        .study-questions-box {
-          background: var(--gold-soft);
-          border-radius: 14px;
-          padding: 24px 26px;
-          border: 1.5px solid var(--border-gold);
-          margin-top: 30px;
-        }
-        .study-questions-box h4 {
-          font-family: var(--font-serif);
-          font-size: 1.15rem;
-          color: var(--green-dark);
-          margin: 0 0 12px;
-        }
-
-        @media (max-width: 900px) {
-          .study-layout { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
-      <div className="study-layout">
-        {/* Sidebar */}
-        <aside className="study-sidebar">
-          <h3>Expository Studies</h3>
-          <ul className="study-nav-list">
-            {BIBLE_STUDIES.map((study) => (
-              <li
-                key={study.id}
-                className={`study-nav-item${activeStudy.id === study.id ? " active" : ""}`}
-                onClick={() => setActiveStudy(study)}
+    <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-start">
+      {/* Sidebar */}
+      <aside className="bg-white rounded-[18px] border-[1.5px] border-gold/25 p-6 shadow-sm">
+        <h3 className="font-serif text-lg text-green-dark mb-4 font-bold">Expository Studies</h3>
+        <ul className="list-none p-0 m-0 flex flex-col gap-2.5">
+          {BIBLE_STUDIES.map((study) => (
+            <li
+              key={study.id}
+              className={`p-3.5 sm:px-4 rounded-xl border transition-all cursor-pointer ${
+                activeStudy.id === study.id
+                  ? "border-gold bg-grad-sanctuary text-ivory shadow-sm"
+                  : "border-gray-200 bg-ivory hover:border-gold hover:bg-white text-text-main"
+              }`}
+              onClick={() => setActiveStudy(study)}
+            >
+              <span className="font-bold text-[0.9rem] mb-1 block leading-snug">{study.title}</span>
+              <span
+                className={`text-[0.74rem] block ${
+                  activeStudy.id === study.id ? "text-gold-light" : "text-text-muted"
+                }`}
               >
-                <span className="study-nav-title">{study.title}</span>
-                <span className="study-nav-sub">{study.passage}</span>
+                {study.passage}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+      {/* Study Details */}
+      <article className="bg-white rounded-[20px] border-[1.5px] border-gold/40 p-6 sm:p-9 shadow-md" aria-labelledby="study-title">
+        <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-gold/15 text-gold-dark border border-gold/40 mb-2">
+          {activeStudy.topic}
+        </span>
+        <h2 id="study-title" className="font-serif text-[clamp(1.4rem,3vw,1.85rem)] text-green-dark my-2 mb-1.5 font-bold leading-tight">
+          {activeStudy.title}
+        </h2>
+        <div className="text-[0.84rem] text-gold-dark font-bold mb-5">
+          📖 Scripture: {activeStudy.passage} | 👤 Teacher: {activeStudy.author}
+        </div>
+
+        {/* Memory Verse Box */}
+        <div className="bg-gradient-to-r from-green-deep to-green-dark text-gold-bright p-4 sm:p-5 rounded-xl border border-gold/30 font-serif italic text-sm sm:text-base leading-relaxed my-5 shadow-sm">
+          {activeStudy.memoryVerse}
+        </div>
+
+        {/* Study Sections */}
+        <div className="my-7 flex flex-col gap-5">
+          {activeStudy.sections.map((sec, idx) => (
+            <div key={idx} className="bg-ivory border border-gold/25 rounded-xl p-5 sm:p-6">
+              <h4 className="font-serif text-lg text-green mb-2 font-bold">{sec.heading}</h4>
+              <p className="text-[0.92rem] text-text-muted leading-[1.75] m-0">{sec.content}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Reflection Questions */}
+        <div className="bg-gold-soft rounded-xl p-6 border-[1.5px] border-gold/40 mt-7.5">
+          <h4 className="font-serif text-lg text-green-dark mb-3 font-bold">
+            💡 Personal &amp; Group Reflection Questions:
+          </h4>
+          <ol className="pl-5 text-green-dark leading-[1.8] text-[0.92rem] list-decimal space-y-1.5">
+            {activeStudy.questions.map((q, idx) => (
+              <li key={idx}>
+                {q}
               </li>
             ))}
-          </ul>
-        </aside>
-
-        {/* Study Details */}
-        <article className="study-detail" aria-labelledby="study-title">
-          <span className="ct-badge">{activeStudy.topic}</span>
-          <h2 id="study-title" className="study-detail-title">{activeStudy.title}</h2>
-          <div className="study-author-line">
-            📖 Scripture: {activeStudy.passage} | 👤 Teacher: {activeStudy.author}
-          </div>
-
-          {/* Memory Verse Box */}
-          <div className="ct-scripture-box">
-            {activeStudy.memoryVerse}
-          </div>
-
-          {/* Study Sections */}
-          <div className="study-sections-wrap">
-            {activeStudy.sections.map((sec, idx) => (
-              <div key={idx} className="study-sec-card">
-                <h4>{sec.heading}</h4>
-                <p>{sec.content}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Reflection Questions */}
-          <div className="study-questions-box">
-            <h4>💡 Personal &amp; Group Reflection Questions:</h4>
-            <ol style={{ paddingLeft: "20px", color: "var(--green-dark)", lineHeight: 1.8, fontSize: "0.92rem" }}>
-              {activeStudy.questions.map((q, idx) => (
-                <li key={idx} style={{ marginBottom: 6 }}>
-                  {q}
-                </li>
-              ))}
-            </ol>
-          </div>
-        </article>
-      </div>
-    </>
+          </ol>
+        </div>
+      </article>
+    </div>
   );
 }

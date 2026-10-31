@@ -100,233 +100,80 @@ const CONFESSIONS = [
 
 export default function Faith() {
   return (
-    <>
-      <style>{`
-        .faith-wrap { font-family:var(--font-sans); }
-        .faith-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 0.72rem;
-          letter-spacing: 0.26em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-weight: 700;
-          padding: 6px 18px;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 50px;
-          background: rgba(214,182,107,0.12);
-          margin-bottom: 16px;
-        }
-        .faith-title {
-          font-family:var(--font-serif);
-          font-size:clamp(1.8rem, 4vw, 2.6rem);
-          color:var(--green-deep);
-          margin:0 0 10px;
-          font-weight:900;
-        }
-        .faith-subtitle {
-          font-size:1rem;
-          color:#374151;
-          margin:0 0 36px;
-          line-height:1.75;
-          max-width: 720px;
-        }
-        .faith-intro {
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.38);
-          border-radius:18px;
-          padding:28px 32px;
-          margin-bottom:40px;
-          box-shadow: 0 6px 20px rgba(18,45,36,0.06);
-        }
-        .faith-intro p {
-          font-size:0.98rem;
-          color:#374151;
-          line-height:1.8;
-          margin:0;
-        }
-        .faith-intro strong { color:var(--green-deep); }
+    <div className="font-sans">
+      <p className="inline-flex items-center gap-2 text-[0.72rem] tracking-[0.26em] uppercase text-gold-dark font-bold py-1.5 px-4.5 border-[1.5px] border-gold/35 rounded-full bg-gold/12 mb-4">
+        ✝ Our Statement of Faith
+      </p>
+      <h2 className="font-serif text-[clamp(1.8rem,4vw,2.6rem)] text-green-deep m-0 mb-2.5 font-black">
+        What We Believe
+      </h2>
+      <p className="text-base text-gray-700 m-0 mb-9 leading-relaxed max-w-[720px]">
+        We are an Apostolic, Bible-believing, Christ-centred, Spirit-filled church committed to
+        proclaiming the Full Gospel of Jesus Christ.
+      </p>
 
-        /* Articles grid (Light Theme) */
-        .faith-articles {
-          display:flex;
-          flex-direction:column;
-          gap:0;
-          border:1.5px solid rgba(214,182,107,0.35);
-          border-radius:20px;
-          overflow:hidden;
-          background: #FFFFFF;
-          box-shadow: 0 8px 28px rgba(18,45,36,0.06);
-        }
-        .faith-article {
-          display:grid;
-          grid-template-columns:56px 1fr;
-          gap:0;
-          border-bottom:1px solid rgba(214,182,107,0.2);
-          transition:background 0.25s;
-        }
-        .faith-article:last-child { border-bottom:none; }
-        .faith-article:hover { background: #FAF6EE; }
-        .faith-article-num {
-          background: #FAF6EE;
-          display:flex;
-          align-items:flex-start;
-          justify-content:center;
-          padding:24px 0 0;
-          font-family:var(--font-serif);
-          font-size:0.95rem;
-          font-weight:700;
-          color:var(--gold-dark);
-          border-right: 1px solid rgba(214,182,107,0.25);
-          flex-shrink:0;
-        }
-        .faith-article-body { padding:22px 28px 22px 24px; }
-        .faith-article-body h3 {
-          font-family:var(--font-serif);
-          font-size:1.2rem;
-          color:var(--green-deep);
-          margin:0 0 8px;
-          font-weight:700;
-        }
-        .faith-article-body p {
-          font-size:0.94rem;
-          color:#374151;
-          line-height:1.8;
-          margin:0 0 8px;
-        }
-        .faith-article-refs {
-          font-size:0.78rem;
-          color:var(--green);
-          font-style:italic;
-          margin:0;
-          font-weight:600;
-        }
-
-        /* Confession Box */
-        .faith-confession {
-          margin-top:48px;
-          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 100%);
-          border: 1.5px solid rgba(214,182,107,0.38);
-          border-radius:24px;
-          padding:46px 40px;
-          text-align:center;
-          box-shadow: 0 10px 32px rgba(18,45,36,0.06);
-        }
-        .faith-confession h3 {
-          font-family:var(--font-serif);
-          font-size:1.6rem;
-          color:var(--green-deep);
-          margin:0 0 6px;
-          font-weight:700;
-        }
-        .faith-confession-sub {
-          font-size:0.75rem;
-          letter-spacing:0.2em;
-          text-transform:uppercase;
-          color:var(--gold-dark);
-          margin-bottom:30px;
-          display:block;
-        }
-        .faith-confessions-list {
-          display:flex;
-          flex-direction:column;
-          gap:12px;
-          margin-bottom:32px;
-        }
-        .faith-confession-item {
-          display:flex;
-          align-items:center;
-          gap:14px;
-          background:#FFFFFF;
-          border:1px solid rgba(214,182,107,0.3);
-          border-radius:12px;
-          padding:14px 20px;
-          text-align:left;
-          box-shadow: 0 2px 8px rgba(18,45,36,0.04);
-          transition: background 0.25s, transform 0.25s, border-color 0.25s;
-        }
-        .faith-confession-item:hover {
-          background: #FAF6EE;
-          border-color: var(--gold);
-          transform: translateX(4px);
-        }
-        .faith-confession-item-icon {
-          color:var(--gold-dark);
-          font-size:0.95rem;
-          flex-shrink:0;
-        }
-        .faith-confession-item span {
-          font-size:0.92rem;
-          color:var(--green-deep);
-          font-weight:600;
-          line-height:1.5;
-        }
-        .faith-final {
-          font-size:0.85rem;
-          color:var(--gold-dark);
-          letter-spacing:0.08em;
-          font-family:var(--font-serif);
-          font-style:italic;
-        }
-
-        @media(max-width:580px){
-          .faith-article{ grid-template-columns:42px 1fr; }
-          .faith-article-num{ font-size:0.82rem; padding:20px 0 0; }
-          .faith-confession{ padding:32px 20px; }
-          .faith-intro{ padding:22px 20px; }
-        }
-      `}</style>
-
-      <div className="faith-wrap">
-        <p className="faith-eyebrow">✝ Our Statement of Faith</p>
-        <h2 className="faith-title">What We Believe</h2>
-        <p className="faith-subtitle">
-          We are an Apostolic, Bible-believing, Christ-centred, Spirit-filled church committed to
-          proclaiming the Full Gospel of Jesus Christ.
+      <div className="bg-white border-[1.5px] border-gold/40 rounded-[18px] p-5.5 sm:p-7 md:p-8 mb-10 shadow-[0_6px_20px_rgba(18,45,36,0.06)]">
+        <p className="text-[0.98rem] text-gray-700 leading-relaxed m-0">
+          We believe the Holy Scriptures are the{" "}
+          <strong className="text-green-deep font-bold">
+            inspired, authoritative and unchanging Word of God
+          </strong>{" "}
+          and the foundation for our faith, doctrine and Christian life.
         </p>
+      </div>
 
-        <div className="faith-intro">
-          <p>
-            We believe the Holy Scriptures are the <strong>inspired, authoritative and unchanging
-            Word of God</strong> and the foundation for our faith, doctrine and Christian life.
-          </p>
-        </div>
+      {/* Articles */}
+      <div className="flex flex-col border-[1.5px] border-gold/35 rounded-[20px] overflow-hidden bg-white shadow-[0_8px_28px_rgba(18,45,36,0.06)]">
+        {ARTICLES.map((a) => (
+          <div
+            className="grid grid-cols-[42px_1fr] sm:grid-cols-[56px_1fr] border-b border-gold/20 last:border-b-0 hover:bg-ivory transition-colors duration-200"
+            key={a.num}
+          >
+            <div
+              className="bg-ivory flex items-start justify-center pt-5 sm:pt-6 font-serif text-sm sm:text-[0.95rem] font-bold text-gold-dark border-r border-gold/25 flex-shrink-0"
+              aria-hidden="true"
+            >
+              {a.num}
+            </div>
+            <div className="p-5 sm:p-6 sm:pl-7">
+              <h3 className="font-serif text-[1.2rem] text-green-deep m-0 mb-2 font-bold">
+                {a.title}
+              </h3>
+              <p className="text-[0.94rem] text-gray-700 leading-relaxed m-0 mb-2">{a.text}</p>
+              <p className="text-[0.78rem] text-green italic m-0 font-semibold">{a.refs}</p>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Articles */}
-        <div className="faith-articles">
-          {ARTICLES.map((a) => (
-            <div className="faith-article" key={a.num}>
-              <div className="faith-article-num" aria-hidden="true">{a.num}</div>
-              <div className="faith-article-body">
-                <h3>{a.title}</h3>
-                <p>{a.text}</p>
-                <p className="faith-article-refs">{a.refs}</p>
-              </div>
+      {/* Confession */}
+      <div className="mt-12 bg-gradient-to-br from-white to-ivory border-[1.5px] border-gold/40 rounded-[24px] p-6 sm:p-10 md:p-11 text-center shadow-[0_10px_32px_rgba(18,45,36,0.06)]">
+        <h3 className="font-serif text-[1.6rem] text-green-deep m-0 mb-1.5 font-bold">
+          Our Confession
+        </h3>
+        <span className="text-[0.75rem] tracking-[0.2em] uppercase text-gold-dark mb-7.5 block">
+          Christ's Tabernacle · Prayer & Worship Centre
+        </span>
+        <div className="flex flex-col gap-3 mb-8">
+          {CONFESSIONS.map((c) => (
+            <div
+              className="flex items-center gap-3.5 bg-white border border-gold/30 rounded-xl p-3.5 sm:px-5 text-left shadow-[0_2px_8px_rgba(18,45,36,0.04)] transition-all duration-200 hover:bg-ivory hover:border-gold hover:translate-x-1"
+              key={c}
+            >
+              <span className="text-gold-dark text-[0.95rem] flex-shrink-0" aria-hidden="true">
+                ✝
+              </span>
+              <span className="text-[0.92rem] text-green-deep font-semibold leading-snug">{c}</span>
             </div>
           ))}
         </div>
-
-        {/* Confession */}
-        <div className="faith-confession">
-          <h3>Our Confession</h3>
-          <span className="faith-confession-sub">Christ's Tabernacle · Prayer & Worship Centre</span>
-          <div className="faith-confessions-list">
-            {CONFESSIONS.map((c) => (
-              <div className="faith-confession-item" key={c}>
-                <span className="faith-confession-item-icon" aria-hidden="true">✝</span>
-                <span>{c}</span>
-              </div>
-            ))}
-          </div>
-          <p className="faith-final">
-            A House of Prayer. A Place of Deliverance. A Centre of Healing. A School of
-            Discipleship.
-            <br /><br />
-            PREACH • DELIVER • HEAL • EQUIP
-          </p>
-        </div>
+        <p className="text-[0.85rem] text-gold-dark tracking-wider font-serif italic">
+          A House of Prayer. A Place of Deliverance. A Centre of Healing. A School of Discipleship.
+          <br />
+          <br />
+          PREACH • DELIVER • HEAL • EQUIP
+        </p>
       </div>
-    </>
+    </div>
   );
 }

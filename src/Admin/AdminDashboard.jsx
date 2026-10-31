@@ -53,20 +53,9 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div style={{ padding: '60px 0', textAlign: 'center', color: '#184332' }}>
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            border: '3px solid #E2E8F0',
-            borderTopColor: '#184332',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 16px',
-          }}
-        />
-        <p style={{ fontWeight: 600 }}>Loading Sanctuary Dashboard metrics...</p>
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className="py-16 text-center text-green">
+        <div className="w-10 h-10 border-[3px] border-slate-200 border-t-green rounded-full animate-spin mx-auto mb-4" />
+        <p className="font-semibold">Loading Sanctuary Dashboard metrics...</p>
       </div>
     );
   }
@@ -87,558 +76,243 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      {/* Top Banner Greeting (White Card, Deep Green Heading) */}
-      <div
-        style={{
-          background: '#FFFFFF',
-          border: '1.5px solid #E2E8F0',
-          borderRadius: 16,
-          padding: '28px 32px',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 20,
-          marginBottom: 32,
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-        }}
-      >
+    <div className="max-w-[1200px] mx-auto">
+      {/* Top Banner Greeting */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-wrap items-center justify-between gap-5 mb-8 shadow-sm">
         <div>
-          <div style={{ color: '#A88A42', fontSize: '0.84rem', fontWeight: 700, letterSpacing: '1px' }}>
+          <div className="text-gold-dark text-xs sm:text-[0.84rem] font-bold tracking-wider uppercase">
             CHRIST'S TABERNACLE ADMINISTRATION
           </div>
-          <h1
-            style={{
-              fontFamily: 'var(--font-serif, serif)',
-              fontSize: '2rem',
-              color: '#122D24',
-              margin: '6px 0 8px',
-              fontWeight: 700,
-            }}
-          >
+          <h1 className="font-serif text-2xl sm:text-3xl text-green-dark my-1.5 font-bold">
             Welcome, Sanctuary Administrator
           </h1>
-          <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem', maxWidth: 680 }}>
+          <p className="text-slate-600 m-0 text-sm sm:text-[0.95rem] max-w-[680px]">
             Manage and publish dynamic hero slides, congregation testimonies, sanctuary gallery archives, and worship song videos in real time.
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: 12 }}>
+        <div className="flex gap-3">
           <button
             onClick={handleRefresh}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '10px 18px',
-              background: '#EAF3EE',
-              border: '1.5px solid #184332',
-              color: '#184332',
-              borderRadius: 8,
-              cursor: 'pointer',
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              transition: 'all 0.2s',
-            }}
+            className="inline-flex items-center gap-2 px-4.5 py-2.5 bg-[#EAF3EE] border border-green text-green rounded-lg cursor-pointer font-bold text-sm transition-all hover:bg-green hover:text-white"
           >
-            <FaSync style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
+            <FaSync className={refreshing ? 'animate-spin' : ''} />
             <span>Refresh Stats</span>
           </button>
         </div>
       </div>
 
       {error && (
-        <div
-          style={{
-            background: '#FEE2E2',
-            border: '1px solid #FECACA',
-            color: '#B91C1C',
-            padding: '14px 18px',
-            borderRadius: 10,
-            marginBottom: 24,
-            fontWeight: 500,
-          }}
-        >
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6 font-medium text-sm">
           {error}
         </div>
       )}
 
-      {/* 5 Stat Metric Cards (Members, Hero, Testimonies, Photos, Lyrics) */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: 18,
-          marginBottom: 36,
-        }}
-      >
+      {/* 5 Stat Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4.5 mb-9">
         {/* Card 0: Church Members */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: 14,
-            padding: '22px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between shadow-sm">
+          <div className="flex justify-between items-start">
             <div>
-              <span style={{ fontSize: '0.78rem', color: '#166534', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
+              <span className="text-xs text-green-700 uppercase tracking-wider font-bold">
                 Church Members
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
+              <div className="text-3xl sm:text-4xl font-extrabold text-green-dark mt-1">
                 {stats.members?.total || 0}
               </div>
             </div>
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 10,
-                background: '#EAF3EE',
-                color: '#184332',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-              }}
-            >
+            <div className="w-11 h-11 rounded-lg bg-[#EAF3EE] text-green flex items-center justify-center text-xl flex-shrink-0">
               <FaUserFriends />
             </div>
           </div>
-          <div
-            style={{
-              marginTop: 18,
-              paddingTop: 14,
-              borderTop: '1px solid #F1F5F9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 8,
-              fontSize: '0.84rem',
-            }}
-          >
-            <span style={{ color: '#15803D', fontWeight: 600 }}>
+          <div className="mt-4.5 pt-3.5 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2 text-[0.84rem]">
+            <span className="text-emerald-700 font-semibold">
               ● {stats.members?.active !== undefined ? `${stats.members.active} Active` : 'Active Congregation'}
             </span>
-            <Link to="/admin/members" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
+            <Link to="/admin/members" className="text-green no-underline font-bold hover:underline">
               View All →
             </Link>
           </div>
         </div>
 
         {/* Card 1: Hero Banners */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: 14,
-            padding: '22px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between shadow-sm">
+          <div className="flex justify-between items-start">
             <div>
-              <span style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+              <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                 Hero Banners
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
+              <div className="text-3xl sm:text-4xl font-extrabold text-green-dark mt-1">
                 {stats.hero.total}
               </div>
             </div>
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 10,
-                background: '#EAF3EE',
-                color: '#184332',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-              }}
-            >
+            <div className="w-11 h-11 rounded-lg bg-[#EAF3EE] text-green flex items-center justify-center text-xl flex-shrink-0">
               <FaImages />
             </div>
           </div>
-          <div
-            style={{
-              marginTop: 18,
-              paddingTop: 14,
-              borderTop: '1px solid #F1F5F9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 8,
-              fontSize: '0.84rem',
-            }}
-          >
-            <span style={{ color: '#15803D', fontWeight: 600 }}>● {stats.hero.active} Active on Home</span>
-            <Link to="/admin/hero" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
+          <div className="mt-4.5 pt-3.5 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2 text-[0.84rem]">
+            <span className="text-emerald-700 font-semibold">● {stats.hero.active} Active on Home</span>
+            <Link to="/admin/hero" className="text-green no-underline font-bold hover:underline">
               Manage →
             </Link>
           </div>
         </div>
 
         {/* Card 2: Testimonials */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: 14,
-            padding: '22px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between shadow-sm">
+          <div className="flex justify-between items-start">
             <div>
-              <span style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+              <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                 Testimonies
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
+              <div className="text-3xl sm:text-4xl font-extrabold text-green-dark mt-1">
                 {stats.testimonials.total}
               </div>
             </div>
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 10,
-                background: '#FDF2F8',
-                color: '#BE185D',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-              }}
-            >
+            <div className="w-11 h-11 rounded-lg bg-pink-50 text-pink-700 flex items-center justify-center text-xl flex-shrink-0">
               <FaComments />
             </div>
           </div>
-          <div
-            style={{
-              marginTop: 18,
-              paddingTop: 14,
-              borderTop: '1px solid #F1F5F9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 8,
-              fontSize: '0.84rem',
-            }}
-          >
-            <span style={{ color: stats.testimonials.pending > 0 ? '#B45309' : '#15803D', fontWeight: 600 }}>
+          <div className="mt-4.5 pt-3.5 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2 text-[0.84rem]">
+            <span className={stats.testimonials.pending > 0 ? 'text-amber-700 font-semibold' : 'text-emerald-700 font-semibold'}>
               {stats.testimonials.pending > 0
                 ? `● ${stats.testimonials.pending} Pending Review`
                 : `● ${stats.testimonials.approved} Published`}
             </span>
-            <Link to="/admin/testimonials" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
+            <Link to="/admin/testimonials" className="text-green no-underline font-bold hover:underline">
               Review →
             </Link>
           </div>
         </div>
 
         {/* Card 3: Photo Gallery */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: 14,
-            padding: '22px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between shadow-sm">
+          <div className="flex justify-between items-start">
             <div>
-              <span style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+              <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                 Photo Gallery
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
+              <div className="text-3xl sm:text-4xl font-extrabold text-green-dark mt-1">
                 {stats.gallery.total}
               </div>
             </div>
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 10,
-                background: '#EFF6FF',
-                color: '#1D4ED8',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-              }}
-            >
+            <div className="w-11 h-11 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center text-xl flex-shrink-0">
               <FaCameraRetro />
             </div>
           </div>
-          <div
-            style={{
-              marginTop: 18,
-              paddingTop: 14,
-              borderTop: '1px solid #F1F5F9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 8,
-              fontSize: '0.84rem',
-            }}
-          >
-            <span style={{ color: '#15803D', fontWeight: 600 }}>● All Albums Active</span>
-            <Link to="/admin/gallery" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
+          <div className="mt-4.5 pt-3.5 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2 text-[0.84rem]">
+            <span className="text-emerald-700 font-semibold">● All Albums Active</span>
+            <Link to="/admin/gallery" className="text-green no-underline font-bold hover:underline">
               Upload →
             </Link>
           </div>
         </div>
 
         {/* Card 4: Worship Lyrics */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: 14,
-            padding: '22px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between shadow-sm">
+          <div className="flex justify-between items-start">
             <div>
-              <span style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>
+              <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
                 Worship Songs &amp; Videos
               </span>
-              <div style={{ fontSize: '2.4rem', fontWeight: 800, color: '#122D24', marginTop: 4 }}>
+              <div className="text-3xl sm:text-4xl font-extrabold text-green-dark mt-1">
                 {stats.lyrics.total}
               </div>
             </div>
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 10,
-                background: '#FAF5FF',
-                color: '#7E22CE',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-              }}
-            >
+            <div className="w-11 h-11 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center text-xl flex-shrink-0">
               <FaMusic />
             </div>
           </div>
-          <div
-            style={{
-              marginTop: 18,
-              paddingTop: 14,
-              borderTop: '1px solid #F1F5F9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 8,
-              fontSize: '0.84rem',
-            }}
-          >
-            <span style={{ color: '#15803D', fontWeight: 600 }}>● YouTube &amp; Lyrics</span>
-            <Link to="/admin/lyrics" style={{ color: '#184332', textDecoration: 'none', fontWeight: 700 }}>
+          <div className="mt-4.5 pt-3.5 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2 text-[0.84rem]">
+            <span className="text-emerald-700 font-semibold">● YouTube &amp; Lyrics</span>
+            <Link to="/admin/lyrics" className="text-green no-underline font-bold hover:underline">
               Edit →
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Quick Actions Bar (Green Headings, White/Gold Buttons) */}
-      <div style={{ marginBottom: 36 }}>
-        <h3 style={{ fontSize: '1.15rem', color: '#122D24', marginBottom: 14, fontWeight: 700, fontFamily: 'var(--font-serif, serif)' }}>
+      {/* Quick Actions Bar */}
+      <div className="mb-9">
+        <h3 className="text-lg sm:text-[1.15rem] text-green-dark mb-3.5 font-bold font-serif">
           Quick Management Actions
         </h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+        <div className="flex flex-wrap gap-3">
           <Link
             to="/admin/members/new"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '12px 20px',
-              background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
-              color: '#FFFFFF',
-              borderRadius: 8,
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              textDecoration: 'none',
-              boxShadow: '0 4px 12px rgba(24, 67, 50, 0.2)',
-            }}
+            className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-br from-green to-green-dark text-white rounded-lg font-bold text-sm no-underline shadow-[0_4px_12px_rgba(24,67,50,0.2)] hover:opacity-95 transition-all"
           >
             <FaUserPlus /> <span>+ Add New Member</span>
           </Link>
 
           <Link
             to="/admin/hero?action=new"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '12px 20px',
-              background: '#FFFFFF',
-              border: '1.5px solid #184332',
-              color: '#184332',
-              borderRadius: 8,
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              textDecoration: 'none',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-            }}
+            className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-green text-green rounded-lg font-bold text-sm no-underline shadow-sm hover:bg-green hover:text-white transition-all"
           >
             <FaPlus /> <span>New Hero Banner</span>
           </Link>
 
           <Link
             to="/admin/testimonials?action=new"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '12px 20px',
-              background: '#FFFFFF',
-              border: '1.5px solid #184332',
-              color: '#184332',
-              borderRadius: 8,
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              textDecoration: 'none',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-            }}
+            className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-green text-green rounded-lg font-bold text-sm no-underline shadow-sm hover:bg-green hover:text-white transition-all"
           >
             <FaPlus /> <span>Add Testimony</span>
           </Link>
 
           <Link
             to="/admin/gallery?action=new"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '12px 20px',
-              background: '#FFFFFF',
-              border: '1.5px solid #184332',
-              color: '#184332',
-              borderRadius: 8,
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              textDecoration: 'none',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-            }}
+            className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-green text-green rounded-lg font-bold text-sm no-underline shadow-sm hover:bg-green hover:text-white transition-all"
           >
             <FaPlus /> <span>Upload Gallery Photo</span>
           </Link>
 
           <Link
             to="/admin/lyrics?action=new"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '12px 20px',
-              background: '#FFFFFF',
-              border: '1.5px solid #184332',
-              color: '#184332',
-              borderRadius: 8,
-              fontWeight: 700,
-              fontSize: '0.88rem',
-              textDecoration: 'none',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
-            }}
+            className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-green text-green rounded-lg font-bold text-sm no-underline shadow-sm hover:bg-green hover:text-white transition-all"
           >
             <FaPlus /> <span>Add Worship Video &amp; Lyrics</span>
           </Link>
         </div>
       </div>
 
-      {/* Split Section: Recent Testimonials & Recent Photos (White Cards, Deep Green Headings) */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', gap: 24 }}>
+      {/* Split Section: Recent Testimonials & Recent Photos */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Recent Testimonies */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: 14,
-            padding: '24px',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-            <h3 style={{ margin: 0, fontSize: '1.18rem', color: '#122D24', fontFamily: 'var(--font-serif, serif)', fontWeight: 700 }}>
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+          <div className="flex justify-between items-center mb-4.5">
+            <h3 className="m-0 text-lg sm:text-[1.18rem] text-green-dark font-serif font-bold">
               Recent Testimonies
             </h3>
-            <Link to="/admin/testimonials" style={{ color: '#184332', fontSize: '0.86rem', textDecoration: 'none', fontWeight: 700 }}>
+            <Link to="/admin/testimonials" className="text-green text-sm no-underline font-bold hover:underline">
               View All →
             </Link>
           </div>
 
           {recent.testimonials?.length === 0 ? (
-            <p style={{ color: '#64748B', fontSize: '0.9rem' }}>No testimonies submitted yet.</p>
+            <p className="text-slate-500 text-sm">No testimonies submitted yet.</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div className="flex flex-col gap-3">
               {recent.testimonials.map((t) => (
                 <div
                   key={t._id}
-                  style={{
-                    background: '#F8FAF9',
-                    border: '1px solid #E2E8F0',
-                    borderRadius: 10,
-                    padding: '14px 16px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
+                  className="bg-[#F8FAF9] border border-slate-200 rounded-lg p-3.5 sm:px-4 flex items-center justify-between gap-3"
                 >
-                  <div style={{ maxWidth: '70%' }}>
-                    <div style={{ fontWeight: 700, color: '#122D24', fontSize: '0.94rem' }}>{t.title}</div>
-                    <div style={{ fontSize: '0.78rem', color: '#64748B', marginTop: 3 }}>
-                      By <strong style={{ color: '#184332' }}>{t.name}</strong> • {t.category} • {t.date}
+                  <div className="max-w-[70%]">
+                    <div className="font-bold text-green-dark text-sm truncate">{t.title}</div>
+                    <div className="text-xs text-slate-500 mt-1 truncate">
+                      By <strong className="text-green">{t.name}</strong> • {t.category} • {t.date}
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     <button
                       onClick={() => handleQuickToggleTestimonial(t._id)}
                       title={t.isApproved ? 'Click to unpublish' : 'Click to approve & publish'}
-                      style={{
-                        background: t.isApproved ? '#DCFCE7' : '#FEF3C7',
-                        border: `1px solid ${t.isApproved ? '#86EFAC' : '#FDE68A'}`,
-                        color: t.isApproved ? '#15803D' : '#B45309',
-                        padding: '6px 12px',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                        fontSize: '0.78rem',
-                        fontWeight: 700,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 5,
-                      }}
+                      className={`px-3 py-1.5 rounded-md cursor-pointer text-xs font-bold flex items-center gap-1.5 transition-all border ${
+                        t.isApproved
+                          ? 'bg-emerald-100 border-emerald-300 text-emerald-800'
+                          : 'bg-amber-100 border-amber-300 text-amber-800'
+                      }`}
                     >
                       {t.isApproved ? <FaCheck /> : <FaTimes />}
                       <span>{t.isApproved ? 'Approved' : 'Pending'}</span>
@@ -651,63 +325,39 @@ export default function AdminDashboard() {
         </div>
 
         {/* Right: Recent Photos in Gallery */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1.5px solid #E2E8F0',
-            borderRadius: 14,
-            padding: '24px',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-            <h3 style={{ margin: 0, fontSize: '1.18rem', color: '#122D24', fontFamily: 'var(--font-serif, serif)', fontWeight: 700 }}>
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+          <div className="flex justify-between items-center mb-4.5">
+            <h3 className="m-0 text-lg sm:text-[1.18rem] text-green-dark font-serif font-bold">
               Recent Gallery Images
             </h3>
-            <Link to="/admin/gallery" style={{ color: '#184332', fontSize: '0.86rem', textDecoration: 'none', fontWeight: 700 }}>
+            <Link to="/admin/gallery" className="text-green text-sm no-underline font-bold hover:underline">
               View All →
             </Link>
           </div>
 
           {recent.photos?.length === 0 ? (
-            <p style={{ color: '#64748B', fontSize: '0.9rem' }}>No gallery photos uploaded yet.</p>
+            <p className="text-slate-500 text-sm">No gallery photos uploaded yet.</p>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+            <div className="grid grid-cols-2 gap-3">
               {recent.photos.map((p) => (
                 <div
                   key={p._id}
-                  style={{
-                    position: 'relative',
-                    borderRadius: 10,
-                    overflow: 'hidden',
-                    height: 120,
-                    border: '1px solid #E2E8F0',
-                  }}
+                  className="relative rounded-lg overflow-hidden h-[120px] border border-slate-200"
                 >
                   <img
                     src={p.image}
                     alt={p.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    className="w-full h-full object-cover"
                     onError={(e) => {
                       e.target.src =
                         'https://images.unsplash.com/photo-1548625361-125dd14d18ce?auto=format&fit=crop&w=600&q=80';
                     }}
                   />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(to top, rgba(18, 45, 36, 0.88) 0%, transparent 60%)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'flex-end',
-                      padding: 10,
-                    }}
-                  >
-                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.2 }}>
+                  <div className="absolute inset-0 bg-gradient-to-t from-green-deep/90 via-transparent to-transparent flex flex-col justify-end p-2.5">
+                    <span className="text-[0.82rem] font-bold text-white leading-tight truncate">
                       {p.title}
                     </span>
-                    <span style={{ fontSize: '0.7rem', color: '#E8CC8F' }}>{p.category}</span>
+                    <span className="text-[0.7rem] text-gold-light truncate">{p.category}</span>
                   </div>
                 </div>
               ))}

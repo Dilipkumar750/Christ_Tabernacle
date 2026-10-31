@@ -66,7 +66,8 @@ function useReveal(sel) {
       (entries) =>
         entries.forEach((e) => {
           if (e.isIntersecting) {
-            e.target.classList.add("jr-in");
+            e.target.classList.remove("opacity-0", "translate-y-7");
+            e.target.classList.add("opacity-100", "translate-y-0");
             io.unobserve(e.target);
           }
         }),
@@ -81,413 +82,17 @@ export default function Journey() {
   useReveal(".jr-reveal");
 
   return (
-    <>
-      <style>{`
-        /* ── Reveal Animations ── */
-        .jr-reveal {
-          opacity: 0;
-          transform: translateY(28px);
-          transition: opacity 0.7s cubic-bezier(.22,1,.36,1),
-                      transform 0.7s cubic-bezier(.22,1,.36,1);
-        }
-        .jr-reveal.jr-in { opacity: 1; transform: none; }
-
-        /* ── Page Header (Light Sanctuary Theme) ── */
-        .jr-header { margin-bottom: 56px; }
-        .jr-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 0.72rem;
-          letter-spacing: 0.26em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-weight: 700;
-          padding: 6px 18px;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 50px;
-          background: rgba(214,182,107,0.12);
-          margin-bottom: 20px;
-        }
-        .jr-header h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(2rem, 4.5vw, 2.9rem);
-          color: var(--green-deep);
-          margin: 0 0 16px;
-          font-weight: 900;
-          line-height: 1.15;
-        }
-        .jr-header h2 em {
-          font-style: italic;
-          color: var(--gold-dark);
-        }
-        .jr-header p {
-          font-size: 1.02rem;
-          color: #374151;
-          line-height: 1.85;
-          max-width: 720px;
-          margin: 0;
-        }
-
-        /* ── Timeline Container ── */
-        .jr-timeline {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          gap: 46px;
-        }
-        /* Vertical timeline bar */
-        .jr-timeline::before {
-          content: '';
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          top: 0;
-          bottom: 0;
-          width: 3px;
-          background: linear-gradient(
-            to bottom,
-            transparent 0%,
-            #276D52 10%,
-            #D6B66B 50%,
-            #276D52 90%,
-            transparent 100%
-          );
-          box-shadow: 0 0 8px rgba(214,182,107,0.25);
-          z-index: 0;
-        }
-
-        /* ── Each Milestone: Left Image, Center Dot, Right Card ── */
-        .jr-row {
-          display: grid;
-          grid-template-columns: 1fr 64px 1fr;
-          align-items: center;
-          position: relative;
-          z-index: 1;
-        }
-
-        /* ── Center dot ── */
-        .jr-center {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          z-index: 2;
-        }
-        .jr-dot {
-          width: 50px;
-          height: 50px;
-          background: #FFFFFF;
-          border: 2.5px solid var(--gold);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.25rem;
-          box-shadow:
-            0 0 0 6px rgba(214,182,107,0.18),
-            0 4px 14px rgba(18,45,36,0.1);
-          transition: transform 0.35s, box-shadow 0.35s;
-          flex-shrink: 0;
-        }
-        .jr-row:hover .jr-dot {
-          transform: scale(1.15);
-          box-shadow:
-            0 0 0 9px rgba(214,182,107,0.28),
-            0 8px 22px rgba(18,45,36,0.18);
-          border-color: var(--gold-dark);
-        }
-
-        /* ── LEFT SIDE: Standalone Image ── */
-        .jr-img-side {
-          padding-right: 32px;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-        }
-        .jr-img-side.jr-no-img {
-          justify-content: center;
-        }
-
-        .jr-img-box {
-          width: 100%;
-          max-width: 440px;
-          border-radius: 18px;
-          overflow: hidden;
-          border: 1.5px solid rgba(214,182,107,0.4);
-          box-shadow: 0 8px 26px rgba(18,45,36,0.08);
-          background: #FFFFFF;
-          transition: transform 0.4s cubic-bezier(.22,1,.36,1),
-                      box-shadow 0.4s,
-                      border-color 0.4s;
-        }
-        .jr-row:hover .jr-img-box {
-          transform: translateY(-5px) scale(1.015);
-          box-shadow: 0 14px 36px rgba(18,45,36,0.14);
-          border-color: var(--gold);
-        }
-        .jr-img-box img {
-          width: 100%;
-          height: 250px;
-          object-fit: cover;
-          display: block;
-          transition: transform 0.6s cubic-bezier(.22,1,.36,1);
-        }
-        .jr-row:hover .jr-img-box img {
-          transform: scale(1.05);
-        }
-        .jr-img-caption {
-          padding: 12px 18px;
-          background: #FAF6EE;
-          font-size: 0.82rem;
-          font-weight: 600;
-          color: var(--green-deep);
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          line-height: 1.45;
-          border-top: 1px solid rgba(214,182,107,0.25);
-        }
-        .jr-img-caption .cap-cross { color: var(--gold-dark); flex-shrink: 0; }
-
-        /* No image scripture box */
-        .jr-no-img-block {
-          width: 100%;
-          max-width: 440px;
-          padding: 28px 30px;
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 18px;
-          text-align: right;
-          box-shadow: 0 6px 22px rgba(18,45,36,0.06);
-        }
-        .jr-no-img-block blockquote {
-          font-family: var(--font-serif);
-          font-style: italic;
-          font-size: 1.05rem;
-          color: var(--green-deep);
-          line-height: 1.7;
-          margin: 0 0 10px;
-        }
-        .jr-no-img-block cite {
-          font-size: 0.76rem;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-style: normal;
-        }
-
-        /* ── RIGHT SIDE: Content Card (Light Theme) ── */
-        .jr-card-side {
-          padding-left: 32px;
-        }
-        .jr-card {
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 20px;
-          padding: 32px 32px;
-          box-shadow: 0 6px 24px rgba(18,45,36,0.06);
-          transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
-          position: relative;
-          overflow: hidden;
-        }
-        /* Gold left accent border */
-        .jr-card::before {
-          content: '';
-          position: absolute;
-          left: 0; top: 0; bottom: 0;
-          width: 5px;
-          background: var(--grad-gold);
-          border-radius: 4px 0 0 4px;
-        }
-        .jr-row:hover .jr-card {
-          border-color: var(--gold);
-          box-shadow: 0 14px 36px rgba(18,45,36,0.12);
-          transform: translateY(-4px);
-        }
-
-        .jr-year-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 16px;
-        }
-        .jr-year {
-          font-size: 0.74rem;
-          font-weight: 800;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          background: rgba(214,182,107,0.14);
-          border: 1px solid rgba(214,182,107,0.4);
-          padding: 5px 14px;
-          border-radius: 50px;
-        }
-        .jr-badge {
-          font-size: 0.65rem;
-          font-weight: 800;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          background: #276D52;
-          color: #FFFFFF;
-          padding: 4px 12px;
-          border-radius: 50px;
-          border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .jr-card h3 {
-          font-family: var(--font-serif);
-          font-size: 1.4rem;
-          color: var(--green-deep);
-          margin: 0 0 12px;
-          font-weight: 700;
-          line-height: 1.3;
-        }
-        .jr-card p {
-          font-size: 0.96rem;
-          color: #374151;
-          line-height: 1.85;
-          margin: 0;
-        }
-
-        /* ── Calling Quote ── */
-        .jr-calling {
-          margin-top: 60px;
-          display: grid;
-          grid-template-columns: 5px 1fr;
-          border-radius: 18px;
-          overflow: hidden;
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          box-shadow: 0 8px 28px rgba(18,45,36,0.06);
-        }
-        .jr-calling-bar { background: var(--grad-gold); }
-        .jr-calling-body { padding: 30px 32px; }
-        .jr-calling-body h3 {
-          font-family: var(--font-serif);
-          font-size: 1.2rem;
-          color: var(--green-deep);
-          margin: 0 0 8px;
-          font-weight: 700;
-        }
-        .jr-calling-body p {
-          font-size: 0.98rem;
-          color: #374151;
-          line-height: 1.8;
-          margin: 0;
-          font-style: italic;
-        }
-
-        /* ── Outcomes Banner (Light Sanctuary Theme) ── */
-        .jr-outcomes {
-          margin-top: 56px;
-          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 100%);
-          border-radius: 24px;
-          padding: 56px 44px;
-          text-align: center;
-          border: 1.5px solid rgba(214,182,107,0.38);
-          box-shadow: 0 10px 32px rgba(18,45,36,0.06);
-          position: relative;
-          overflow: hidden;
-        }
-        .jr-outcomes::before {
-          content: '✝';
-          position: absolute;
-          top: -30px; left: 50%;
-          transform: translateX(-50%);
-          font-size: 200px;
-          color: rgba(214,182,107,0.06);
-          font-family: var(--font-serif);
-          pointer-events: none;
-        }
-        .jr-outcomes-inner { position: relative; z-index: 1; }
-        .jr-outcomes h3 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.6rem, 3.5vw, 2.3rem);
-          color: var(--green-deep);
-          margin: 0 0 12px;
-          font-weight: 700;
-        }
-        .jr-outcomes-sub {
-          font-size: 1rem;
-          color: #374151;
-          line-height: 1.8;
-          margin: 0 auto 36px;
-          max-width: 600px;
-        }
-        .jr-outcomes-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 18px;
-          margin-bottom: 36px;
-        }
-        .jr-outcome-card {
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.3);
-          border-radius: 18px;
-          padding: 24px 14px;
-          box-shadow: 0 4px 14px rgba(18,45,36,0.04);
-          transition: background 0.3s, transform 0.3s, border-color 0.3s;
-        }
-        .jr-outcome-card:hover {
-          background: #FAF6EE;
-          border-color: var(--gold);
-          transform: translateY(-5px);
-        }
-        .jr-outcome-icon { font-size: 2rem; display: block; margin-bottom: 12px; }
-        .jr-outcome-label {
-          font-size: 0.82rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--green-deep);
-          line-height: 1.5;
-        }
-        .jr-outcomes-quote {
-          font-family: var(--font-serif);
-          font-style: italic;
-          font-size: 1.05rem;
-          color: var(--gold-dark);
-          margin: 0;
-        }
-
-        /* ── Mobile Stacking ── */
-        @media (max-width: 860px) {
-          .jr-timeline::before { left: 24px; transform: none; }
-          .jr-row {
-            grid-template-columns: 50px 1fr;
-            grid-template-areas:
-              "dot card"
-              ". img";
-            gap: 16px 16px;
-          }
-          .jr-center {
-            grid-area: dot;
-            align-items: center;
-          }
-          .jr-img-side {
-            grid-area: img;
-            padding: 0 0 0 10px;
-            align-items: flex-start;
-          }
-          .jr-img-box { max-width: 100%; }
-          .jr-no-img-block { max-width: 100%; text-align: left; }
-          .jr-card-side { grid-area: card; padding-left: 0; }
-          .jr-timeline { gap: 48px; }
-          .jr-outcomes { padding: 40px 20px; }
-          .jr-outcomes-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-      `}</style>
-
+    <div className="font-sans">
       {/* ── Page Header ── */}
-      <div className="jr-header jr-reveal">
-        <div className="jr-eyebrow">✝ Our Sacred Heritage</div>
-        <h2>
+      <div className="jr-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out mb-14">
+        <div className="inline-flex items-center gap-2 text-[0.72rem] tracking-[0.26em] uppercase text-gold-dark font-bold py-1.5 px-4.5 border-[1.5px] border-gold/35 rounded-full bg-gold/12 mb-5">
+          ✝ Our Sacred Heritage
+        </div>
+        <h2 className="font-serif text-[clamp(2rem,4.5vw,2.9rem)] text-green-deep m-0 mb-4 font-black leading-[1.15]">
           A Story Written by<br />
-          <em>God's Faithfulness</em>
+          <em className="italic text-gold-dark font-serif">God's Faithfulness</em>
         </h2>
-        <p>
+        <p className="text-[1.02rem] text-gray-700 leading-relaxed max-w-[720px] m-0">
           The ministry of Christ's Tabernacle was not built on worldly strength or human wisdom,
           but born out of prayer, sustained through intercession, and established upon the
           uncompromised Word of God. From 15 saints in 1991 to a vibrant church family today —
@@ -495,50 +100,77 @@ export default function Journey() {
         </p>
       </div>
 
-      {/* ── Timeline: Left Image, Right Card ── */}
-      <div className="jr-timeline">
+      {/* ── Timeline: Left Image, Center Dot, Right Card ── */}
+      <div className="relative flex flex-col gap-12">
+        {/* Vertical timeline bar */}
+        <div
+          className="absolute left-6 md:left-1/2 -translate-x-0 md:-translate-x-1/2 top-0 bottom-0 w-[3px] bg-gradient-to-b from-transparent via-gold to-transparent shadow-[0_0_8px_rgba(214,182,107,0.25)] pointer-events-none z-0"
+          aria-hidden="true"
+        />
+
         {MILESTONES.map((m, i) => (
           <div
             key={m.year}
-            className="jr-row jr-reveal"
+            className="jr-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out grid grid-cols-[48px_1fr] md:grid-cols-[1fr_64px_1fr] gap-y-4 md:gap-y-0 items-center relative z-10 group"
             style={{ transitionDelay: `${i * 0.1}s` }}
           >
             {/* LEFT — Standalone Image Box or Scripture */}
-            <div className={`jr-img-side${!m.image ? " jr-no-img" : ""}`}>
+            <div
+              className={`col-start-2 row-start-2 md:col-start-1 md:row-start-1 pr-0 md:pr-8 flex flex-col items-start md:items-end ${
+                !m.image ? "justify-center" : ""
+              }`}
+            >
               {m.image ? (
-                <div className="jr-img-box">
-                  <img src={m.image} alt={m.title} />
+                <div className="w-full max-w-[440px] rounded-[18px] overflow-hidden border-[1.5px] border-gold/40 group-hover:border-gold shadow-[0_8px_26px_rgba(18,45,36,0.08)] group-hover:shadow-[0_14px_36px_rgba(18,45,36,0.14)] bg-white transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015]">
+                  <img
+                    src={m.image}
+                    alt={m.title}
+                    className="w-full h-[250px] object-cover block transition-transform duration-500 group-hover:scale-105"
+                  />
                   {m.caption && (
-                    <div className="jr-img-caption">
-                      <span className="cap-cross">✝</span>
+                    <div className="p-3 px-4.5 bg-ivory text-[0.82rem] font-semibold text-green-deep flex items-center gap-2.5 leading-snug border-t border-gold/25">
+                      <span className="text-gold-dark flex-shrink-0">✝</span>
                       {m.caption}
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="jr-no-img-block">
-                  <blockquote>
+                <div className="w-full max-w-[440px] p-7 px-7.5 bg-white border-[1.5px] border-gold/35 rounded-[18px] text-left md:text-right shadow-[0_6px_22px_rgba(18,45,36,0.06)]">
+                  <blockquote className="font-serif italic text-base md:text-[1.05rem] text-green-deep leading-relaxed m-0 mb-2.5">
                     "Not by might, nor by power, but by my Spirit, says the LORD of hosts."
                   </blockquote>
-                  <cite>— Zechariah 4:6</cite>
+                  <cite className="text-[0.76rem] font-bold tracking-[0.14em] uppercase text-gold-dark not-italic">
+                    — Zechariah 4:6
+                  </cite>
                 </div>
               )}
             </div>
 
             {/* CENTER — Timeline Dot */}
-            <div className="jr-center">
-              <div className="jr-dot" aria-hidden="true">{m.icon}</div>
+            <div className="col-start-1 row-start-1 md:col-start-2 md:row-start-1 flex flex-col items-center justify-center z-10">
+              <div
+                className="w-12 h-12 md:w-[50px] md:h-[50px] bg-white border-[2.5px] border-gold group-hover:border-gold-dark rounded-full flex items-center justify-center text-lg md:text-xl shadow-[0_0_0_6px_rgba(214,182,107,0.18),0_4px_14px_rgba(18,45,36,0.1)] group-hover:shadow-[0_0_0_9px_rgba(214,182,107,0.28),0_8px_22px_rgba(18,45,36,0.18)] transition-all duration-300 group-hover:scale-110 flex-shrink-0"
+                aria-hidden="true"
+              >
+                {m.icon}
+              </div>
             </div>
 
             {/* RIGHT — Content Card */}
-            <div className="jr-card-side">
-              <div className="jr-card">
-                <div className="jr-year-badge">
-                  <span className="jr-year">{m.year}</span>
-                  <span className="jr-badge">{m.badge}</span>
+            <div className="col-start-2 row-start-1 md:col-start-3 md:row-start-1 pl-0 md:pl-8">
+              <div className="bg-white border-[1.5px] border-gold/35 group-hover:border-gold rounded-[20px] p-6 sm:p-8 shadow-[0_6px_24px_rgba(18,45,36,0.06)] group-hover:shadow-[0_14px_36px_rgba(18,45,36,0.12)] transition-all duration-300 group-hover:-translate-y-1 relative overflow-hidden before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[5px] before:bg-grad-gold before:rounded-l">
+                <div className="inline-flex items-center gap-2.5 mb-4">
+                  <span className="text-[0.74rem] font-extrabold tracking-[0.18em] uppercase text-gold-dark bg-gold/15 border border-gold/40 py-1 px-3.5 rounded-full">
+                    {m.year}
+                  </span>
+                  <span className="text-[0.65rem] font-extrabold tracking-[0.12em] uppercase bg-green-light text-white py-1 px-3 rounded-full border border-white/20">
+                    {m.badge}
+                  </span>
                 </div>
-                <h3>{m.title}</h3>
-                <p>{m.desc}</p>
+                <h3 className="font-serif text-[1.4rem] text-green-deep m-0 mb-3 font-bold leading-snug">
+                  {m.title}
+                </h3>
+                <p className="text-[0.96rem] text-gray-700 leading-relaxed m-0">{m.desc}</p>
               </div>
             </div>
           </div>
@@ -546,11 +178,13 @@ export default function Journey() {
       </div>
 
       {/* ── Calling Quote ── */}
-      <div className="jr-calling jr-reveal">
-        <div className="jr-calling-bar" aria-hidden="true" />
-        <div className="jr-calling-body">
-          <h3>The Founding Word</h3>
-          <p>
+      <div className="jr-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out mt-15 grid grid-cols-[5px_1fr] rounded-[18px] overflow-hidden bg-white border-[1.5px] border-gold/35 shadow-[0_8px_28px_rgba(18,45,36,0.06)]">
+        <div className="bg-grad-gold" aria-hidden="true" />
+        <div className="p-7 sm:p-8">
+          <h3 className="font-serif text-[1.2rem] text-green-deep m-0 mb-2 font-bold">
+            The Founding Word
+          </h3>
+          <p className="text-[0.98rem] text-gray-700 leading-relaxed m-0 italic">
             "Not by might, nor by power, but by my Spirit, says the LORD of hosts." — Zechariah 4:6.
             This promise continues to guide our leaders and church family in every season of ministry.
           </p>
@@ -558,26 +192,43 @@ export default function Journey() {
       </div>
 
       {/* ── Outcomes Banner ── */}
-      <div className="jr-outcomes jr-reveal">
-        <div className="jr-outcomes-inner">
-          <h3>What the Lord Has Done</h3>
-          <p className="jr-outcomes-sub">
+      <div className="jr-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out mt-14 bg-gradient-to-br from-white to-ivory rounded-[24px] p-8 sm:p-12 md:p-14 text-center border-[1.5px] border-gold/40 shadow-[0_10px_32px_rgba(18,45,36,0.06)] relative overflow-hidden">
+        {/* Background cross ornament */}
+        <span
+          className="absolute -top-7.5 left-1/2 -translate-x-1/2 text-[200px] text-gold/[0.06] font-serif pointer-events-none select-none leading-none"
+          aria-hidden="true"
+        >
+          ✝
+        </span>
+
+        <div className="relative z-10">
+          <h3 className="font-serif text-[clamp(1.6rem,3.5vw,2.3rem)] text-green-deep m-0 mb-3 font-bold">
+            What the Lord Has Done
+          </h3>
+          <p className="text-base text-gray-700 leading-relaxed mx-auto mb-9 max-w-[600px]">
             Over the past three decades, countless individuals burdened by illness, fear, and
             hopelessness have experienced the mighty touch of Jesus Christ in our prayer sanctuary.
           </p>
-          <div className="jr-outcomes-grid">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4.5 mb-9">
             {OUTCOMES.map((o) => (
-              <div key={o.label} className="jr-outcome-card">
-                <span className="jr-outcome-icon">{o.icon}</span>
-                <span className="jr-outcome-label">{o.label}<br />in Christ</span>
+              <div
+                key={o.label}
+                className="bg-white border-[1.5px] border-gold/30 hover:border-gold hover:bg-ivory rounded-[18px] py-6 px-3.5 shadow-[0_4px_14px_rgba(18,45,36,0.04)] transition-all duration-300 hover:-translate-y-1"
+              >
+                <span className="text-[2rem] block mb-3">{o.icon}</span>
+                <span className="text-[0.82rem] font-bold tracking-[0.12em] uppercase text-green-deep leading-snug">
+                  {o.label}
+                  <br />
+                  in Christ
+                </span>
               </div>
             ))}
           </div>
-          <p className="jr-outcomes-quote">
+          <p className="font-serif italic text-base md:text-[1.05rem] text-gold-dark m-0">
             "To God be all the glory, great things He hath done!"
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }

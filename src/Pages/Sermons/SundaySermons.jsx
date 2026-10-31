@@ -102,134 +102,17 @@ export default function SundaySermons() {
 
   return (
     <>
-      <style>{`
-        .sermon-filter-strip {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 16px;
-          margin-bottom: 36px;
-          flex-wrap: wrap;
-        }
-        .sermon-search-input {
-          padding: 11px 16px;
-          border-radius: 50px;
-          border: 1.5px solid var(--border-gold-subtle);
-          background: var(--white);
-          font-family: var(--font-sans);
-          font-size: 0.88rem;
-          min-width: 260px;
-        }
-        .sermon-search-input:focus {
-          outline: none;
-          border-color: var(--gold);
-          box-shadow: 0 0 0 3px rgba(214, 182, 107, 0.15);
-        }
-
-        .sermon-series-buttons {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
-        .sermon-series-btn {
-          padding: 7px 16px;
-          border-radius: 50px;
-          font-size: 0.78rem;
-          font-weight: 700;
-          border: 1px solid var(--border-gold-subtle);
-          background: var(--white);
-          color: var(--text-muted);
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .sermon-series-btn:hover {
-          color: var(--green);
-          border-color: var(--gold);
-        }
-        .sermon-series-btn.active {
-          background: var(--grad-green-accent);
-          color: var(--gold-bright);
-          border-color: var(--gold);
-        }
-
-        .sermons-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-          gap: 28px;
-        }
-        .sermon-card {
-          background: var(--white);
-          border: 1.5px solid var(--border-gold-subtle);
-          border-radius: 18px;
-          padding: 30px 26px;
-          box-shadow: var(--shadow-sm);
-          transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
-          display: flex;
-          flex-direction: column;
-        }
-        .sermon-card:hover {
-          transform: translateY(-5px);
-          box-shadow: var(--shadow-md);
-          border-color: var(--gold);
-        }
-        .sermon-card-head {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 12px;
-        }
-        .sermon-series-badge {
-          font-size: 0.72rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          background: var(--gold-soft);
-          color: var(--gold-dark);
-          padding: 4px 12px;
-          border-radius: 50px;
-          border: 1px solid var(--border-gold-subtle);
-        }
-        .sermon-card-date {
-          font-size: 0.76rem;
-          color: var(--text-light);
-        }
-        .sermon-card-title {
-          font-family: var(--font-serif);
-          font-size: 1.25rem;
-          color: var(--green-dark);
-          margin: 0 0 8px;
-          font-weight: 700;
-          line-height: 1.35;
-        }
-        .sermon-speaker-line {
-          font-size: 0.82rem;
-          color: var(--gold-dark);
-          font-weight: 600;
-          margin-bottom: 14px;
-        }
-        .sermon-summary {
-          font-size: 0.9rem;
-          color: var(--text-muted);
-          line-height: 1.7;
-          margin: 0 0 20px;
-          flex-grow: 1;
-        }
-        .sermon-card-footer {
-          border-top: 1px solid var(--border-gold-subtle);
-          padding-top: 14px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-      `}</style>
-
       {/* Filter and Search */}
-      <div className="sermon-filter-strip">
-        <div className="sermon-series-buttons" role="tablist">
+      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-9">
+        <div className="flex gap-2 flex-wrap" role="tablist">
           {SERIES_LIST.map((series) => (
             <button
               key={series}
-              className={`sermon-series-btn${selectedSeries === series ? " active" : ""}`}
+              className={`px-4 py-1.5 rounded-full text-[0.78rem] font-bold border transition-all cursor-pointer ${
+                selectedSeries === series
+                  ? "bg-gradient-to-r from-green-deep to-green-medium text-gold-bright border-gold shadow-sm"
+                  : "bg-white text-text-muted border-gold/30 hover:text-green hover:border-gold"
+              }`}
               onClick={() => setSelectedSeries(series)}
             >
               {series === "All" ? "📜 All Series" : series}
@@ -240,38 +123,50 @@ export default function SundaySermons() {
         <input
           type="search"
           placeholder="🔍 Search sermon topic, scripture..."
-          className="sermon-search-input"
+          className="py-2 px-4 rounded-full border-[1.5px] border-gold/30 bg-white font-sans text-[0.88rem] focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 min-w-[260px] text-text-main placeholder-text-muted/60"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
       {/* Grid */}
-      <div className="sermons-grid">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
         {filtered.map((sermon) => (
-          <article key={sermon.id} className="sermon-card">
-            <div className="sermon-card-head">
-              <span className="sermon-series-badge">{sermon.series}</span>
-              <span className="sermon-card-date">{sermon.date}</span>
+          <article
+            key={sermon.id}
+            className="bg-white border-[1.5px] border-gold/25 hover:border-gold rounded-[18px] p-6 sm:p-7 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 flex flex-col"
+          >
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-[0.72rem] font-bold tracking-[0.08em] uppercase bg-gold-soft text-gold-dark px-3 py-1 rounded-full border border-gold/30">
+                {sermon.series}
+              </span>
+              <span className="text-[0.76rem] text-text-light">{sermon.date}</span>
             </div>
             {sermon.image && (
-              <div style={{ height: 300, borderRadius: 10, overflow: "hidden", margin: "10px 0 14px", border: "1.5px solid var(--border-gold-subtle)" }}>
-                <img src={sermon.image} alt={sermon.speaker} style={{ width: "100%", height: "100%", objectFit: "fit" }} />
+              <div className="h-[260px] sm:h-[280px] rounded-xl overflow-hidden my-3 border-[1.5px] border-gold/20 bg-green-dark">
+                <img
+                  src={sermon.image}
+                  alt={sermon.speaker}
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
             )}
-            <h3 className="sermon-card-title">{sermon.title}</h3>
-            <div className="sermon-speaker-line">
+            <h3 className="font-serif text-xl text-green-dark my-2 mb-2 font-bold leading-snug">
+              {sermon.title}
+            </h3>
+            <div className="text-[0.82rem] text-gold-dark font-semibold mb-3">
               👤 {sermon.speaker} • 📖 {sermon.passage}
             </div>
-            <p className="sermon-summary">{sermon.summary}</p>
-            <div className="sermon-card-footer">
-              <span style={{ fontSize: "0.78rem", color: "var(--text-light)" }}>
+            <p className="text-[0.9rem] text-text-muted leading-[1.7] mb-5 grow">
+              {sermon.summary}
+            </p>
+            <div className="border-t border-gold/20 pt-3.5 flex justify-between items-center mt-auto">
+              <span className="text-[0.78rem] text-text-light font-medium">
                 Sunday Morning Service
               </span>
               <button
                 onClick={() => setNotesModal(sermon)}
-                className="ct-btn-gold"
-                style={{ padding: "8px 16px", fontSize: "0.78rem" }}
+                className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-gold to-gold-dark text-green-deep font-bold px-4 py-2 rounded-full shadow-sm hover:shadow hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider cursor-pointer"
               >
                 Study Notes 📝
               </button>
@@ -282,60 +177,49 @@ export default function SundaySermons() {
 
       {/* Notes Modal */}
       {notesModal && (
-        <div className="ct-modal-backdrop" onClick={() => setNotesModal(null)}>
-          <div className="ct-modal-window" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          onClick={() => setNotesModal(null)}
+        >
+          <div
+            className="relative bg-white rounded-2xl border-[1.5px] border-gold/40 p-6 sm:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
-              className="ct-modal-close"
+              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gold/20 text-gray-500 hover:text-green-dark flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
               onClick={() => setNotesModal(null)}
               aria-label="Close sermon notes"
             >
               ✕
             </button>
 
-            <span className="ct-badge" style={{ marginBottom: 10 }}>
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-gold/15 text-gold-dark border border-gold/40 mb-2.5">
               {notesModal.series} • {notesModal.date}
             </span>
-            <h3
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "1.6rem",
-                color: "var(--green-dark)",
-                margin: "4px 0 6px",
-              }}
-            >
+            <h3 className="font-serif text-2xl sm:text-[1.6rem] text-green-dark my-1 mb-1.5 font-bold leading-tight">
               {notesModal.title}
             </h3>
-            <p style={{ color: "var(--gold-dark)", fontWeight: 700, fontSize: "0.9rem", marginBottom: 18 }}>
+            <p className="text-gold-dark font-bold text-[0.9rem] mb-4">
               Ministered by {notesModal.speaker} | Scripture: {notesModal.passage}
             </p>
 
-            <div className="ct-scripture-box" style={{ margin: "16px 0 24px" }}>
+            <div className="bg-ivory border-l-[3px] border-gold p-4 sm:p-5 rounded-r-xl font-serif italic text-green-dark text-sm sm:text-base leading-relaxed my-4">
               {notesModal.summary}
             </div>
 
-            <h4
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "1.15rem",
-                color: "var(--green-dark)",
-                marginBottom: "12px",
-              }}
-            >
+            <h4 className="font-serif text-lg text-green-dark mb-3 font-bold">
               Key Biblical Takeaways &amp; Application:
             </h4>
-            <ul style={{ paddingLeft: "20px", color: "var(--text-muted)", lineHeight: 1.8, fontSize: "0.94rem" }}>
+            <ul className="pl-5 text-text-muted leading-[1.8] text-[0.94rem] list-disc space-y-2">
               {notesModal.keyPoints.map((pt, i) => (
-                <li key={i} style={{ marginBottom: 10 }}>
-                  {pt}
-                </li>
+                <li key={i}>{pt}</li>
               ))}
             </ul>
 
-            <div style={{ marginTop: 24, textAlign: "center" }}>
+            <div className="mt-6 text-center">
               <button
                 onClick={() => setNotesModal(null)}
-                className="ct-btn-emerald"
-                style={{ width: "100%" }}
+                className="w-full bg-gradient-to-r from-green-deep to-green-medium text-gold-bright font-bold py-3 px-6 rounded-full hover:shadow-lg transition-all cursor-pointer text-sm uppercase tracking-wider"
               >
                 Close Sermon Notes
               </button>

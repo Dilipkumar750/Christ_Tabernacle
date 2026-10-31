@@ -18,296 +18,118 @@ export default function About() {
   }
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700&display=swap');
+    <div className="bg-ivory w-full min-h-screen font-sans">
+      {/* ── Hero ── */}
+      <section
+        className="relative bg-grad-sanctuary-dark pt-16 md:pt-[85px] pb-11 md:pb-[60px] px-4 md:px-6 text-center overflow-hidden border-b border-gold/30"
+        aria-labelledby="about-h1"
+      >
+        {/* Glow backdrop */}
+        <div
+          className="absolute inset-0 pointer-events-none z-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 60% at 50% 80%, rgba(214,182,107,0.1) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 20% 10%, rgba(40,110,82,0.4) 0%, transparent 55%), radial-gradient(ellipse 50% 50% at 80% 10%, rgba(40,110,82,0.3) 0%, transparent 55%)",
+          }}
+          aria-hidden="true"
+        />
 
-        /* ── About Hero ── */
-        .about-hero {
-          position: relative;
-          background: var(--grad-sanctuary-dark);
-          padding: 85px 24px 60px;
-          text-align: center;
-          font-family: var(--font-sans);
-          overflow: hidden;
-          border-bottom: 1px solid var(--border-gold);
-        }
+        <ParticleCross />
 
-        /* Radial glow backdrop */
-        .about-hero::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(ellipse 70% 60% at 50% 80%, rgba(214,182,107,0.1) 0%, transparent 65%),
-            radial-gradient(ellipse 50% 50% at 20% 10%, rgba(40,110,82,0.4) 0%, transparent 55%),
-            radial-gradient(ellipse 50% 50% at 80% 10%, rgba(40,110,82,0.3) 0%, transparent 55%);
-          pointer-events: none;
-          z-index: 0;
-        }
+        <div className="relative z-10 max-w-[760px] mx-auto">
+          {/* Animated church emblem ring */}
+          <div className="relative w-24 h-24 mx-auto mb-6 flex items-center justify-center animate-pulse">
+            <span
+              className="absolute -inset-3 rounded-full border border-dashed border-gold/35 animate-[spin_30s_linear_infinite_reverse] pointer-events-none"
+              aria-hidden="true"
+            />
+            <span
+              className="absolute -inset-1.5 rounded-full border-[1.5px] border-gold/65 animate-[spin_18s_linear_infinite] pointer-events-none"
+              aria-hidden="true"
+            />
+            <img
+              className="w-full h-full rounded-full object-cover border-[2.5px] border-gold block drop-shadow-[0_0_15px_rgba(214,182,107,0.45)]"
+              src={logoImg}
+              alt="Christ's Tabernacle Emblem"
+            />
+          </div>
 
-        .about-hero-inner {
-          position: relative;
-          z-index: 2;
-          max-width: 760px;
-          margin: 0 auto;
-        }
+          <div className="inline-flex items-center gap-2.5 text-[0.72rem] tracking-[0.28em] uppercase text-gold-bright font-bold mb-4 py-1.5 px-5 border-[1.5px] border-gold/35 rounded-full bg-gold/10">
+            <span>✝</span> Who We Are <span>✝</span>
+          </div>
 
-        /* Animated church emblem ring */
-        .about-emblem-ring {
-          width: 96px;
-          height: 96px;
-          margin: 0 auto 24px;
-          position: relative;
-          animation: about-ring-pulse 4s ease-in-out infinite;
-        }
-        @keyframes about-ring-pulse {
-          0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(214,182,107,0.35)); }
-          50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(214,182,107,0.6)); }
-        }
-        .about-emblem-ring::before {
-          content: '';
-          position: absolute;
-          inset: -6px;
-          border-radius: 50%;
-          border: 1.5px solid var(--gold);
-          animation: about-ring-spin 18s linear infinite;
-          opacity: 0.65;
-        }
-        .about-emblem-ring::after {
-          content: '';
-          position: absolute;
-          inset: -12px;
-          border-radius: 50%;
-          border: 1px dashed rgba(214,182,107,0.35);
-          animation: about-ring-spin 30s linear infinite reverse;
-        }
-        @keyframes about-ring-spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .about-emblem-img {
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 2.5px solid var(--gold);
-          display: block;
-        }
+          <h1
+            id="about-h1"
+            className="font-serif text-[clamp(2.2rem,5.5vw,3.8rem)] text-ivory font-black mb-4.5 leading-[1.15] tracking-tight"
+          >
+            About <em className="italic text-gold-bright">Christ's Tabernacle</em>
+          </h1>
 
-        .about-hero-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          font-size: 0.72rem;
-          letter-spacing: 0.28em;
-          text-transform: uppercase;
-          color: var(--gold-bright);
-          font-weight: 700;
-          margin-bottom: 16px;
-          padding: 6px 20px;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 50px;
-          background: rgba(214,182,107,0.1);
-        }
+          <p className="text-sm md:text-base text-ivory/85 max-w-[600px] mx-auto mb-7 leading-relaxed">
+            Rooted in prayer, established in faith, and called to declare the transformative
+            power, divine healing, and deliverance of Jesus Christ since 1991.
+          </p>
 
-        .about-hero h1 {
-          font-family: var(--font-serif);
-          font-size: clamp(2.2rem, 5.5vw, 3.8rem);
-          color: var(--ivory);
-          font-weight: 900;
-          margin: 0 0 18px;
-          line-height: 1.15;
-          letter-spacing: -0.01em;
-          animation: about-fadein 0.9s ease both;
-        }
-        @keyframes about-fadein {
-          from { opacity: 0; transform: translateY(18px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .about-hero h1 em {
-          font-style: italic;
-          color: var(--gold-bright);
-        }
-
-        .about-hero-desc {
-          font-size: 1.05rem;
-          color: rgba(250,246,238,0.85);
-          max-width: 600px;
-          margin: 0 auto 30px;
-          line-height: 1.8;
-          animation: about-fadein 0.9s 0.15s ease both;
-        }
-
-        /* Stats strip */
-        .about-hero-stats {
-          display: inline-flex;
-          gap: 0;
-          border: 1.5px solid rgba(214,182,107,0.3);
-          border-radius: 14px;
-          overflow: hidden;
-          background: rgba(12,34,25,0.7);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-          animation: about-fadein 0.9s 0.3s ease both;
-        }
-        .about-hero-stat {
-          padding: 14px 28px;
-          border-right: 1px solid rgba(214,182,107,0.25);
-        }
-        .about-hero-stat:last-child { border-right: none; }
-        .about-hero-stat-num {
-          font-family: var(--font-serif);
-          font-size: 1.6rem;
-          color: var(--gold-bright);
-          font-weight: 700;
-          line-height: 1;
-          display: block;
-        }
-        .about-hero-stat-label {
-          font-size: 0.68rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: rgba(250,246,238,0.7);
-          display: block;
-          margin-top: 4px;
-        }
-
-        /* ── Sticky Green Tabs Bar ── */
-        .about-tabs-bar {
-          background: #FFFFFF;
-          border-bottom: 2px solid rgba(214,182,107,0.35);
-          border-top: 1px solid rgba(214,182,107,0.2);
-          padding: 0 24px;
-          position: sticky;
-          top: 70px;
-          z-index: 90;
-          font-family: var(--font-sans);
-          box-shadow: 0 4px 16px rgba(18,45,36,0.05);
-        }
-        .about-tabs {
-          max-width: 1100px;
-          margin: 0 auto;
-          display: flex;
-          gap: 4px;
-          overflow-x: auto;
-          scrollbar-width: none;
-        }
-        .about-tabs::-webkit-scrollbar { display: none; }
-
-        .about-tab-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 16px 22px;
-          font-size: 0.85rem;
-          font-weight: 600;
-          color: #3D5949;
-          text-decoration: none;
-          white-space: nowrap;
-          border-bottom: 3px solid transparent;
-          transition: all 0.22s ease;
-          position: relative;
-          bottom: -1px;
-          letter-spacing: 0.02em;
-        }
-        .about-tab-link .tab-icon {
-          font-size: 0.95rem;
-          opacity: 0.85;
-          transition: opacity 0.2s;
-        }
-        .about-tab-link:hover {
-          color: var(--green-deep);
-          background: rgba(214,182,107,0.08);
-        }
-        .about-tab-link:hover .tab-icon { opacity: 1; }
-        .about-tab-link.active {
-          color: var(--green-deep);
-          font-weight: 700;
-          border-bottom-color: var(--gold);
-          background: rgba(214,182,107,0.15);
-        }
-        .about-tab-link.active .tab-icon { opacity: 1; }
-
-        /* ── Content Wrapper (Light Warm Ivory Canvas) ── */
-        .about-content-wrap {
-          max-width: 1100px;
-          margin: 0 auto;
-          padding: 56px 24px 96px;
-          font-family: var(--font-sans);
-          background: var(--ivory);
-          min-height: 60vh;
-        }
-        .about-outer-wrap {
-          background: var(--ivory);
-          width: 100%;
-          min-height: 100vh;
-        }
-
-        @media (max-width: 680px) {
-          .about-hero { padding: 64px 16px 44px; }
-          .about-hero-stats { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-          .about-hero-stat { padding: 10px 18px; }
-          .about-tab-link { padding: 12px 14px; font-size: 0.78rem; gap: 5px; }
-          .about-content-wrap { padding: 36px 16px 64px; }
-        }
-      `}</style>
-
-      <div className="about-outer-wrap">
-        {/* ── Hero ── */}
-        <section className="about-hero" aria-labelledby="about-h1">
-          <ParticleCross />
-          <div className="about-hero-inner">
-            <div className="about-emblem-ring">
-              <img className="about-emblem-img" src={logoImg} alt="Christ's Tabernacle Emblem" />
+          <div className="inline-flex flex-row flex-wrap justify-center border-[1.5px] border-gold/30 rounded-xl overflow-hidden bg-green-deep/70 shadow-card">
+            <div className="px-4.5 py-2.5 sm:px-7 sm:py-3.5 border-r border-gold/25">
+              <span className="font-serif text-xl sm:text-[1.6rem] text-gold-bright font-bold leading-none block">
+                33+
+              </span>
+              <span className="text-[0.68rem] tracking-[0.14em] uppercase text-ivory/70 block mt-1">
+                Years of Ministry
+              </span>
             </div>
-            <div className="about-hero-eyebrow">
-              <span>✝</span> Who We Are <span>✝</span>
+            <div className="px-4.5 py-2.5 sm:px-7 sm:py-3.5 border-r border-gold/25">
+              <span className="font-serif text-xl sm:text-[1.6rem] text-gold-bright font-bold leading-none block">
+                1000s
+              </span>
+              <span className="text-[0.68rem] tracking-[0.14em] uppercase text-ivory/70 block mt-1">
+                Lives Transformed
+              </span>
             </div>
-            <h1 id="about-h1">
-              About <em>Christ's Tabernacle</em>
-            </h1>
-            <p className="about-hero-desc">
-              Rooted in prayer, established in faith, and called to declare the transformative
-              power, divine healing, and deliverance of Jesus Christ since 1991.
-            </p>
-            <div className="about-hero-stats">
-              <div className="about-hero-stat">
-                <span className="about-hero-stat-num">33+</span>
-                <span className="about-hero-stat-label">Years of Ministry</span>
-              </div>
-              <div className="about-hero-stat">
-                <span className="about-hero-stat-num">1000s</span>
-                <span className="about-hero-stat-label">Lives Transformed</span>
-              </div>
-              <div className="about-hero-stat">
-                <span className="about-hero-stat-num">1991</span>
-                <span className="about-hero-stat-label">Founded in Faith</span>
-              </div>
+            <div className="px-4.5 py-2.5 sm:px-7 sm:py-3.5">
+              <span className="font-serif text-xl sm:text-[1.6rem] text-gold-bright font-bold leading-none block">
+                1991
+              </span>
+              <span className="text-[0.68rem] tracking-[0.14em] uppercase text-ivory/70 block mt-1">
+                Founded in Faith
+              </span>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── Sticky Green Tabs ── */}
-        <nav className="about-tabs-bar" aria-label="About Us navigation">
-          <div className="about-tabs">
-            {TABS.map((tab) => (
-              <NavLink
-                key={tab.path}
-                to={tab.path}
-                className={({ isActive }) => `about-tab-link${isActive ? " active" : ""}`}
-              >
-                <span className="tab-icon" aria-hidden="true">{tab.icon}</span>
-                {tab.label}
-              </NavLink>
-            ))}
-          </div>
-        </nav>
+      {/* ── Sticky Green Tabs ── */}
+      <nav
+        className="bg-white border-b-2 border-gold/35 border-t border-gold/20 px-4 sm:px-6 sticky top-[70px] z-[90] shadow-[0_4px_16px_rgba(18,45,36,0.05)]"
+        aria-label="About Us navigation"
+      >
+        <div className="max-w-[1100px] mx-auto flex gap-1 overflow-x-auto scrollbar-hide">
+          {TABS.map((tab) => (
+            <NavLink
+              key={tab.path}
+              to={tab.path}
+              className={({ isActive }) =>
+                `inline-flex items-center gap-1.5 sm:gap-2 py-3 px-3.5 sm:py-4 sm:px-5.5 text-xs sm:text-sm font-semibold whitespace-nowrap border-b-[3px] transition-all duration-200 tracking-wide relative -bottom-[1px] ${
+                  isActive
+                    ? "text-green-deep font-bold border-gold bg-gold/15"
+                    : "text-[#3D5949] border-transparent hover:text-green-deep hover:bg-gold/10"
+                }`
+              }
+            >
+              <span className="text-sm sm:text-base opacity-85" aria-hidden="true">
+                {tab.icon}
+              </span>
+              {tab.label}
+            </NavLink>
+          ))}
+        </div>
+      </nav>
 
-        {/* ── Nested Content ── */}
-        <main className="about-content-wrap">
-          <Outlet />
-        </main>
-      </div>
-    </>
+      {/* ── Nested Content ── */}
+      <main className="max-w-[1100px] mx-auto px-4 py-9 sm:px-6 sm:py-14 pb-24 min-h-[60vh]">
+        <Outlet />
+      </main>
+    </div>
   );
 }

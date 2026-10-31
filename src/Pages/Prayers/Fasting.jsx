@@ -28,123 +28,44 @@ const FASTING_SCHEDULE = [
 export default function Fasting() {
   return (
     <>
-      <style>{`
-        .fasting-hero-box {
-          background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
-          border-radius: 20px;
-          border: 1.5px solid var(--border-gold);
-          padding: 42px 36px;
-          color: var(--text-main);
-          margin-bottom: 44px;
-          box-shadow: 0 4px 20px rgba(18, 45, 36, 0.05);
-        }
-        .fasting-hero-box h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.6rem, 3.5vw, 2.3rem);
-          margin: 10px 0 14px;
-          color: var(--green-dark);
-        }
-        .fasting-hero-box h2 span { color: var(--gold-dark); }
-        .fasting-hero-box p {
-          color: #374151;
-          font-size: 1rem;
-          line-height: 1.75;
-          max-width: 720px;
-          margin: 0;
-        }
-
-        .fasting-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 24px;
-          margin: 32px 0 48px;
-        }
-        .fasting-card {
-          background: var(--white);
-          border: 1.5px solid var(--border-gold-subtle);
-          border-radius: 18px;
-          padding: 30px 26px;
-          box-shadow: var(--shadow-sm);
-          transition: transform 0.25s, border-color 0.25s;
-        }
-        .fasting-card:hover {
-          transform: translateY(-4px);
-          border-color: var(--gold);
-        }
-        .fasting-card-icon {
-          font-size: 2.2rem;
-          margin-bottom: 12px;
-          display: block;
-        }
-        .fasting-card-title {
-          font-family: var(--font-serif);
-          font-size: 1.25rem;
-          color: var(--green-dark);
-          margin: 0 0 6px;
-          font-weight: 700;
-        }
-        .fasting-card-time {
-          font-size: 0.78rem;
-          color: var(--gold-dark);
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          margin-bottom: 12px;
-          display: block;
-        }
-        .fasting-card-focus {
-          font-size: 0.9rem;
-          color: var(--text-muted);
-          line-height: 1.65;
-          margin: 0;
-        }
-
-        .fasting-guidelines {
-          background: var(--ivory);
-          border-radius: 18px;
-          border: 1px solid var(--border-gold-subtle);
-          padding: 36px 32px;
-        }
-        .fasting-guidelines h3 {
-          font-family: var(--font-serif);
-          font-size: 1.4rem;
-          color: var(--green-dark);
-          margin: 0 0 16px;
-        }
-
-        @media (max-width: 768px) {
-          .fasting-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
       {/* Hero */}
-      <div className="fasting-hero-box">
-        <span className="ct-badge ct-badge-gold">† The Power of Humility &amp; Sacrifice †</span>
-        <h2>
-          Fasting <span>&amp; Deliverance Prayers</span>
+      <div
+        className="rounded-[20px] border-[1.5px] border-gold/40 p-6 sm:p-9 md:p-11 mb-11 shadow-[0_4px_20px_rgba(18,45,36,0.05)] text-text-main"
+        style={{ background: "linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%)" }}
+      >
+        <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-gold/15 text-gold-dark border border-gold/40 mb-2.5">
+          † The Power of Humility &amp; Sacrifice †
+        </span>
+        <h2 className="font-serif text-[clamp(1.6rem,3.5vw,2.3rem)] my-2.5 md:my-3.5 text-green-dark font-bold leading-tight">
+          Fasting <span className="text-gold-dark">&amp; Deliverance Prayers</span>
         </h2>
-        <p>
+        <p className="text-gray-700 text-base leading-[1.75] max-w-[720px] m-0">
           "Is not this the fast that I have chosen: to loose the chains of injustice and untie the cords of the yoke, to set the oppressed free and break every yoke?" — Isaiah 58:6. At Christ's Tabernacle, fasting prayer is the engine room of our spiritual power.
         </p>
       </div>
 
       {/* Schedule Grid */}
       <section aria-labelledby="schedule-heading">
-        <h3 id="schedule-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "1.6rem", color: "var(--green-dark)" }}>
+        <h3 id="schedule-heading" className="font-serif text-2xl md:text-[1.6rem] text-green-dark font-bold">
           Fasting Prayer Gatherings
         </h3>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
+        <p className="text-text-muted text-[0.95rem] mt-1">
           Join our prayer warriors as we seek the face of God in corporate consecrated fasting.
         </p>
 
-        <div className="fasting-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8 mb-12">
           {FASTING_SCHEDULE.map((item) => (
-            <div key={item.title} className="fasting-card">
-              <span className="fasting-card-icon" aria-hidden="true">{item.icon}</span>
-              <h4 className="fasting-card-title">{item.title}</h4>
-              <span className="fasting-card-time">{item.timing}</span>
-              <p className="fasting-card-focus">
-                <strong>Prayer Focus:</strong> {item.focus}
+            <div
+              key={item.title}
+              className="bg-white border-[1.5px] border-gold/25 hover:border-gold rounded-[18px] p-7 md:p-8 shadow-sm hover:-translate-y-1 transition-all duration-300"
+            >
+              <span className="text-4xl mb-3 block" aria-hidden="true">{item.icon}</span>
+              <h4 className="font-serif text-xl text-green-dark font-bold mb-1.5">{item.title}</h4>
+              <span className="text-[0.78rem] text-gold-dark font-bold uppercase tracking-[0.08em] mb-3 block">
+                {item.timing}
+              </span>
+              <p className="text-[0.9rem] text-text-muted leading-[1.65] m-0">
+                <strong className="text-green-dark">Prayer Focus:</strong> {item.focus}
               </p>
             </div>
           ))}
@@ -152,20 +73,22 @@ export default function Fasting() {
       </section>
 
       {/* Guidelines Box */}
-      <div className="fasting-guidelines">
-        <h3>Biblical Principles for an Acceptable Fast</h3>
-        <ul style={{ paddingLeft: "20px", color: "var(--text-muted)", lineHeight: 1.85, fontSize: "0.95rem" }}>
+      <div className="bg-ivory rounded-[18px] border border-gold/25 p-7 sm:p-9">
+        <h3 className="font-serif text-xl sm:text-[1.4rem] text-green-dark font-bold mb-4">
+          Biblical Principles for an Acceptable Fast
+        </h3>
+        <ul className="pl-5 text-text-muted leading-[1.85] text-[0.95rem] list-disc space-y-2">
           <li>
-            <strong>Purity of Motive:</strong> Fast not for human applause, but in secret before your Heavenly Father (Matthew 6:16–18).
+            <strong className="text-green-dark">Purity of Motive:</strong> Fast not for human applause, but in secret before your Heavenly Father (Matthew 6:16–18).
           </li>
           <li>
-            <strong>Feed on the Word:</strong> Dedicate the hours saved from meal preparation to immersing yourself in Scripture and intercessory prayer.
+            <strong className="text-green-dark">Feed on the Word:</strong> Dedicate the hours saved from meal preparation to immersing yourself in Scripture and intercessory prayer.
           </li>
           <li>
-            <strong>Confession &amp; Forgiveness:</strong> Let your fast be accompanied by repentance, forgiving those who offended you, and reconciliation.
+            <strong className="text-green-dark">Confession &amp; Forgiveness:</strong> Let your fast be accompanied by repentance, forgiving those who offended you, and reconciliation.
           </li>
           <li>
-            <strong>Expect Miracles:</strong> Approach God with unwavering faith knowing that "this kind does not go out except by prayer and fasting" (Matthew 17:21).
+            <strong className="text-green-dark">Expect Miracles:</strong> Approach God with unwavering faith knowing that "this kind does not go out except by prayer and fasting" (Matthew 17:21).
           </li>
         </ul>
       </div>

@@ -32,7 +32,14 @@ function useReveal(sel) {
     const els = document.querySelectorAll(sel);
     if (!els.length) return;
     const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("v-in"); io.unobserve(e.target); } }),
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.remove("opacity-0", "translate-y-7");
+            e.target.classList.add("opacity-100", "translate-y-0");
+            io.unobserve(e.target);
+          }
+        }),
       { threshold: 0.12 }
     );
     els.forEach((el) => io.observe(el));
@@ -44,252 +51,78 @@ export default function Vision() {
   useReveal(".v-reveal");
 
   return (
-    <>
-      <style>{`
-        .v-reveal {
-          opacity: 0;
-          transform: translateY(28px);
-          transition: opacity 0.65s cubic-bezier(.22,1,.36,1), transform 0.65s cubic-bezier(.22,1,.36,1);
-        }
-        .v-reveal.v-in { opacity: 1; transform: none; }
-
-        /* ── Hero Statement (Light Sanctuary Theme) ── */
-        .vis-hero {
-          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 60%, #F5EFE6 100%);
-          border-radius: 24px;
-          padding: 56px 44px;
-          margin-bottom: 48px;
-          position: relative;
-          overflow: hidden;
-          border: 1.5px solid rgba(214,182,107,0.38);
-          box-shadow: 0 10px 32px rgba(18,45,36,0.06);
-        }
-        .vis-hero::before {
-          content: '';
-          position: absolute;
-          top: -60px; right: -60px;
-          width: 260px; height: 260px;
-          background: radial-gradient(circle, rgba(214,182,107,0.14) 0%, transparent 65%);
-          border-radius: 50%;
-          pointer-events: none;
-        }
-        .vis-hero::after {
-          content: '✝';
-          position: absolute;
-          bottom: -24px; left: 32px;
-          font-size: 140px;
-          color: rgba(214,182,107,0.06);
-          font-family: var(--font-serif);
-          pointer-events: none;
-        }
-        .vis-hero-inner { position: relative; z-index: 1; }
-        .vis-label {
-          font-size: 0.72rem;
-          letter-spacing: 0.28em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-weight: 700;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 20px;
-        }
-        .vis-label::before, .vis-label::after {
-          content: '';
-          flex: 1;
-          height: 1px;
-          background: linear-gradient(to right, transparent, rgba(214,182,107,0.4), transparent);
-        }
-        .vis-hero blockquote {
-          font-family: var(--font-serif);
-          font-size: clamp(1.15rem, 2.8vw, 1.6rem);
-          color: var(--green-deep);
-          line-height: 1.7;
-          margin: 0 0 24px;
-          font-style: italic;
-          font-weight: 400;
-        }
-        .vis-hero blockquote strong {
-          color: var(--gold-dark);
-          font-style: normal;
-          font-weight: 700;
-        }
-        .vis-scripture-ref {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 0.78rem;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: var(--green-deep);
-          background: rgba(214,182,107,0.14);
-          border: 1px solid rgba(214,182,107,0.35);
-          padding: 8px 18px;
-          border-radius: 50px;
-        }
-
-        /* ── Section heading ── */
-        .vis-section-head {
-          margin-bottom: 28px;
-        }
-        .vis-section-head h3 {
-          font-family: var(--font-serif);
-          font-size: 1.6rem;
-          color: var(--green-deep);
-          margin: 0 0 6px;
-          font-weight: 700;
-        }
-        .vis-section-head p {
-          font-size: 0.96rem;
-          color: #374151;
-          margin: 0;
-        }
-
-        /* ── Pillars Grid ── */
-        .vis-pillars {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 22px;
-        }
-
-        .vis-pillar {
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 20px;
-          padding: 32px 28px;
-          box-shadow: 0 6px 24px rgba(18,45,36,0.06);
-          transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s, border-color 0.3s;
-          position: relative;
-          overflow: hidden;
-        }
-        .vis-pillar::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 3px;
-          background: var(--grad-gold);
-          opacity: 0.8;
-          transition: opacity 0.3s;
-        }
-        .vis-pillar:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 16px 40px rgba(18,45,36,0.12);
-          border-color: var(--gold);
-        }
-        .vis-pillar:hover::before { opacity: 1; }
-
-        .vis-pillar-icon-wrap {
-          width: 52px;
-          height: 52px;
-          border-radius: 14px;
-          background: #FAF6EE;
-          border: 2px solid var(--gold);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.5rem;
-          margin-bottom: 18px;
-          box-shadow: 0 4px 14px rgba(18,45,36,0.06);
-        }
-        .vis-pillar h4 {
-          font-family: var(--font-serif);
-          font-size: 1.4rem;
-          color: var(--green-deep);
-          margin: 0 0 4px;
-          font-weight: 700;
-        }
-        .vis-pillar-verse {
-          font-size: 0.76rem;
-          color: var(--green);
-          font-style: italic;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          margin-bottom: 14px;
-          display: block;
-        }
-        .vis-pillar p {
-          font-size: 0.95rem;
-          color: #374151;
-          line-height: 1.8;
-          margin: 0;
-        }
-
-        /* ── Scripture Footer ── */
-        .vis-footer-verse {
-          margin-top: 48px;
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 18px;
-          padding: 34px 38px;
-          text-align: center;
-          box-shadow: 0 6px 20px rgba(18,45,36,0.05);
-        }
-        .vis-footer-verse blockquote {
-          font-family: var(--font-serif);
-          font-style: italic;
-          font-size: 1.15rem;
-          color: var(--green-deep);
-          line-height: 1.75;
-          margin: 0 0 10px;
-        }
-        .vis-footer-verse cite {
-          font-size: 0.78rem;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-style: normal;
-        }
-
-        @media (max-width: 680px) {
-          .vis-hero { padding: 36px 22px; border-radius: 18px; }
-          .vis-pillars { grid-template-columns: 1fr; }
-          .vis-footer-verse { padding: 24px 20px; }
-        }
-      `}</style>
-
+    <div className="font-sans">
       {/* Hero statement */}
-      <div className="vis-hero v-reveal">
-        <div className="vis-hero-inner">
-          <div className="vis-label">† Our Kingdom Vision †</div>
-          <blockquote>
-            "To be a <strong>vibrant sanctuary of prayer and deliverance</strong> where every soul
-            is transformed by Christ, every home is sanctified by the Holy Spirit, and the
-            Gospel of the Kingdom shines as an unquenchable beacon of salvation."
+      <div className="v-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out bg-gradient-to-br from-white via-ivory to-[#F5EFE6] rounded-[24px] p-7 sm:p-11 md:p-14 mb-12 relative overflow-hidden border-[1.5px] border-gold/40 shadow-[0_10px_32px_rgba(18,45,36,0.06)]">
+        {/* Glow backdrop */}
+        <span
+          className="absolute -top-15 -right-15 w-[260px] h-[260px] bg-[radial-gradient(circle,rgba(214,182,107,0.14)_0%,transparent_65%)] rounded-full pointer-events-none"
+          aria-hidden="true"
+        />
+        {/* Background cross ornament */}
+        <span
+          className="absolute -bottom-6 left-8 text-[140px] text-gold/[0.06] font-serif pointer-events-none select-none leading-none"
+          aria-hidden="true"
+        >
+          ✝
+        </span>
+
+        <div className="relative z-10">
+          <div className="text-[0.72rem] tracking-[0.28em] uppercase text-gold-dark font-bold flex items-center gap-2.5 mb-5 before:content-[''] before:flex-1 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-gold/40 before:to-transparent after:content-[''] after:flex-1 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-gold/40 after:to-transparent">
+            † Our Kingdom Vision †
+          </div>
+          <blockquote className="font-serif text-[clamp(1.15rem,2.8vw,1.6rem)] text-green-deep leading-relaxed m-0 mb-6 italic font-normal">
+            "To be a{" "}
+            <strong className="text-gold-dark not-italic font-bold">
+              vibrant sanctuary of prayer and deliverance
+            </strong>{" "}
+            where every soul is transformed by Christ, every home is sanctified by the Holy Spirit,
+            and the Gospel of the Kingdom shines as an unquenchable beacon of salvation."
           </blockquote>
-          <span className="vis-scripture-ref">✝ Christ's Tabernacle · Est. 1991</span>
+          <span className="inline-flex items-center gap-2 text-[0.78rem] font-bold tracking-[0.14em] uppercase text-green-deep bg-gold/15 border border-gold/35 py-2 px-4.5 rounded-full">
+            ✝ Christ's Tabernacle · Est. 1991
+          </span>
         </div>
       </div>
 
       {/* Pillars */}
-      <div className="vis-section-head v-reveal">
-        <h3>Four Pillars of Our Vision</h3>
-        <p>How we live out God's calling in Chennai and beyond.</p>
+      <div className="v-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out mb-7">
+        <h3 className="font-serif text-[1.6rem] text-green-deep m-0 mb-1.5 font-bold">
+          Four Pillars of Our Vision
+        </h3>
+        <p className="text-[0.96rem] text-gray-700 m-0">
+          How we live out God's calling in Chennai and beyond.
+        </p>
       </div>
 
-      <div className="vis-pillars">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5">
         {VISION_PILLARS.map((p, i) => (
           <div
             key={p.word}
-            className="vis-pillar v-reveal"
+            className="v-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out bg-white border-[1.5px] border-gold/35 hover:border-gold rounded-[20px] p-7 sm:p-8 shadow-[0_6px_24px_rgba(18,45,36,0.06)] hover:shadow-[0_16px_40px_rgba(18,45,36,0.12)] transition-all duration-300 hover:-translate-y-1.5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-grad-gold before:opacity-80 hover:before:opacity-100"
             style={{ transitionDelay: `${i * 0.1}s` }}
           >
-            <div className="vis-pillar-icon-wrap">{p.icon}</div>
-            <h4>{p.word}</h4>
-            <span className="vis-pillar-verse">{p.verse}</span>
-            <p>{p.desc}</p>
+            <div className="w-[52px] h-[52px] rounded-[14px] bg-ivory border-2 border-gold flex items-center justify-center text-2xl mb-4.5 shadow-[0_4px_14px_rgba(18,45,36,0.06)]">
+              {p.icon}
+            </div>
+            <h4 className="font-serif text-[1.4rem] text-green-deep m-0 mb-1 font-bold">{p.word}</h4>
+            <span className="text-[0.76rem] text-green italic font-semibold tracking-wider mb-3.5 block">
+              {p.verse}
+            </span>
+            <p className="text-[0.95rem] text-gray-700 leading-relaxed m-0">{p.desc}</p>
           </div>
         ))}
       </div>
 
       {/* Footer verse */}
-      <div className="vis-footer-verse v-reveal">
-        <blockquote>
+      <div className="v-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out mt-12 bg-white border-[1.5px] border-gold/35 rounded-[18px] p-6 sm:p-8.5 md:p-9.5 text-center shadow-[0_6px_20px_rgba(18,45,36,0.05)]">
+        <blockquote className="font-serif italic text-base md:text-[1.15rem] text-green-deep leading-relaxed m-0 mb-2.5">
           "Where there is no vision, the people perish; but he that keepeth the law, happy is he."
         </blockquote>
-        <cite>— Proverbs 29:18</cite>
+        <cite className="text-[0.78rem] font-bold tracking-[0.14em] uppercase text-gold-dark not-italic">
+          — Proverbs 29:18
+        </cite>
       </div>
-    </>
+    </div>
   );
 }

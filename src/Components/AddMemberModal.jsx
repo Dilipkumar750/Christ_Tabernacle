@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaUserPlus, FaTimes, FaCheckCircle, FaCross, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaCalendarAlt } from "react-icons/fa";
+import { FaUserPlus, FaTimes, FaCheckCircle } from "react-icons/fa";
 import { createMember } from "../services/api";
 
 export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
@@ -97,20 +97,13 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
     setError("");
   };
 
+  const labelClass = "block text-xs font-bold text-green mb-1.5 uppercase tracking-wide";
+  const inputClass =
+    "w-full px-3 py-2.5 bg-[#F8FAF9] border border-slate-300 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-green-light/40 focus:border-green transition-all";
+
   return (
     <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 9999,
-        background: "rgba(11, 35, 24, 0.72)",
-        backdropFilter: "blur(6px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "16px",
-        overflowY: "auto",
-      }}
+      className="fixed inset-0 z-[9999] bg-[#0B2318]/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -119,71 +112,22 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
       aria-labelledby="member-modal-title"
     >
       <div
-        style={{
-          width: "100%",
-          maxWidth: 680,
-          background: "#FFFFFF",
-          borderRadius: 16,
-          boxShadow: "0 20px 50px rgba(0, 0, 0, 0.35)",
-          overflow: "hidden",
-          border: "1.5px solid rgba(214, 182, 107, 0.35)",
-          position: "relative",
-          margin: "auto",
-          animation: "modalFadeUp 0.25s ease-out forwards",
-        }}
+        className="w-full max-w-[680px] bg-white rounded-2xl shadow-2xl overflow-hidden border border-gold/35 relative m-auto animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #0B2318 0%, #123727 60%, #1E5641 100%)",
-            color: "#FFFFFF",
-            padding: "20px 24px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderBottom: "2px solid #D6B66B",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div
-              style={{
-                width: 38,
-                height: 38,
-                borderRadius: "50%",
-                background: "rgba(214, 182, 107, 0.2)",
-                border: "1.5px solid #D6B66B",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#D6B66B",
-                fontSize: "1rem",
-                flexShrink: 0,
-              }}
-            >
+        <div className="bg-gradient-to-br from-[#0B2318] via-[#123727] to-[#1E5641] text-white px-6 py-5 flex items-center justify-between border-b-2 border-gold">
+          <div className="flex items-center gap-3">
+            <div className="w-[38px] h-[38px] rounded-full bg-gold/20 border border-gold flex items-center justify-center text-gold text-base flex-shrink-0">
               <FaUserPlus />
             </div>
             <div>
-              <div
-                style={{
-                  fontSize: "0.74rem",
-                  color: "#D6B66B",
-                  letterSpacing: "1.5px",
-                  textTransform: "uppercase",
-                  fontWeight: 700,
-                }}
-              >
+              <div className="text-[0.74rem] text-gold tracking-[1.5px] uppercase font-bold">
                 Christ's Tabernacle Congregation
               </div>
               <h2
                 id="member-modal-title"
-                style={{
-                  margin: 0,
-                  fontSize: "1.25rem",
-                  fontFamily: "var(--font-serif, serif)",
-                  color: "#FFFFFF",
-                  fontWeight: 700,
-                }}
+                className="m-0 text-lg sm:text-xl font-serif text-white font-bold leading-tight"
               >
                 Church Member Registration
               </h2>
@@ -192,20 +136,7 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
 
           <button
             onClick={onClose}
-            style={{
-              background: "rgba(255, 255, 255, 0.12)",
-              border: "none",
-              color: "#FFFFFF",
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "0.95rem",
-              transition: "all 0.2s",
-            }}
+            className="bg-white/10 hover:bg-white/20 border-0 text-white w-8 h-8 rounded-full cursor-pointer flex items-center justify-center text-sm transition-all"
             aria-label="Close form"
           >
             <FaTimes />
@@ -213,86 +144,34 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
         </div>
 
         {/* Content Body */}
-        <div style={{ padding: "24px 28px", maxHeight: "80vh", overflowY: "auto" }}>
+        <div className="px-6 sm:px-7 py-6 max-h-[80vh] overflow-y-auto">
           {success ? (
-            <div style={{ textAlign: "center", padding: "30px 10px" }}>
-              <div
-                style={{
-                  width: 64,
-                  height: 64,
-                  borderRadius: "50%",
-                  background: "#DCFCE7",
-                  color: "#16A34A",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "2rem",
-                  margin: "0 auto 16px",
-                  boxShadow: "0 4px 14px rgba(22, 163, 74, 0.2)",
-                }}
-              >
+            <div className="text-center py-7 px-2.5">
+              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4 shadow-[0_4px_14px_rgba(22,163,74,0.2)]">
                 <FaCheckCircle />
               </div>
-              <h3
-                style={{
-                  fontFamily: "var(--font-serif, serif)",
-                  fontSize: "1.5rem",
-                  color: "#122D24",
-                  margin: "0 0 8px",
-                }}
-              >
+              <h3 className="font-serif text-2xl text-green-dark mb-2 font-bold">
                 Member Enrolled Successfully!
               </h3>
-              <p style={{ color: "#475569", fontSize: "0.95rem", maxWidth: 440, margin: "0 auto 16px", lineHeight: 1.6 }}>
+              <p className="text-slate-600 text-[0.95rem] max-w-[440px] mx-auto mb-4 leading-relaxed">
                 Welcome to Christ's Tabernacle Prayer &amp; Worship Centre! Your membership details have been stored in the church registry.
               </p>
-              <div
-                style={{
-                  background: "#F8FAF9",
-                  border: "1px dashed #D6B66B",
-                  borderRadius: 10,
-                  padding: "12px 18px",
-                  color: "#184332",
-                  fontSize: "0.85rem",
-                  fontStyle: "italic",
-                  maxWidth: 480,
-                  margin: "0 auto 24px",
-                }}
-              >
+              <div className="bg-[#F8FAF9] border border-dashed border-gold rounded-xl px-4.5 py-3 text-green text-[0.85rem] italic max-w-[480px] mx-auto mb-6">
                 "Now you are the body of Christ, and each one of you is a part of it." — 1 Corinthians 12:27
               </div>
 
-              <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+              <div className="flex gap-3 justify-center">
                 <button
                   type="button"
                   onClick={handleReset}
-                  style={{
-                    padding: "10px 20px",
-                    background: "#F1F5F9",
-                    border: "1px solid #CBD5E1",
-                    color: "#334155",
-                    borderRadius: 8,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    fontSize: "0.88rem",
-                  }}
+                  className="px-5 py-2.5 bg-slate-100 border border-slate-300 text-slate-700 rounded-lg font-bold cursor-pointer text-sm hover:bg-slate-200 transition-all"
                 >
                   + Add Another Member
                 </button>
                 <button
                   type="button"
                   onClick={onClose}
-                  style={{
-                    padding: "10px 24px",
-                    background: "linear-gradient(135deg, #184332 0%, #122D24 100%)",
-                    border: "none",
-                    color: "#FFFFFF",
-                    borderRadius: 8,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    fontSize: "0.88rem",
-                    boxShadow: "0 4px 12px rgba(24, 67, 50, 0.25)",
-                  }}
+                  className="px-6 py-2.5 bg-gradient-to-br from-green to-green-dark text-white rounded-lg font-bold cursor-pointer text-sm shadow-[0_4px_12px_rgba(24,67,50,0.25)] hover:opacity-95 transition-all"
                 >
                   Done
                 </button>
@@ -300,35 +179,22 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <p style={{ margin: "0 0 18px", color: "#64748B", fontSize: "0.88rem", lineHeight: 1.5 }}>
+              <p className="m-0 mb-4.5 text-slate-500 text-[0.88rem] leading-normal">
                 Please fill in the membership details below. All stored data is securely kept in the Admin Sanctuary members registry.
               </p>
 
               {error && (
-                <div
-                  style={{
-                    background: "#FEE2E2",
-                    border: "1px solid #FECACA",
-                    color: "#DC2626",
-                    padding: "10px 14px",
-                    borderRadius: 8,
-                    fontSize: "0.86rem",
-                    marginBottom: 18,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
+                <div className="bg-red-100 border border-red-200 text-red-600 px-3.5 py-2.5 rounded-lg text-sm mb-4.5 flex items-center gap-2 font-medium">
                   <span>⚠️</span>
                   <span>{error}</span>
                 </div>
               )}
 
               {/* Row 1: Full Name & Gender */}
-              <div className="ct-form-row ct-form-row-2" style={{ marginBottom: 16 }}>
-                <div>
-                  <label style={labelStyle}>
-                    Full Name <span style={{ color: "#DC2626" }}>*</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-4">
+                <div className="sm:col-span-2">
+                  <label className={labelClass}>
+                    Full Name <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -337,12 +203,12 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
                     onChange={handleChange}
                     placeholder="e.g. Sister Hannah D. / Bro. David"
                     required
-                    style={inputStyle}
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label style={labelStyle}>Gender</label>
-                  <select name="gender" value={formData.gender} onChange={handleChange} style={inputStyle}>
+                  <label className={labelClass}>Gender</label>
+                  <select name="gender" value={formData.gender} onChange={handleChange} className={inputClass}>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
@@ -351,23 +217,23 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
               </div>
 
               {/* Row 2: Date of Birth & Age */}
-              <div className="ct-form-row ct-form-row-half" style={{ marginBottom: 16 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
                 <div>
-                  <label style={labelStyle}>
-                    Date of Birth (DOB) <span style={{ color: "#64748B", fontWeight: 400 }}>(Optional)</span>
+                  <label className={labelClass}>
+                    Date of Birth (DOB) <span className="text-slate-500 font-normal">(Optional)</span>
                   </label>
                   <input
                     type="date"
                     name="dob"
                     value={formData.dob}
                     onChange={handleChange}
-                    style={inputStyle}
+                    className={inputClass}
                     max={new Date().toISOString().split("T")[0]}
                   />
                 </div>
                 <div>
-                  <label style={labelStyle}>
-                    Age <span style={{ color: "#64748B", fontWeight: 400 }}>(Years)</span>
+                  <label className={labelClass}>
+                    Age <span className="text-slate-500 font-normal">(Years)</span>
                   </label>
                   <input
                     type="number"
@@ -377,16 +243,16 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
                     placeholder="Auto or enter age"
                     min="1"
                     max="125"
-                    style={inputStyle}
+                    className={inputClass}
                   />
                 </div>
               </div>
 
-              {/* Row 3: Mobile Number & Mail ID (Optional) */}
-              <div className="ct-form-row ct-form-row-half" style={{ marginBottom: 16 }}>
+              {/* Row 3: Mobile Number & Mail ID */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
                 <div>
-                  <label style={labelStyle}>
-                    Mobile Number <span style={{ color: "#DC2626" }}>*</span>
+                  <label className={labelClass}>
+                    Mobile Number <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="tel"
@@ -395,12 +261,12 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
                     onChange={handleChange}
                     placeholder="e.g. +91 98401 23456"
                     required
-                    style={inputStyle}
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label style={labelStyle}>
-                    Mail ID <span style={{ color: "#16A34A", fontWeight: 600 }}>(Optional)</span>
+                  <label className={labelClass}>
+                    Mail ID <span className="text-green-600 font-semibold">(Optional)</span>
                   </label>
                   <input
                     type="email"
@@ -408,15 +274,15 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="name@example.com"
-                    style={inputStyle}
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               {/* Row 4: Residential Address */}
-              <div style={{ marginBottom: 16 }}>
-                <label style={labelStyle}>
-                  Residential Address <span style={{ color: "#DC2626" }}>*</span>
+              <div className="mb-4">
+                <label className={labelClass}>
+                  Residential Address <span className="text-red-600">*</span>
                 </label>
                 <textarea
                   name="address"
@@ -425,15 +291,15 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
                   rows={2}
                   placeholder="Door No., Street Name, Area, City, Pincode"
                   required
-                  style={{ ...inputStyle, resize: "vertical" }}
+                  className={`${inputClass} resize-y`}
                 />
               </div>
 
-              {/* Row 5: Additional Church & Family Details (Blood Group, Marital Status, Baptism) */}
-              <div className="ct-form-row ct-form-row-3" style={{ marginBottom: 16 }}>
+              {/* Row 5: Additional Church & Family Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-4">
                 <div>
-                  <label style={labelStyle}>Blood Group</label>
-                  <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} style={inputStyle}>
+                  <label className={labelClass}>Blood Group</label>
+                  <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className={inputClass}>
                     <option value="">Select</option>
                     <option value="A+">A+</option>
                     <option value="A-">A-</option>
@@ -447,8 +313,13 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Marital Status</label>
-                  <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} style={inputStyle}>
+                  <label className={labelClass}>Marital Status</label>
+                  <select
+                    name="maritalStatus"
+                    value={formData.maritalStatus}
+                    onChange={handleChange}
+                    className={inputClass}
+                  >
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
                     <option value="Widowed">Widowed</option>
@@ -457,8 +328,8 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Water Baptized?</label>
-                  <select name="baptized" value={formData.baptized} onChange={handleChange} style={inputStyle}>
+                  <label className={labelClass}>Water Baptized?</label>
+                  <select name="baptized" value={formData.baptized} onChange={handleChange} className={inputClass}>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </select>
@@ -466,35 +337,35 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
               </div>
 
               {/* Row 6: Occupation & Emergency Contact */}
-              <div className="ct-form-row ct-form-row-half" style={{ marginBottom: 16 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
                 <div>
-                  <label style={labelStyle}>Occupation / Profession</label>
+                  <label className={labelClass}>Occupation / Profession</label>
                   <input
                     type="text"
                     name="occupation"
                     value={formData.occupation}
                     onChange={handleChange}
                     placeholder="e.g. Teacher, Engineer, Business"
-                    style={inputStyle}
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label style={labelStyle}>Emergency Contact / Guardian</label>
+                  <label className={labelClass}>Emergency Contact / Guardian</label>
                   <input
                     type="text"
                     name="emergencyContact"
                     value={formData.emergencyContact}
                     onChange={handleChange}
                     placeholder="e.g. Spouse / Parent Contact"
-                    style={inputStyle}
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               {/* Row 7: Notes or Prayer Request */}
-              <div style={{ marginBottom: 22 }}>
-                <label style={labelStyle}>
-                  Ministry Interests / Prayer Needs / Remarks <span style={{ color: "#64748B", fontWeight: 400 }}>(Optional)</span>
+              <div className="mb-5.5">
+                <label className={labelClass}>
+                  Ministry Interests / Prayer Needs / Remarks <span className="text-slate-500 font-normal">(Optional)</span>
                 </label>
                 <textarea
                   name="notes"
@@ -502,55 +373,23 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
                   onChange={handleChange}
                   rows={2}
                   placeholder="e.g. Choir, Sunday school teacher, healing prayer..."
-                  style={{ ...inputStyle, resize: "vertical" }}
+                  className={`${inputClass} resize-y`}
                 />
               </div>
 
               {/* Form Action Buttons */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                  gap: 12,
-                  paddingTop: 16,
-                  borderTop: "1px solid #E2E8F0",
-                }}
-              >
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={onClose}
-                  style={{
-                    padding: "10px 18px",
-                    background: "#F1F5F9",
-                    border: "1px solid #CBD5E1",
-                    color: "#475569",
-                    borderRadius: 8,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    fontSize: "0.88rem",
-                  }}
+                  className="px-4.5 py-2.5 bg-slate-100 border border-slate-300 text-slate-600 rounded-lg font-semibold cursor-pointer text-sm hover:bg-slate-200 transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  style={{
-                    padding: "11px 26px",
-                    background: "linear-gradient(135deg, #184332 0%, #122D24 100%)",
-                    border: "none",
-                    color: "#FFFFFF",
-                    borderRadius: 8,
-                    fontWeight: 700,
-                    fontSize: "0.92rem",
-                    cursor: submitting ? "not-allowed" : "pointer",
-                    opacity: submitting ? 0.75 : 1,
-                    boxShadow: "0 4px 14px rgba(24, 67, 50, 0.25)",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
+                  className="px-6 py-2.5 bg-gradient-to-br from-green to-green-dark text-white rounded-lg font-bold text-sm cursor-pointer shadow-[0_4px_14px_rgba(24,67,50,0.25)] hover:opacity-95 transition-all inline-flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-75"
                 >
                   <FaUserPlus />
                   <span>{submitting ? "Enrolling Member..." : "Submit Member Registration"}</span>
@@ -560,59 +399,6 @@ export default function AddMemberModal({ isOpen, onClose, onMemberAdded }) {
           )}
         </div>
       </div>
-
-      <style>{`
-        @keyframes modalFadeUp {
-          from { opacity: 0; transform: translateY(16px) scale(0.98); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .ct-form-row {
-          display: grid;
-          gap: 14px;
-        }
-        .ct-form-row-2 {
-          grid-template-columns: 2fr 1fr;
-        }
-        .ct-form-row-half {
-          grid-template-columns: 1fr 1fr;
-        }
-        .ct-form-row-3 {
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        @media (max-width: 600px) {
-          .ct-form-row-2,
-          .ct-form-row-half,
-          .ct-form-row-3 {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }
-
-const labelStyle = {
-  display: "block",
-  fontSize: "0.78rem",
-  fontWeight: 700,
-  color: "#184332",
-  marginBottom: 5,
-  textTransform: "uppercase",
-  letterSpacing: "0.4px",
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: "9px 12px",
-  background: "#F8FAF9",
-  border: "1.5px solid #CBD5E1",
-  borderRadius: 8,
-  fontSize: "0.88rem",
-  color: "#1E293B",
-  outline: "none",
-  boxSizing: "border-box",
-  fontFamily: "inherit",
-  transition: "border-color 0.2s",
-};

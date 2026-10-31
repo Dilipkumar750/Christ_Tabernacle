@@ -34,7 +34,11 @@ function useReveal(sel) {
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
-          if (e.isIntersecting) { e.target.classList.add("mo-in"); io.unobserve(e.target); }
+          if (e.isIntersecting) {
+            e.target.classList.remove("opacity-0", "translate-y-7");
+            e.target.classList.add("opacity-100", "translate-y-0");
+            io.unobserve(e.target);
+          }
         }),
       { threshold: 0.1 }
     );
@@ -47,271 +51,90 @@ export default function Motto() {
   useReveal(".mo-reveal");
 
   return (
-    <>
-      <style>{`
-        .mo-reveal {
-          opacity: 0;
-          transform: translateY(28px);
-          transition: opacity 0.65s cubic-bezier(.22,1,.36,1),
-                      transform 0.65s cubic-bezier(.22,1,.36,1);
-        }
-        .mo-reveal.mo-in { opacity: 1; transform        /* ── Hero Banner (Light Sanctuary Theme) ── */
-        .mo-banner {
-          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 60%, #F5EFE6 100%);
-          border-radius: 24px;
-          padding: 60px 44px;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-          margin-bottom: 52px;
-          color: var(--green-deep);
-          border: 1.5px solid rgba(214,182,107,0.38);
-          box-shadow: 0 10px 32px rgba(18,45,36,0.06);
-        }
-        .mo-banner::before {
-          content: '✝';
-          position: absolute;
-          top: -30px; left: 50%;
-          transform: translateX(-50%);
-          font-size: 200px;
-          color: rgba(214,182,107,0.06);
-          font-family: var(--font-serif);
-          pointer-events: none;
-        }
-        .mo-banner-inner { position: relative; z-index: 1; }
-        .mo-banner-eyebrow {
-          font-size: 0.72rem;
-          letter-spacing: 0.28em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-weight: 700;
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          justify-content: center;
-          margin-bottom: 22px;
-        }
-        .mo-banner-eyebrow::before,
-        .mo-banner-eyebrow::after {
-          content: '';
-          width: 60px;
-          height: 1px;
-          background: linear-gradient(to right, transparent, var(--gold), transparent);
-        }
-
-        .mo-fff {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0;
-          margin-bottom: 28px;
-          flex-wrap: wrap;
-        }
-        .mo-fff-word {
-          font-family: var(--font-serif);
-          font-size: clamp(2rem, 5.5vw, 3.8rem);
-          font-weight: 900;
-          color: var(--green-deep);
-          line-height: 1;
-          padding: 0 12px;
-          position: relative;
-          transition: color 0.3s;
-          cursor: default;
-        }
-        .mo-fff-word:hover { color: var(--gold-dark); }
-        .mo-fff-sep {
-          font-family: var(--font-serif);
-          font-size: clamp(1.4rem, 3vw, 2.4rem);
-          color: var(--gold);
-          opacity: 0.7;
-          font-weight: 400;
-          line-height: 1;
-          padding: 0 4px;
-        }
-        .mo-banner-verse {
-          font-family: var(--font-serif);
-          font-style: italic;
-          font-size: 1.05rem;
-          color: #374151;
-          max-width: 580px;
-          margin: 0 auto;
-          line-height: 1.75;
-        }
-
-        /* ── Pillars Grid ── */
-        .mo-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-          margin-bottom: 48px;
-        }
-        .mo-card {
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 22px;
-          padding: 36px 28px;
-          box-shadow: 0 6px 24px rgba(18,45,36,0.06);
-          display: flex;
-          flex-direction: column;
-          position: relative;
-          overflow: hidden;
-          transition: transform 0.35s cubic-bezier(.22,1,.36,1),
-                      box-shadow 0.35s,
-                      border-color 0.35s;
-        }
-        .mo-card::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 4px;
-          background: var(--grad-gold);
-          opacity: 0.8;
-          transition: opacity 0.3s;
-        }
-        .mo-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 16px 40px rgba(18,45,36,0.12);
-          border-color: var(--gold);
-        }
-        .mo-card:hover::before { opacity: 1; }
-
-        .mo-card-letter {
-          font-family: var(--font-serif);
-          font-size: 4rem;
-          font-weight: 900;
-          color: rgba(214,182,107,0.12);
-          position: absolute;
-          top: 16px; right: 20px;
-          line-height: 1;
-          pointer-events: none;
-          transition: color 0.3s;
-        }
-        .mo-card:hover .mo-card-letter {
-          color: rgba(214,182,107,0.22);
-        }
-
-        .mo-card-icon {
-          width: 54px;
-          height: 54px;
-          background: #FAF6EE;
-          border: 2px solid var(--gold);
-          border-radius: 14px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.5rem;
-          margin-bottom: 20px;
-          box-shadow: 0 4px 14px rgba(18,45,36,0.06);
-          flex-shrink: 0;
-        }
-        .mo-card h3 {
-          font-family: var(--font-serif);
-          font-size: 1.6rem;
-          color: var(--green-deep);
-          margin: 0 0 4px;
-          font-weight: 700;
-        }
-        .mo-card-sub {
-          font-size: 0.74rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-weight: 700;
-          margin-bottom: 8px;
-          display: block;
-        }
-        .mo-card-verse {
-          font-size: 0.8rem;
-          color: var(--green);
-          font-weight: 600;
-          margin-bottom: 16px;
-          display: block;
-          font-style: italic;
-        }
-        .mo-card p {
-          font-size: 0.96rem;
-          color: #374151;
-          line-height: 1.8;
-          margin: 0;
-          flex: 1;
-        }
-
-        /* ── Footer verse ── */
-        .mo-footer {
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214,182,107,0.35);
-          border-radius: 18px;
-          padding: 34px 38px;
-          text-align: center;
-          box-shadow: 0 6px 20px rgba(18,45,36,0.05);
-        }
-        .mo-footer blockquote {
-          font-family: var(--font-serif);
-          font-style: italic;
-          font-size: 1.15rem;
-          color: var(--green-deep);
-          line-height: 1.75;
-          margin: 0 0 10px;
-        }
-        .mo-footer cite {
-          font-size: 0.78rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-style: normal;
-        }
-
-        @media (max-width: 820px) {
-          .mo-grid { grid-template-columns: 1fr; }
-          .mo-banner { padding: 44px 22px; border-radius: 18px; }
-          .mo-footer { padding: 24px 20px; }
-        }
-      `}</style>
-
+    <div className="font-sans">
       {/* Hero Banner */}
-      <div className="mo-banner mo-reveal">
-        <div className="mo-banner-inner">
-          <div className="mo-banner-eyebrow">The Core Motto of Christ's Tabernacle</div>
-          <div className="mo-fff">
-            <span className="mo-fff-word">Faith</span>
-            <span className="mo-fff-sep">·</span>
-            <span className="mo-fff-word">Family</span>
-            <span className="mo-fff-sep">·</span>
-            <span className="mo-fff-word">Future</span>
+      <div className="mo-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out bg-gradient-to-br from-white via-ivory to-[#F5EFE6] rounded-[24px] p-8 sm:p-12 md:p-15 text-center relative overflow-hidden mb-13 text-green-deep border-[1.5px] border-gold/40 shadow-[0_10px_32px_rgba(18,45,36,0.06)]">
+        {/* Background cross ornament */}
+        <span
+          className="absolute -top-7.5 left-1/2 -translate-x-1/2 text-[200px] text-gold/[0.06] font-serif pointer-events-none select-none leading-none"
+          aria-hidden="true"
+        >
+          ✝
+        </span>
+
+        <div className="relative z-10">
+          <div className="text-[0.72rem] tracking-[0.28em] uppercase text-gold-dark font-bold flex items-center justify-center gap-3.5 mb-5.5 before:content-[''] before:w-15 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-gold before:to-transparent after:content-[''] after:w-15 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-gold after:to-transparent">
+            The Core Motto of Christ's Tabernacle
           </div>
-          <p className="mo-banner-verse">
-            "Now faith is confidence in what we hope for and assurance about what we do not see."
-            — Hebrews 11:1
+
+          <div className="flex items-center justify-center gap-0 mb-7 flex-wrap">
+            <span className="font-serif text-[clamp(2rem,5.5vw,3.8rem)] font-black text-green-deep leading-none px-3 relative transition-colors duration-200 cursor-default hover:text-gold-dark">
+              Faith
+            </span>
+            <span className="font-serif text-[clamp(1.4rem,3vw,2.4rem)] text-gold/70 font-normal leading-none px-1">
+              ·
+            </span>
+            <span className="font-serif text-[clamp(2rem,5.5vw,3.8rem)] font-black text-green-deep leading-none px-3 relative transition-colors duration-200 cursor-default hover:text-gold-dark">
+              Family
+            </span>
+            <span className="font-serif text-[clamp(1.4rem,3vw,2.4rem)] text-gold/70 font-normal leading-none px-1">
+              ·
+            </span>
+            <span className="font-serif text-[clamp(2rem,5.5vw,3.8rem)] font-black text-green-deep leading-none px-3 relative transition-colors duration-200 cursor-default hover:text-gold-dark">
+              Future
+            </span>
+          </div>
+
+          <p className="font-serif italic text-base md:text-[1.05rem] text-gray-700 max-w-[580px] mx-auto leading-relaxed">
+            "Now faith is confidence in what we hope for and assurance about what we do not see." —
+            Hebrews 11:1
           </p>
         </div>
       </div>
 
       {/* Pillars */}
-      <div className="mo-grid">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         {PILLARS.map((p, i) => (
           <div
             key={p.title}
-            className="mo-card mo-reveal"
+            className="mo-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out bg-white border-[1.5px] border-gold/35 hover:border-gold rounded-[22px] p-7 sm:p-9 shadow-[0_6px_24px_rgba(18,45,36,0.06)] hover:shadow-[0_16px_40px_rgba(18,45,36,0.12)] flex flex-col relative overflow-hidden transition-all duration-300 hover:-translate-y-2 group before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-grad-gold before:opacity-80 hover:before:opacity-100"
             style={{ transitionDelay: `${i * 0.12}s` }}
           >
-            <span className="mo-card-letter" aria-hidden="true">{p.letter}</span>
-            <div className="mo-card-icon" aria-hidden="true">{p.icon}</div>
-            <h3>{p.title}</h3>
-            <span className="mo-card-sub">{p.subtitle}</span>
-            <span className="mo-card-verse">{p.verse}</span>
-            <p>{p.desc}</p>
+            <span
+              className="font-serif text-[4rem] font-black text-gold/12 group-hover:text-gold/25 absolute top-4 right-5 leading-none pointer-events-none select-none transition-colors duration-300"
+              aria-hidden="true"
+            >
+              {p.letter}
+            </span>
+            <div
+              className="w-[54px] h-[54px] bg-ivory border-2 border-gold rounded-[14px] flex items-center justify-center text-2xl mb-5 shadow-[0_4px_14px_rgba(18,45,36,0.06)] flex-shrink-0"
+              aria-hidden="true"
+            >
+              {p.icon}
+            </div>
+            <h3 className="font-serif text-[1.6rem] text-green-deep m-0 mb-1 font-bold">
+              {p.title}
+            </h3>
+            <span className="text-[0.74rem] tracking-[0.14em] uppercase text-gold-dark font-bold mb-2 block">
+              {p.subtitle}
+            </span>
+            <span className="text-[0.8rem] text-green font-semibold mb-4 block italic">
+              {p.verse}
+            </span>
+            <p className="text-[0.96rem] text-gray-700 leading-relaxed m-0 flex-1">{p.desc}</p>
           </div>
         ))}
       </div>
 
       {/* Footer Verse */}
-      <div className="mo-footer mo-reveal">
-        <blockquote>
+      <div className="mo-reveal opacity-0 translate-y-7 transition-all duration-700 ease-out bg-white border-[1.5px] border-gold/35 rounded-[18px] p-6 sm:p-8.5 text-center shadow-[0_6px_20px_rgba(18,45,36,0.05)]">
+        <blockquote className="font-serif italic text-base md:text-[1.15rem] text-green-deep leading-relaxed m-0 mb-2.5">
           "As for me and my house, we will serve the LORD."
         </blockquote>
-        <cite>— Joshua 24:15</cite>
+        <cite className="text-[0.78rem] font-bold tracking-[0.12em] uppercase text-gold-dark not-italic">
+          — Joshua 24:15
+        </cite>
       </div>
-    </>
+    </div>
   );
 }

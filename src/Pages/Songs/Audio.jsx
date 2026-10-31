@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import worshipImg from "../../assets/worship.jpg";
 
 const PLAYLIST = [
@@ -77,345 +77,159 @@ export default function Audio() {
   };
 
   return (
-    <>
-      <style>{`
-        .audio-layout {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 36px;
-          align-items: start;
-        }
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-9 items-start">
+      {/* Player Card */}
+      <section
+        className="bg-grad-sanctuary rounded-[20px] border-2 border-gold p-6 sm:p-[36px_30px] text-ivory shadow-lg-g relative overflow-hidden"
+        aria-label="Audio Worship Player"
+      >
+        <span
+          className="absolute -top-7 -right-5 text-[160px] text-gold/[0.05] pointer-events-none font-serif leading-none select-none"
+          aria-hidden="true"
+        >
+          ✝
+        </span>
 
-        .audio-player-card {
-          background: var(--grad-sanctuary);
-          border-radius: 20px;
-          border: 2px solid var(--border-gold);
-          padding: 36px 30px;
-          color: var(--ivory);
-          box-shadow: var(--shadow-lg);
-          position: relative;
-          overflow: hidden;
-        }
-        .audio-player-card::before {
-          content: '✝';
-          position: absolute;
-          top: -30px;
-          right: -20px;
-          font-size: 160px;
-          color: rgba(214, 182, 107, 0.05);
-          pointer-events: none;
-          font-family: var(--font-serif);
-        }
-
-        .audio-art-wrap {
-          position: relative;
-          height: 220px;
-          border-radius: 14px;
-          overflow: hidden;
-          margin-bottom: 24px;
-          border: 1.5px solid var(--border-gold);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-        .audio-art {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .audio-art-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top, rgba(9, 28, 19, 0.85) 0%, transparent 60%);
-          display: flex;
-          align-items: flex-end;
-          padding: 16px;
-        }
-
-        /* Waves Animation */
-        .audio-waves {
-          display: flex;
-          align-items: flex-end;
-          gap: 4px;
-          height: 28px;
-        }
-        .wave-bar {
-          width: 4px;
-          background: var(--gold-bright);
-          border-radius: 2px;
-          animation: waveMove 1s ease-in-out infinite alternate;
-        }
-        .wave-bar:nth-child(2) { animation-delay: 0.2s; height: 16px; }
-        .wave-bar:nth-child(3) { animation-delay: 0.4s; height: 24px; }
-        .wave-bar:nth-child(4) { animation-delay: 0.1s; height: 20px; }
-        .wave-bar:nth-child(5) { animation-delay: 0.5s; height: 12px; }
-        @keyframes waveMove {
-          0% { height: 6px; }
-          100% { height: 26px; }
-        }
-
-        .audio-track-title {
-          font-family: var(--font-serif);
-          font-size: 1.35rem;
-          color: var(--ivory);
-          margin: 0 0 4px;
-          font-weight: 700;
-        }
-        .audio-track-artist {
-          font-size: 0.86rem;
-          color: var(--gold-bright);
-          margin-bottom: 18px;
-          font-weight: 600;
-        }
-
-        /* Progress */
-        .audio-progress-wrap {
-          margin-bottom: 20px;
-        }
-        .audio-progress-bar {
-          width: 100%;
-          height: 6px;
-          background: rgba(255, 255, 255, 0.15);
-          border-radius: 3px;
-          overflow: hidden;
-          cursor: pointer;
-        }
-        .audio-progress-fill {
-          height: 100%;
-          background: var(--grad-gold);
-          border-radius: 3px;
-          transition: width 0.3s linear;
-        }
-        .audio-times {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.74rem;
-          color: rgba(250, 246, 238, 0.7);
-          margin-top: 6px;
-        }
-
-        /* Controls */
-        .audio-controls {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 20px;
-          margin-bottom: 20px;
-        }
-        .ctrl-btn {
-          background: none;
-          border: none;
-          color: var(--ivory);
-          font-size: 1.4rem;
-          cursor: pointer;
-          transition: transform 0.2s, color 0.2s;
-        }
-        .ctrl-btn:hover {
-          color: var(--gold-bright);
-          transform: scale(1.1);
-        }
-        .play-main-btn {
-          width: 58px;
-          height: 58px;
-          border-radius: 50%;
-          background: var(--grad-gold);
-          color: #122D24;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.6rem;
-          box-shadow: 0 6px 25px rgba(214, 182, 107, 0.4);
-          cursor: pointer;
-          transition: transform 0.2s;
-        }
-        .play-main-btn:hover {
-          transform: scale(1.08);
-        }
-
-        /* Playlist */
-        .audio-playlist-card {
-          background: var(--white);
-          border-radius: 20px;
-          border: 1.5px solid var(--border-gold-subtle);
-          padding: 28px 24px;
-          box-shadow: var(--shadow-sm);
-        }
-        .playlist-head {
-          font-family: var(--font-serif);
-          font-size: 1.25rem;
-          color: var(--green-dark);
-          margin: 0 0 16px;
-          font-weight: 700;
-        }
-        .playlist-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .playlist-item {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          padding: 14px 16px;
-          border-radius: 12px;
-          border: 1px solid var(--border-subtle);
-          cursor: pointer;
-          transition: all 0.2s;
-          background: var(--ivory);
-        }
-        .playlist-item:hover {
-          border-color: var(--gold);
-          background: var(--white);
-        }
-        .playlist-item.active {
-          border-color: var(--gold);
-          background: var(--gold-soft);
-        }
-        .playlist-num {
-          font-family: var(--font-serif);
-          font-weight: 700;
-          color: var(--green);
-          font-size: 0.95rem;
-          width: 22px;
-        }
-        .playlist-info {
-          flex-grow: 1;
-        }
-        .playlist-item-title {
-          font-weight: 700;
-          font-size: 0.9rem;
-          color: var(--green-dark);
-          margin-bottom: 2px;
-          display: block;
-        }
-        .playlist-item-sub {
-          font-size: 0.74rem;
-          color: var(--text-light);
-        }
-        .playlist-item-time {
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: var(--gold-dark);
-        }
-
-        @media (max-width: 820px) {
-          .audio-layout { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
-      <div className="audio-layout">
-        {/* Player */}
-        <section className="audio-player-card" aria-label="Audio Worship Player">
-          <div className="audio-art-wrap">
-            <img src={worshipImg} alt="Worship Recording" className="audio-art" />
-            <div className="audio-art-overlay">
-              {isPlaying && (
-                <div className="audio-waves" aria-hidden="true">
-                  <div className="wave-bar" />
-                  <div className="wave-bar" />
-                  <div className="wave-bar" />
-                  <div className="wave-bar" />
-                  <div className="wave-bar" />
-                </div>
-              )}
-            </div>
+        {/* Art Wrap */}
+        <div className="relative h-[220px] rounded-[14px] overflow-hidden mb-6 border-[1.5px] border-gold shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+          <img src={worshipImg} alt="Worship Recording" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#091c13]/85 to-transparent flex items-end p-4">
+            {isPlaying && (
+              <div className="flex items-end gap-1 h-7" aria-hidden="true">
+                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-4" />
+                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-6" style={{ animationDelay: "0.2s" }} />
+                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-7" style={{ animationDelay: "0.4s" }} />
+                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-5" style={{ animationDelay: "0.1s" }} />
+                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-3" style={{ animationDelay: "0.5s" }} />
+              </div>
+            )}
           </div>
+        </div>
 
-          <span className="ct-badge ct-badge-dark" style={{ marginBottom: 10 }}>
-            {track.category}
-          </span>
-          <h2 className="audio-track-title">{track.title}</h2>
-          <p className="audio-track-artist">{track.artist}</p>
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#0C2219]/80 text-gold-bright border border-gold/30 mb-2.5">
+          {track.category}
+        </span>
+        <h2 className="font-serif text-[1.35rem] text-ivory font-bold mb-1 leading-snug">
+          {track.title}
+        </h2>
+        <p className="text-[0.86rem] text-gold-bright mb-[18px] font-semibold">
+          {track.artist}
+        </p>
 
-          {/* Progress Bar */}
-          <div className="audio-progress-wrap">
+        {/* Progress Bar */}
+        <div className="mb-5">
+          <div
+            className="w-full h-1.5 bg-white/15 rounded-full overflow-hidden cursor-pointer"
+            onClick={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const pos = (e.clientX - rect.left) / rect.width;
+              setCurrentTime(Math.floor(pos * track.seconds));
+            }}
+          >
             <div
-              className="audio-progress-bar"
-              onClick={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                setCurrentTime(Math.floor(pos * track.seconds));
+              className="h-full bg-grad-gold rounded-full transition-all duration-300 ease-linear"
+              style={{ width: `${(currentTime / track.seconds) * 100}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-[0.74rem] text-ivory/70 mt-1.5 font-medium">
+            <span>{formatTime(currentTime)}</span>
+            <span>{track.duration}</span>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="flex items-center justify-center gap-5 mb-5">
+          <button
+            className="bg-transparent border-none text-ivory text-2xl hover:text-gold-bright hover:scale-110 transition-all duration-200 cursor-pointer p-1"
+            onClick={handlePrev}
+            aria-label="Previous track"
+          >
+            ⏮
+          </button>
+          <button
+            className="w-[58px] h-[58px] rounded-full bg-grad-gold text-green-dark flex items-center justify-center text-2xl shadow-[0_6px_25px_rgba(214,182,107,0.4)] hover:scale-105 transition-transform duration-200 cursor-pointer font-bold"
+            onClick={() => setIsPlaying(!isPlaying)}
+            aria-label={isPlaying ? "Pause track" : "Play track"}
+          >
+            {isPlaying ? "⏸" : "▶"}
+          </button>
+          <button
+            className="bg-transparent border-none text-ivory text-2xl hover:text-gold-bright hover:scale-110 transition-all duration-200 cursor-pointer p-1"
+            onClick={handleNext}
+            aria-label="Next track"
+          >
+            ⏭
+          </button>
+        </div>
+
+        {/* Volume Control */}
+        <div className="flex items-center justify-center gap-2.5 mb-[18px] text-[0.82rem] text-gold-bright">
+          <span>🔊</span>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            className="w-[110px] accent-gold cursor-pointer"
+            aria-label="Volume slider"
+          />
+          <span className="text-[0.74rem] min-w-[32px]">{volume}%</span>
+        </div>
+
+        <p className="text-[0.85rem] text-ivory/75 leading-relaxed text-center m-0">
+          {track.description}
+        </p>
+      </section>
+
+      {/* Playlist Card */}
+      <aside
+        className="bg-white rounded-[20px] border-[1.5px] border-gold/30 p-6 md:p-7 shadow-sm-g"
+        aria-label="Worship Playlist"
+      >
+        <h3 className="font-serif text-xl font-bold text-green-dark mb-4">
+          Worship Tracks &amp; Recordings
+        </h3>
+        <ul className="list-none p-0 m-0 flex flex-col gap-3">
+          {PLAYLIST.map((p, idx) => (
+            <li
+              key={p.id}
+              className={`flex items-center gap-3.5 p-3.5 rounded-xl border cursor-pointer transition-all duration-200 ${
+                currentTrackIdx === idx
+                  ? "border-gold bg-gold-soft shadow-sm"
+                  : "border-slate-200 bg-ivory hover:border-gold hover:bg-white"
+              }`}
+              onClick={() => {
+                setCurrentTrackIdx(idx);
+                setCurrentTime(0);
+                setIsPlaying(true);
               }}
             >
-              <div
-                className="audio-progress-fill"
-                style={{ width: `${(currentTime / track.seconds) * 100}%` }}
-              />
-            </div>
-            <div className="audio-times">
-              <span>{formatTime(currentTime)}</span>
-              <span>{track.duration}</span>
-            </div>
-          </div>
+              <span className="font-serif font-bold text-green text-[0.95rem] w-6 shrink-0">
+                {idx + 1}
+              </span>
+              <div className="flex-grow">
+                <span className="font-bold text-[0.9rem] text-green-dark mb-0.5 block leading-tight">
+                  {p.title}
+                </span>
+                <span className="text-[0.74rem] text-text-light block">
+                  {p.artist}
+                </span>
+              </div>
+              <span className="text-[0.8rem] font-bold text-gold-dark shrink-0">
+                {p.duration}
+              </span>
+            </li>
+          ))}
+        </ul>
 
-          {/* Controls */}
-          <div className="audio-controls">
-            <button className="ctrl-btn" onClick={handlePrev} aria-label="Previous track">
-              ⏮
-            </button>
-            <button
-              className="play-main-btn"
-              onClick={() => setIsPlaying(!isPlaying)}
-              aria-label={isPlaying ? "Pause track" : "Play track"}
-            >
-              {isPlaying ? "⏸" : "▶"}
-            </button>
-            <button className="ctrl-btn" onClick={handleNext} aria-label="Next track">
-              ⏭
-            </button>
-          </div>
-
-          {/* Volume Control */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 18, fontSize: "0.82rem", color: "var(--gold-bright)" }}>
-            <span>🔊</span>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={volume}
-              onChange={(e) => setVolume(Number(e.target.value))}
-              style={{ width: 110, accentColor: "var(--gold)" }}
-              aria-label="Volume slider"
-            />
-            <span style={{ fontSize: "0.74rem", minWidth: 32 }}>{volume}%</span>
-          </div>
-
-          <p style={{ fontSize: "0.85rem", color: "rgba(250, 246, 238, 0.75)", lineHeight: 1.6, textAlign: "center", margin: 0 }}>
-            {track.description}
-          </p>
-        </section>
-
-        {/* Playlist */}
-        <aside className="audio-playlist-card" aria-label="Worship Playlist">
-          <h3 className="playlist-head">Worship Tracks &amp; Recordings</h3>
-          <ul className="playlist-list">
-            {PLAYLIST.map((p, idx) => (
-              <li
-                key={p.id}
-                className={`playlist-item${currentTrackIdx === idx ? " active" : ""}`}
-                onClick={() => {
-                  setCurrentTrackIdx(idx);
-                  setCurrentTime(0);
-                  setIsPlaying(true);
-                }}
-              >
-                <span className="playlist-num">{idx + 1}</span>
-                <div className="playlist-info">
-                  <span className="playlist-item-title">{p.title}</span>
-                  <span className="playlist-item-sub">{p.artist}</span>
-                </div>
-                <span className="playlist-item-time">{p.duration}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="ct-scripture-box" style={{ marginTop: 24 }}>
-            "Speaking to one another with psalms, hymns, and songs from the Spirit. Sing and make music from your heart to the Lord."
-            <cite>— Ephesians 5:19</cite>
-          </div>
-        </aside>
-      </div>
-    </>
+        <div className="bg-gold-soft border-l-4 border-gold rounded-r-[14px] p-5 font-serif italic text-[0.95rem] text-green-dark leading-relaxed relative mt-6">
+          "Speaking to one another with psalms, hymns, and songs from the Spirit. Sing and make music from your heart to the Lord."
+          <cite className="block font-sans not-italic text-[0.78rem] font-bold tracking-wider uppercase text-gold-dark mt-2">
+            — Ephesians 5:19
+          </cite>
+        </div>
+      </aside>
+    </div>
   );
 }

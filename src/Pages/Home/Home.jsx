@@ -2,14 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getPublicHeroSlides } from "../../services/api";
 import logoImg from "../../assets/logo.jpeg";
-import sanctuaryImg from "../../assets/sanctuary.jpg";
 import modernSanctuaryImg from "../../assets/Modern-Sanctuary.png";
 import heroBanner1 from "../../assets/hero-banner.png";
 import heroBanner2 from "../../assets/hero-banner2.png";
 import heroBanner3 from "../../assets/hero-banner3.png";
 import jesusSaravananImg from "../../assets/jesus_saravanan.jpeg";
 import saravanan3Img from "../../assets/saravanan3.jpeg";
-import saravananImg from "../../assets/saravanan.jpeg";
 import outdoorFellowshipImg from "../../assets/image1.jpeg";
 import anniversaryPosterImg from "../../assets/popup.jpeg";
 
@@ -189,769 +187,9 @@ export default function Home() {
 
   return (
     <>
-      <style>{`
-        /* ── Hero Section ── */
-        .home-hero {
-          background: var(--grad-hero);
-          padding: 85px 24px 70px;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-          font-family: var(--font-sans);
-          border-bottom: 2px solid var(--border-gold-subtle);
-        }
-        .home-hero::before {
-          content: '✝';
-          position: absolute;
-          top: -80px;
-          left: 50%;
-          transform: translateX(-50%);
-          font-size: 360px;
-          color: rgba(214, 182, 107, 0.05);
-          pointer-events: none;
-          font-family: var(--font-serif);
-          line-height: 1;
-        }
-
-        .home-hero-badge {
-          position: relative;
-          width: 130px;
-          height: 130px;
-          margin: 0 auto 26px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .home-hero-halo {
-          position: absolute;
-          inset: -12px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(214, 182, 107, 0.45) 0%, rgba(214, 182, 107, 0) 70%);
-          animation: ctPulse 3.5s ease-in-out infinite alternate;
-        }
-        .home-hero-logo {
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 4px solid var(--gold);
-          box-shadow: 0 10px 32px rgba(12, 34, 25, 0.22), 0 0 25px rgba(214, 182, 107, 0.4);
-          position: relative;
-          z-index: 1;
-          transition: transform 0.4s ease;
-          background: #ffffff;
-        }
-        .home-hero-logo:hover {
-          transform: scale(1.05);
-        }
-
-        .home-hero-tag {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          background: rgba(24, 67, 50, 0.08);
-          border: 1px solid var(--border-gold);
-          border-radius: 50px;
-          padding: 7px 22px;
-          font-size: 0.74rem;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: var(--green);
-          font-weight: 700;
-          margin-bottom: 22px;
-        }
-
-        .home-hero-h1 {
-          font-family: var(--font-serif);
-          font-size: clamp(2.2rem, 6vw, 4.2rem);
-          color: var(--green-dark);
-          font-weight: 700;
-          line-height: 1.15;
-          margin: 0 0 10px;
-          letter-spacing: -0.01em;
-        }
-        .home-hero-h1 span {
-          background: var(--grad-gold);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
-        .home-hero-sub {
-          font-family: var(--font-serif);
-          font-size: clamp(1rem, 2.2vw, 1.35rem);
-          color: var(--gold-dark);
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          margin: 0 0 22px;
-          font-weight: 600;
-        }
-
-        .home-hero-desc {
-          font-size: clamp(1rem, 2vw, 1.18rem);
-          color: var(--text-muted);
-          max-width: 720px;
-          margin: 0 auto 36px;
-          line-height: 1.75;
-        }
-        .home-hero-desc strong {
-          color: var(--green);
-          font-weight: 600;
-        }
-
-        .home-hero-actions {
-          display: flex;
-          gap: 16px;
-          justify-content: center;
-          flex-wrap: wrap;
-          margin-bottom: 50px;
-        }
-
-        /* Service Times Strip */
-        .home-service-strip {
-          display: flex;
-          justify-content: center;
-          background: var(--white);
-          border-radius: 18px;
-          border: 1.5px solid var(--border-gold-subtle);
-          box-shadow: var(--shadow-md);
-          max-width: 820px;
-          margin: 0 auto;
-          overflow: hidden;
-        }
-        .home-service-item {
-          flex: 1;
-          min-width: 200px;
-          padding: 20px 24px;
-          text-align: center;
-          border-right: 1px solid var(--border-gold-subtle);
-          transition: background 0.25s;
-        }
-        .home-service-item:hover {
-          background: var(--gold-soft);
-        }
-        .home-service-item:last-child {
-          border-right: none;
-        }
-        .home-service-icon {
-          font-size: 1.5rem;
-          margin-bottom: 6px;
-        }
-        .home-service-label {
-          font-size: 0.72rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          display: block;
-          margin-bottom: 4px;
-        }
-        .home-service-time {
-          font-size: 0.88rem;
-          color: var(--text-muted);
-          font-weight: 600;
-        }
-
-        /* ── Pillars Section (Light Sanctuary Theme) ── */
-        .home-pillars {
-          background: linear-gradient(180deg, #FAF7F2 0%, #FFFFFF 100%);
-          padding: 85px 24px;
-          font-family: var(--font-sans);
-          color: var(--text-main);
-          position: relative;
-          overflow: hidden;
-          border-top: 1.5px solid var(--border-gold);
-          border-bottom: 1.5px solid var(--border-gold-subtle);
-        }
-        .home-pillars-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 28px;
-          margin-top: 48px;
-        }
-        .home-pillar-card {
-          background: #FFFFFF;
-          border: 1.5px solid rgba(214, 182, 107, 0.35);
-          border-radius: 18px;
-          padding: 38px 30px;
-          box-shadow: 0 6px 24px rgba(18, 45, 36, 0.05);
-          transition: transform 0.28s ease, background 0.28s, border-color 0.28s, box-shadow 0.28s;
-          display: flex;
-          flex-direction: column;
-        }
-        .home-pillar-card:hover {
-          transform: translateY(-6px);
-          background: #FAF6EE;
-          border-color: var(--gold);
-          box-shadow: 0 16px 40px rgba(18, 45, 36, 0.12);
-        }
-        .home-pillar-icon-box {
-          width: 58px;
-          height: 58px;
-          border-radius: 16px;
-          background: #FAF6EE;
-          border: 1.5px solid rgba(214, 182, 107, 0.4);
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.85rem;
-          margin-bottom: 20px;
-          box-shadow: 0 4px 12px rgba(18, 45, 36, 0.04);
-          transition: transform 0.25s ease, background 0.25s, border-color 0.25s;
-        }
-        .home-pillar-card:hover .home-pillar-icon-box {
-          transform: scale(1.08) rotate(2deg);
-          background: #FFFFFF;
-          border-color: var(--gold);
-        }
-        .home-pillar-card h3 {
-          font-family: var(--font-serif);
-          font-size: 1.35rem;
-          color: var(--green-deep);
-          margin: 0 0 8px;
-          font-weight: 800;
-        }
-        .home-pillar-verse {
-          font-size: 0.78rem;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--gold-dark);
-          font-weight: 800;
-          margin-bottom: 14px;
-          display: inline-block;
-        }
-        .home-pillar-card p {
-          font-size: 0.94rem;
-          color: #374151;
-          line-height: 1.8;
-          margin: 0 0 22px;
-          flex-grow: 1;
-        }
-        .home-pillar-link {
-          font-size: 0.84rem;
-          font-weight: 800;
-          color: var(--green);
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          transition: all 0.2s ease;
-          padding-top: 16px;
-          border-top: 1px dashed rgba(214, 182, 107, 0.35);
-          margin-top: auto;
-        }
-        .home-pillar-link:hover {
-          transform: translateX(4px);
-          color: var(--gold-dark);
-        }
-
-        /* ── Welcome & Story Section (Light Warm Theme) ── */
-        .home-welcome {
-          padding: 95px 24px;
-          background: linear-gradient(180deg, #FAF6EE 0%, #F5EFE6 100%);
-          border-top: 1px solid rgba(214,182,107,0.25);
-          border-bottom: 1px solid rgba(214,182,107,0.25);
-        }
-        .home-welcome-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 50px;
-          align-items: center;
-        }
-        .home-welcome-img-wrap {
-          position: relative;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 12px 36px rgba(18,45,36,0.1);
-          border: 2px solid rgba(214,182,107,0.4);
-          background: #FFFFFF;
-        }
-        .home-welcome-img {
-          width: 100%;
-          height: 420px;
-          object-fit: cover;
-          display: block;
-          transition: transform 0.5s ease;
-        }
-        .home-welcome-img-wrap:hover .home-welcome-img {
-          transform: scale(1.03);
-        }
-        .home-welcome-badge {
-          position: absolute;
-          bottom: 20px;
-          left: 20px;
-          background: #FFFFFF;
-          color: var(--green-deep);
-          border: 1.5px solid var(--gold);
-          border-radius: 12px;
-          padding: 12px 20px;
-          box-shadow: 0 6px 20px rgba(18,45,36,0.12);
-        }
-
-        /* ── Mission Purpose Strip (Light Theme) ── */
-        .home-mission {
-          background: linear-gradient(180deg, #FFFFFF 0%, #FAF6EE 100%);
-          padding: 85px 24px;
-          text-align: center;
-          border-top: 1px solid rgba(214,182,107,0.25);
-          border-bottom: 1px solid rgba(214,182,107,0.25);
-        }
-        .home-mission-tags {
-          display: flex;
-          justify-content: center;
-          gap: 14px;
-          flex-wrap: wrap;
-          margin: 30px 0 40px;
-        }
-        .home-mission-tag {
-          background: #FFFFFF;
-          color: var(--green-deep);
-          font-size: 0.8rem;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          padding: 10px 24px;
-          border-radius: 50px;
-          border: 1.5px solid rgba(214,182,107,0.4);
-          box-shadow: 0 2px 10px rgba(18,45,36,0.05);
-          transition: all 0.22s ease;
-        }
-        .home-mission-tag:hover {
-          background: #FAF6EE;
-          border-color: var(--gold);
-          transform: translateY(-2px);
-        }
-
-        /* ── Quick Explore Grid ── */
-        .home-explore {
-          padding: 85px 24px;
-          background: linear-gradient(180deg, #FAF6EE 0%, #F2E9DC 100%);
-          border-top: 2px solid var(--border-gold-subtle);
-        }
-        .home-explore-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-          gap: 24px;
-          margin-top: 45px;
-        }
-        .home-explore-card {
-          background: var(--white);
-          border: 1.5px solid var(--border-gold-subtle);
-          border-radius: 16px;
-          padding: 28px 24px;
-          box-shadow: var(--shadow-sm);
-          transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
-          display: flex;
-          flex-direction: column;
-          text-decoration: none;
-          color: inherit;
-        }
-        .home-explore-card:hover {
-          transform: translateY(-5px);
-          box-shadow: var(--shadow-md);
-          border-color: var(--gold);
-        }
-        .home-explore-head {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 14px;
-        }
-        .home-explore-icon {
-          font-size: 2.2rem;
-        }
-        .home-explore-tag {
-          font-size: 0.68rem;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          background: var(--gold-soft);
-          color: var(--gold-dark);
-          padding: 4px 10px;
-          border-radius: 50px;
-          border: 1px solid var(--border-gold-subtle);
-        }
-        .home-explore-card h3 {
-          font-family: var(--font-serif);
-          font-size: 1.18rem;
-          color: var(--green-dark);
-          margin: 0 0 10px;
-          font-weight: 700;
-        }
-        .home-explore-card p {
-          font-size: 0.88rem;
-          color: var(--text-muted);
-          line-height: 1.65;
-          margin: 0 0 18px;
-          flex-grow: 1;
-        }
-        .home-explore-arrow {
-          font-size: 0.82rem;
-          font-weight: 700;
-          color: var(--gold-dark);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-        }
-
-        /* ── Weekly Promise Banner (Light Sanctuary Theme) ── */
-        .home-promise {
-          background: linear-gradient(150deg, #FFFFFF 0%, #FAF6EE 50%, #F5EFE6 100%);
-          padding: 68px 24px;
-          color: var(--green-deep);
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-          border-top: 1.5px solid var(--border-gold);
-          border-bottom: 1.5px solid var(--border-gold-subtle);
-        }
-        .home-promise::before {
-          content: '✝';
-          position: absolute;
-          top: -20px;
-          left: 50%;
-          transform: translateX(-50%);
-          font-size: 160px;
-          color: rgba(214, 182, 107, 0.06);
-          font-family: var(--font-serif);
-          pointer-events: none;
-        }
-        .home-promise-inner {
-          max-width: 820px;
-          margin: 0 auto;
-          position: relative;
-          z-index: 1;
-        }
-
-        @media (max-width: 1024px) {
-          .home-pillars-grid { grid-template-columns: repeat(2, 1fr); }
-          .home-welcome-grid { gap: 36px; }
-        }
-        @media (max-width: 768px) {
-          .home-hero { padding: 60px 16px 50px; }
-          .home-hero-badge { width: 105px; height: 105px; margin-bottom: 20px; }
-          .home-hero-actions { gap: 10px; margin-bottom: 40px; }
-          .home-pillars { padding: 60px 16px; }
-          .home-pillars-grid { grid-template-columns: 1fr; gap: 20px; }
-          .home-welcome { padding: 60px 16px; }
-          .home-welcome-grid { grid-template-columns: 1fr; }
-          .home-welcome-img { height: 260px; }
-          .home-service-strip { flex-direction: column; max-width: 100%; border-radius: 14px; }
-          .home-service-item { border-right: none; border-bottom: 1px solid var(--border-gold-subtle); padding: 16px 18px; }
-          .home-mission { padding: 60px 16px; }
-          .home-explore { padding: 60px 16px; }
-          .home-promise { padding: 50px 16px; }
-        }
-        @media (max-width: 480px) {
-          .home-hero-actions a { width: 100%; text-align: center; }
-          .home-hero-tag { font-size: 0.65rem; padding: 6px 14px; }
-          .home-mission-tags { gap: 8px; margin: 24px 0 30px; }
-          .home-mission-tag { padding: 8px 16px; font-size: 0.72rem; }
-          .home-welcome-badge { bottom: 12px; left: 12px; padding: 8px 12px; }
-        }
-
-        /* ── Grand Hero Banner Carousel ── */
-        .home-banner-section {
-          background: linear-gradient(180deg, #FAF7F2 0%, #FAF6EE 100%);
-          padding: 24px 20px 20px;
-          position: relative;
-          outline: none;
-          border-bottom: 1px solid var(--border-gold-subtle);
-        }
-        .home-banner-container {
-          max-width: 1360px;
-          margin: 0 auto;
-        }
-        .home-banner-slider {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 21 / 8.2;
-          min-height: 280px;
-          max-height: 540px;
-          border-radius: 20px;
-          overflow: hidden;
-          background: #000;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 0 1.5px rgba(214, 182, 107, 0.38);
-        }
-        .home-banner-slide {
-          position: absolute;
-          inset: 0;
-          opacity: 0;
-          visibility: hidden;
-          transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1), transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
-          transform: scale(1.025);
-          pointer-events: none;
-        }
-        .home-banner-slide.active {
-          opacity: 1;
-          visibility: visible;
-          transform: scale(1);
-          pointer-events: auto;
-        }
-        .home-banner-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
-          display: block;
-        }
-        .home-banner-gradient-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.1) 45%, rgba(7, 25, 17, 0.84) 100%);
-          pointer-events: none;
-        }
-        .home-banner-content-strip {
-          position: absolute;
-          bottom: 20px;
-          left: 24px;
-          right: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 20px;
-          background: rgba(12, 36, 25, 0.82);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          padding: 12px 22px;
-          border-radius: 14px;
-          border: 1px solid rgba(214, 182, 107, 0.45);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-          z-index: 5;
-        }
-        .home-banner-tag {
-          font-size: 0.72rem;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          color: var(--gold-bright);
-          font-weight: 700;
-          white-space: nowrap;
-          background: rgba(214, 182, 107, 0.15);
-          padding: 5px 12px;
-          border-radius: 20px;
-          border: 1px solid rgba(214, 182, 107, 0.35);
-        }
-        .home-banner-caption-text {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          min-width: 0;
-        }
-        .home-banner-slide-title {
-          font-family: var(--font-serif);
-          font-size: 1.05rem;
-          font-weight: 700;
-          color: var(--ivory);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .home-banner-slide-sub {
-          font-size: 0.82rem;
-          color: rgba(250, 246, 238, 0.82);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .home-banner-cta-btn {
-          background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 100%);
-          color: var(--green-dark);
-          font-size: 0.8rem;
-          font-weight: 700;
-          padding: 8px 18px;
-          border-radius: 8px;
-          text-decoration: none;
-          white-space: nowrap;
-          transition: all 0.25s ease;
-          box-shadow: 0 4px 12px rgba(214, 182, 107, 0.3);
-        }
-        .home-banner-cta-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 18px rgba(214, 182, 107, 0.5);
-          color: #06170f;
-        }
-
-        /* Banner Carousel Buttons */
-        .home-banner-btn {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 46px;
-          height: 46px;
-          border-radius: 50%;
-          background: rgba(12, 36, 25, 0.72);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          border: 1.5px solid rgba(214, 182, 107, 0.55);
-          color: var(--gold-bright);
-          font-size: 1.15rem;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.25s ease;
-          z-index: 10;
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        }
-        .home-banner-btn:hover {
-          background: var(--gold-bright);
-          color: var(--green-dark);
-          transform: translateY(-50%) scale(1.1);
-          border-color: #ffffff;
-        }
-        .home-banner-prev { left: 18px; }
-        .home-banner-next { right: 18px; }
-
-        /* Banner Carousel Controls: Dots & Status */
-        .home-banner-controls {
-          position: absolute;
-          top: 18px;
-          right: 20px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          background: rgba(7, 25, 17, 0.78);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          padding: 6px 14px;
-          border-radius: 30px;
-          border: 1px solid rgba(214, 182, 107, 0.35);
-          z-index: 10;
-        }
-        .home-banner-dots {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .home-banner-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: rgba(250, 246, 238, 0.4);
-          border: none;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          padding: 0;
-        }
-        .home-banner-dot.active {
-          background: var(--gold-bright);
-          width: 24px;
-          border-radius: 10px;
-          box-shadow: 0 0 10px rgba(214, 182, 107, 0.7);
-        }
-        .home-banner-status {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          border-left: 1px solid rgba(214, 182, 107, 0.3);
-          padding-left: 8px;
-        }
-        .home-banner-counter {
-          font-size: 0.72rem;
-          color: rgba(250, 246, 238, 0.85);
-          font-weight: 600;
-          font-family: var(--font-sans);
-        }
-        .home-banner-playpause {
-          background: none;
-          border: none;
-          color: var(--gold-light);
-          font-size: 0.72rem;
-          font-weight: 700;
-          cursor: pointer;
-          padding: 2px 6px;
-          border-radius: 4px;
-          transition: color 0.2s;
-        }
-        .home-banner-playpause:hover {
-          color: var(--gold-bright);
-        }
-
-        /* ── Sanctuary Views Switcher ── */
-        .home-sanctuary-views-bar {
-          position: absolute;
-          top: 14px;
-          left: 14px;
-          display: flex;
-          gap: 8px;
-          z-index: 4;
-          background: rgba(12, 36, 25, 0.75);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          padding: 5px;
-          border-radius: 30px;
-          border: 1px solid rgba(214, 182, 107, 0.45);
-        }
-        .home-sanctuary-tab {
-          border: none;
-          background: transparent;
-          color: rgba(250, 246, 238, 0.82);
-          font-size: 0.75rem;
-          font-weight: 700;
-          padding: 6px 14px;
-          border-radius: 20px;
-          cursor: pointer;
-          transition: all 0.25s ease;
-        }
-        .home-sanctuary-tab.active {
-          background: var(--gold-bright);
-          color: var(--green-dark);
-          box-shadow: 0 2px 10px rgba(214, 182, 107, 0.45);
-        }
-        .home-sanctuary-img-container {
-          overflow: hidden;
-          height: 420px;
-          background: #0c2419;
-        }
-
-        @media (max-width: 900px) {
-          .home-banner-content-strip {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-            bottom: 14px;
-            left: 14px;
-            right: 14px;
-            padding: 10px 14px;
-          }
-          .home-banner-cta-btn {
-            align-self: flex-start;
-          }
-        }
-        @media (max-width: 768px) {
-          .home-banner-section { padding: 14px 12px 14px; }
-          .home-banner-slider {
-            aspect-ratio: 16 / 9;
-            min-height: 220px;
-            border-radius: 14px;
-          }
-          .home-banner-btn {
-            width: 36px;
-            height: 36px;
-            font-size: 0.95rem;
-          }
-          .home-banner-prev { left: 8px; }
-          .home-banner-next { right: 8px; }
-          .home-banner-controls {
-            top: 10px;
-            right: 10px;
-            padding: 4px 10px;
-          }
-          .home-banner-content-strip {
-            display: none;
-          }
-          .home-sanctuary-img-container {
-            height: 270px;
-          }
-        }
-      `}</style>
-
       {/* ── 1. Grand Hero Banner Carousel ── */}
       <section
-        className="home-banner-section"
+        className="relative bg-gradient-to-b from-[#FAF7F2] to-ivory py-3.5 md:py-6 px-3 md:px-5 border-b border-gold/20 outline-none"
         aria-label="Christ's Tabernacle Featured Banners"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -960,9 +198,9 @@ export default function Home() {
         onKeyDown={handleKeyDown}
         tabIndex={0}
       >
-        <div className="home-banner-container">
+        <div className="max-w-[1360px] mx-auto">
           <div
-            className="home-banner-slider"
+            className="relative w-full aspect-[16/9] md:aspect-[21/8.2] min-h-[220px] md:min-h-[280px] max-h-[540px] rounded-xl md:rounded-[20px] overflow-hidden bg-black shadow-[0_20px_50px_rgba(0,0,0,0.45)] ring-1 md:ring-[1.5px] ring-gold/40"
             role="region"
             aria-roledescription="carousel"
             aria-label="Hero Banner Slideshow"
@@ -970,7 +208,11 @@ export default function Home() {
             {slides.map((slide, idx) => (
               <div
                 key={slide._id || slide.id || idx}
-                className={`home-banner-slide ${idx === currentSlide ? "active" : ""}`}
+                className={`absolute inset-0 transition-all duration-[850ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                  idx === currentSlide
+                    ? "opacity-100 visible scale-100 pointer-events-auto"
+                    : "opacity-0 invisible scale-[1.025] pointer-events-none"
+                }`}
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`Slide ${idx + 1} of ${slides.length}: ${slide.title}`}
@@ -979,18 +221,23 @@ export default function Home() {
                 <img
                   src={slideImgErrors[idx] ? FALLBACKS[idx % FALLBACKS.length] : (slide.image || FALLBACKS[idx % FALLBACKS.length])}
                   alt={slide.alt || slide.title}
-                  className="home-banner-img"
+                  className="w-full h-full object-cover object-center block"
                   loading={idx === 0 ? "eager" : "lazy"}
                   onError={() => setSlideImgErrors((prev) => ({ ...prev, [idx]: true }))}
                 />
-                <div className="home-banner-gradient-overlay" />
-                <div className="home-banner-content-strip">
-                  <div className="home-banner-tag">✝ {slide.tag} ✝</div>
-                  <div className="home-banner-caption-text">
-                    <span className="home-banner-slide-title">{slide.title}</span>
-                    <span className="home-banner-slide-sub">{slide.subtitle}</span>
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/[0.02] via-black/10 to-[#071911]/85" />
+                <div className="hidden md:flex absolute bottom-3.5 md:bottom-5 left-3.5 md:left-6 right-3.5 md:right-6 lg:flex-row flex-col lg:items-center items-start justify-between gap-2.5 lg:gap-5 bg-green-deep/80 backdrop-blur-md px-3.5 md:px-5 py-2.5 md:py-3 rounded-xl md:rounded-[14px] border border-gold/45 shadow-[0_10px_30px_rgba(0,0,0,0.35)] z-[5]">
+                  <div className="text-[0.72rem] tracking-[0.15em] uppercase text-gold-bright font-bold whitespace-nowrap bg-gold/15 px-3 py-1 rounded-full border border-gold/35">
+                    ✝ {slide.tag} ✝
                   </div>
-                  <Link to={slide.actionLink || '/contact'} className="home-banner-cta-btn">
+                  <div className="flex-1 flex flex-col gap-0.5 min-w-0">
+                    <span className="font-serif text-[1.05rem] font-bold text-ivory truncate">{slide.title}</span>
+                    <span className="text-[0.82rem] text-ivory/80 truncate">{slide.subtitle}</span>
+                  </div>
+                  <Link
+                    to={slide.actionLink || '/contact'}
+                    className="self-start lg:self-auto bg-gradient-to-r from-gold-bright to-gold text-green-dark hover:text-[#06170f] text-[0.8rem] font-bold px-4 py-2 rounded-lg whitespace-nowrap transition-all duration-200 shadow-[0_4px_12px_rgba(214,182,107,0.3)] hover:shadow-[0_6px_18px_rgba(214,182,107,0.5)] hover:-translate-y-0.5"
+                  >
                     {slide.actionText || 'Plan a Visit'} →
                   </Link>
                 </div>
@@ -1000,7 +247,7 @@ export default function Home() {
             {/* Navigation Arrows */}
             <button
               type="button"
-              className="home-banner-btn home-banner-prev"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 rounded-full bg-green-deep/75 backdrop-blur-sm border md:border-[1.5px] border-gold/55 text-gold-bright hover:bg-gold-bright hover:text-green-dark hover:border-white hover:scale-110 text-sm md:text-lg flex items-center justify-center transition-all duration-200 z-10 shadow-lg cursor-pointer"
               onClick={handlePrevSlide}
               aria-label="Previous banner slide"
             >
@@ -1008,7 +255,7 @@ export default function Home() {
             </button>
             <button
               type="button"
-              className="home-banner-btn home-banner-next"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 rounded-full bg-green-deep/75 backdrop-blur-sm border md:border-[1.5px] border-gold/55 text-gold-bright hover:bg-gold-bright hover:text-green-dark hover:border-white hover:scale-110 text-sm md:text-lg flex items-center justify-center transition-all duration-200 z-10 shadow-lg cursor-pointer"
               onClick={handleNextSlide}
               aria-label="Next banner slide"
             >
@@ -1016,8 +263,8 @@ export default function Home() {
             </button>
 
             {/* Controls: Indicators & Play/Pause */}
-            <div className="home-banner-controls">
-              <div className="home-banner-dots" role="tablist" aria-label="Slide Selection">
+            <div className="absolute top-2.5 md:top-4 right-2.5 md:right-5 flex items-center gap-2 md:gap-3 bg-[#071911]/80 backdrop-blur-md px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full border border-gold/35 z-10">
+              <div className="flex items-center gap-2" role="tablist" aria-label="Slide Selection">
                 {slides.map((slide, idx) => (
                   <button
                     key={slide._id || slide.id || idx}
@@ -1025,19 +272,23 @@ export default function Home() {
                     role="tab"
                     aria-selected={idx === currentSlide}
                     aria-label={`Go to slide ${idx + 1}: ${slide.title}`}
-                    className={`home-banner-dot ${idx === currentSlide ? "active" : ""}`}
+                    className={`h-2 transition-all duration-300 cursor-pointer ${
+                      idx === currentSlide
+                        ? "w-6 bg-gold-bright rounded-full shadow-[0_0_10px_rgba(214,182,107,0.7)]"
+                        : "w-2 bg-ivory/40 rounded-full hover:bg-ivory/60"
+                    }`}
                     onClick={() => setCurrentSlide(idx)}
                   />
                 ))}
               </div>
 
-              <div className="home-banner-status">
-                <span className="home-banner-counter">
+              <div className="flex items-center gap-2 border-l border-gold/30 pl-2">
+                <span className="text-[0.72rem] text-ivory/85 font-semibold font-sans">
                   {currentSlide + 1} / {slides.length}
                 </span>
                 <button
                   type="button"
-                  className="home-banner-playpause"
+                  className="text-[0.72rem] font-bold text-gold-light hover:text-gold-bright px-1.5 py-0.5 rounded transition-colors cursor-pointer"
                   onClick={() => setIsPaused((prev) => !prev)}
                   aria-label={isPaused ? "Resume banner slideshow" : "Pause banner slideshow"}
                   title={isPaused ? "Resume slideshow" : "Pause slideshow"}
@@ -1051,99 +302,120 @@ export default function Home() {
       </section>
 
       {/* ── 2. Church Introduction & Service Times ── */}
-      <section className="home-hero" aria-labelledby="hero-title">
-        <div className="home-hero-badge">
-          <div className="home-hero-halo" aria-hidden="true" />
+      <section
+        className="relative overflow-hidden text-center font-sans bg-gradient-to-b from-[#FDFAF5] via-ivory to-ivory-warm py-14 md:py-20 px-4 md:px-6 border-b-2 border-gold/20 before:content-['✝'] before:absolute before:-top-20 before:left-1/2 before:-translate-x-1/2 before:text-[240px] md:before:text-[360px] before:text-gold/[0.05] before:pointer-events-none before:font-serif before:leading-none"
+        aria-labelledby="hero-title"
+      >
+        <div className="relative w-[105px] h-[105px] md:w-[130px] md:h-[130px] mx-auto mb-5 md:mb-6 flex items-center justify-center">
+          <div
+            className="absolute -inset-3 rounded-full bg-[radial-gradient(circle,rgba(214,182,107,0.45)_0%,rgba(214,182,107,0)_70%)] animate-pulse pointer-events-none"
+            aria-hidden="true"
+          />
           <img
             src={logoImg}
             alt="Christ's Tabernacle Official Emblem"
-            className="home-hero-logo"
+            className="w-full h-full rounded-full object-cover border-4 border-gold shadow-[0_10px_32px_rgba(12,34,25,0.22),0_0_25px_rgba(214,182,107,0.4)] relative z-[1] transition-transform duration-300 hover:scale-105 bg-white"
           />
         </div>
 
-        <div className="home-hero-tag">
+        <div className="inline-flex items-center gap-2 bg-green/10 border border-gold/40 rounded-full px-3.5 md:px-5 py-1.5 md:py-2 text-[0.65rem] md:text-[0.74rem] tracking-[0.2em] uppercase text-green font-bold mb-5 md:mb-6">
           <span>✝</span>
           <span>Prayer &amp; Worship Centre • Est. 1991</span>
           <span>✝</span>
         </div>
 
-        <h1 id="hero-title" className="home-hero-h1">
-          Christ's <span>Tabernacle</span>
+        <h1 id="hero-title" className="font-serif text-[clamp(2.2rem,6vw,4.2rem)] text-green-dark font-bold leading-[1.15] mb-2.5 tracking-tight">
+          Christ's <span className="bg-grad-gold bg-clip-text text-transparent">Tabernacle</span>
         </h1>
-        <p className="home-hero-sub">Prayer &amp; Worship Centre</p>
+        <p className="font-serif text-[clamp(1rem,2.2vw,1.35rem)] text-gold-dark tracking-[0.12em] uppercase mb-5 md:mb-6 font-semibold">
+          Prayer &amp; Worship Centre
+        </p>
 
-        <p className="home-hero-desc">
-          <strong>A House of Prayer.</strong> A Place of Deliverance. <strong>A Centre of Divine Healing.</strong><br />
+        <p className="text-[clamp(1rem,2vw,1.18rem)] text-text-muted max-w-[720px] mx-auto mb-8 md:mb-9 leading-relaxed">
+          <strong className="text-green font-semibold">A House of Prayer.</strong> A Place of Deliverance.{" "}
+          <strong className="text-green font-semibold">A Centre of Divine Healing.</strong><br />
           Dedicated to preaching the Word of God, exalting Jesus Christ, breaking spiritual bonds, and empowering generations.
         </p>
 
-        <div className="home-hero-actions">
-          <Link to="/about/journey" className="ct-btn-gold">
+        <div className="flex gap-2.5 md:gap-4 justify-center flex-wrap mb-10 md:mb-12">
+          <Link
+            to="/about/journey"
+            className="inline-flex items-center justify-center gap-2.5 bg-grad-gold text-text-main font-bold text-[0.88rem] tracking-[0.05em] uppercase px-7 py-3 rounded-full shadow-gold hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(214,182,107,0.45)] transition-all duration-200 cursor-pointer w-full sm:w-auto text-center"
+          >
             Our Journey &amp; Calling →
           </Link>
-          <Link to="/contact" className="ct-btn-emerald">
+          <Link
+            to="/contact"
+            className="inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-green to-green-medium hover:bg-grad-sanctuary text-ivory font-bold text-[0.88rem] tracking-[0.05em] uppercase px-7 py-3 rounded-full shadow-md hover:shadow-lg hover:border-gold hover:-translate-y-0.5 border border-gold/30 transition-all duration-200 cursor-pointer w-full sm:w-auto text-center"
+          >
             Plan a Visit 🙏
           </Link>
-          <Link to="/prayers/sunday-services" className="ct-btn-outline">
+          <Link
+            to="/prayers/sunday-services"
+            className="inline-flex items-center justify-center gap-2.5 bg-transparent hover:bg-gradient-to-r hover:from-green hover:to-green-medium text-green hover:text-ivory border-2 border-green font-bold text-[0.88rem] tracking-[0.05em] uppercase px-6 py-2.5 rounded-full hover:-translate-y-0.5 transition-all duration-200 cursor-pointer w-full sm:w-auto text-center"
+          >
             Service Timings 🕒
           </Link>
         </div>
 
         {/* Service Schedule Strip */}
-        <div className="home-service-strip" role="region" aria-label="Church Services">
+        <div
+          className="flex flex-col md:flex-row justify-center bg-white rounded-xl md:rounded-[18px] border md:border-[1.5px] border-gold/20 shadow-md max-w-full md:max-w-[820px] mx-auto overflow-hidden divide-y md:divide-y-0 md:divide-x divide-gold/20"
+          role="region"
+          aria-label="Church Services"
+        >
           {SERVICE_TIMES.map((st) => (
-            <div key={st.label} className="home-service-item">
-              <div className="home-service-icon" aria-hidden="true">{st.icon}</div>
-              <span className="home-service-label">{st.label}</span>
-              <span className="home-service-time">{st.time}</span>
+            <div key={st.label} className="flex-1 md:min-w-[200px] py-4 md:py-5 px-4 md:px-6 text-center hover:bg-gold-soft transition-colors duration-200">
+              <div className="text-2xl mb-1.5" aria-hidden="true">{st.icon}</div>
+              <span className="block text-[0.72rem] font-bold tracking-[0.12em] uppercase text-gold-dark mb-1">{st.label}</span>
+              <span className="text-[0.88rem] text-text-muted font-semibold">{st.time}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── 2. The Three Pillars ── */}
-      <section className="home-pillars" aria-labelledby="pillars-heading">
-        <div className="ct-container">
-          <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto" }}>
-            <span className="ct-badge">† Divine Calling &amp; Pillars †</span>
+      {/* ── 3. The Three Pillars ── */}
+      <section
+        className="py-14 md:py-20 px-4 md:px-6 bg-gradient-to-b from-[#FAF7F2] to-white border-y border-gold/30 text-text-main font-sans relative overflow-hidden"
+        aria-labelledby="pillars-heading"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-[760px] mx-auto">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase bg-gold/15 border border-gold/40 text-gold-dark">
+              † Divine Calling &amp; Pillars †
+            </span>
             <h2
               id="pillars-heading"
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "clamp(2rem, 4vw, 2.85rem)",
-                color: "var(--green-deep)",
-                marginTop: 14,
-                marginBottom: 10,
-                fontWeight: 800,
-                lineHeight: 1.25
-              }}
+              className="font-serif text-[clamp(2rem,4vw,2.85rem)] text-green-deep mt-3.5 mb-2.5 font-extrabold leading-tight"
             >
-              A Community Anchored in <span className="ct-gold-text">Faith &amp; Deliverance</span>
+              A Community Anchored in <span className="bg-grad-gold bg-clip-text text-transparent">Faith &amp; Deliverance</span>
             </h2>
-            <p
-              style={{
-                color: "var(--text-muted)",
-                fontStyle: "italic",
-                fontFamily: "var(--font-serif)",
-                fontSize: "1.08rem",
-                marginTop: 10,
-                lineHeight: 1.6
-              }}
-            >
+            <p className="text-text-muted italic font-serif text-[1.08rem] mt-2.5 leading-relaxed">
               "The Lord who brought me to this ministry will lead me henceforth."
             </p>
           </div>
 
-          <div className="home-pillars-grid">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7 mt-10 md:mt-12">
             {PILLARS.map((p) => (
-              <div key={p.title} className="home-pillar-card">
-                <div className="home-pillar-icon-box" aria-hidden="true">
+              <div
+                key={p.title}
+                className="group flex flex-col bg-white hover:bg-ivory border-[1.5px] border-gold/35 hover:border-gold rounded-[18px] p-6 md:p-9 shadow-[0_6px_24px_rgba(18,45,36,0.05)] hover:shadow-[0_16px_40px_rgba(18,45,36,0.12)] hover:-translate-y-1.5 transition-all duration-300"
+              >
+                <div
+                  className="w-[58px] h-[58px] rounded-2xl bg-ivory group-hover:bg-white border-[1.5px] border-gold/40 group-hover:border-gold inline-flex items-center justify-center text-3xl mb-5 shadow-[0_4px_12px_rgba(18,45,36,0.04)] group-hover:scale-105 group-hover:rotate-2 transition-all duration-300"
+                  aria-hidden="true"
+                >
                   <span>{p.icon}</span>
                 </div>
-                <h3>{p.title}</h3>
-                <span className="home-pillar-verse">{p.verse}</span>
-                <p>{p.desc}</p>
-                <Link to={p.link} className="home-pillar-link">
+                <h3 className="font-serif text-[1.35rem] text-green-deep mb-2 font-extrabold">{p.title}</h3>
+                <span className="text-[0.78rem] tracking-[0.12em] uppercase text-gold-dark font-extrabold mb-3.5 inline-block">
+                  {p.verse}
+                </span>
+                <p className="text-[0.94rem] text-gray-700 leading-relaxed mb-5 flex-grow">{p.desc}</p>
+                <Link
+                  to={p.link}
+                  className="text-[0.84rem] font-extrabold text-green group-hover:text-gold-dark uppercase tracking-wider inline-flex items-center gap-2 pt-4 border-t border-dashed border-gold/35 mt-auto transition-all duration-200 hover:translate-x-1"
+                >
                   Learn More <span>→</span>
                 </Link>
               </div>
@@ -1152,41 +424,63 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 3. Welcome & Story Section with Sanctuary Photography ── */}
-      <section className="home-welcome" aria-labelledby="welcome-heading">
-        <div className="ct-container">
-          <div className="home-welcome-grid">
+      {/* ── 4. Welcome & Story Section with Sanctuary Photography ── */}
+      <section
+        className="py-14 md:py-24 px-4 md:px-6 bg-gradient-to-b from-ivory to-ivory-warm border-y border-gold/25"
+        aria-labelledby="welcome-heading"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-9 lg:gap-12 items-center">
             <div>
-              <span className="ct-badge">† Welcome to the Sanctuary †</span>
-              <h2 id="welcome-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--green-deep)", margin: "14px 0 18px", lineHeight: 1.25 }}>
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase bg-gold/15 border border-gold/40 text-gold-dark">
+                † Welcome to the Sanctuary †
+              </span>
+              <h2
+                id="welcome-heading"
+                className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] text-green-deep my-3.5 md:my-4 leading-tight font-bold"
+              >
                 A Sanctuary Built by Faith, <br />
-                <span className="ct-gold-text">Sustained by Prayer</span>
+                <span className="bg-grad-gold bg-clip-text text-transparent">Sustained by Prayer</span>
               </h2>
-              <p style={{ color: "#374151", fontSize: "1.02rem", lineHeight: 1.8, marginBottom: 18 }}>
+              <p className="text-gray-700 text-[1.02rem] leading-relaxed mb-4">
                 In 1991, Eva. Glory Devapiriyam answered God's divine calling to minister the Gospel with 15 faithful believers in a humble house. Over decades of miraculous healing, fervent prayer, and unshakeable dedication, the ministry flourished into Christ's Tabernacle Church under Pastor Saravanan Immanuel.
               </p>
-              <p style={{ color: "#4B5563", fontSize: "0.96rem", lineHeight: 1.75, marginBottom: 28 }}>
+              <p className="text-gray-600 text-[0.96rem] leading-relaxed mb-7">
                 Today, Christ's Tabernacle stands as an oasis of spiritual renewal in Chennai and beyond — where the broken find healing, captives receive deliverance, and worshippers glorify the King of Kings.
               </p>
 
-              <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-                <Link to="/about/journey" className="ct-btn-gold">
+              <div className="flex gap-3.5 flex-wrap">
+                <Link
+                  to="/about/journey"
+                  className="inline-flex items-center justify-center gap-2.5 bg-grad-gold text-text-main font-bold text-[0.88rem] tracking-[0.05em] uppercase px-7 py-3 rounded-full shadow-gold hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(214,182,107,0.45)] transition-all duration-200 cursor-pointer text-center"
+                >
                   Read Full History
                 </Link>
-                <Link to="/about/faith" className="ct-btn-outline">
+                <Link
+                  to="/about/faith"
+                  className="inline-flex items-center justify-center gap-2.5 bg-transparent hover:bg-gradient-to-r hover:from-green hover:to-green-medium text-green hover:text-ivory border-2 border-green font-bold text-[0.88rem] tracking-[0.05em] uppercase px-6 py-2.5 rounded-full hover:-translate-y-0.5 transition-all duration-200 cursor-pointer text-center"
+                >
                   Statement of Faith
                 </Link>
               </div>
             </div>
 
-            <div className="home-welcome-img-wrap">
+            <div className="relative rounded-2xl md:rounded-[20px] overflow-hidden shadow-[0_12px_36px_rgba(18,45,36,0.1)] border-2 border-gold/40 bg-white group">
               {/* Sanctuary Views Switcher */}
-              <div className="home-sanctuary-views-bar" role="tablist" aria-label="Sanctuary Views" style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              <div
+                className="absolute top-3 md:top-3.5 left-3 md:left-3.5 flex flex-wrap gap-1.5 z-[4] bg-green-deep/75 backdrop-blur-md p-1 md:p-1.5 rounded-full border border-gold/45"
+                role="tablist"
+                aria-label="Sanctuary Views"
+              >
                 <button
                   type="button"
                   role="tab"
                   aria-selected={activeSanctuaryView === "modern"}
-                  className={`home-sanctuary-tab ${activeSanctuaryView === "modern" ? "active" : ""}`}
+                  className={`border-none text-xs font-bold px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full cursor-pointer transition-all duration-200 ${
+                    activeSanctuaryView === "modern"
+                      ? "bg-gold-bright text-green-dark shadow-[0_2px_10px_rgba(214,182,107,0.45)]"
+                      : "text-ivory/80 hover:text-white"
+                  }`}
                   onClick={() => setActiveSanctuaryView("modern")}
                 >
                   ✨ Sanctuary &amp; Altar
@@ -1195,7 +489,11 @@ export default function Home() {
                   type="button"
                   role="tab"
                   aria-selected={activeSanctuaryView === "vision"}
-                  className={`home-sanctuary-tab ${activeSanctuaryView === "vision" ? "active" : ""}`}
+                  className={`border-none text-xs font-bold px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full cursor-pointer transition-all duration-200 ${
+                    activeSanctuaryView === "vision"
+                      ? "bg-gold-bright text-green-dark shadow-[0_2px_10px_rgba(214,182,107,0.45)]"
+                      : "text-ivory/80 hover:text-white"
+                  }`}
                   onClick={() => setActiveSanctuaryView("vision")}
                 >
                   † Divine Calling
@@ -1204,7 +502,11 @@ export default function Home() {
                   type="button"
                   role="tab"
                   aria-selected={activeSanctuaryView === "pastor"}
-                  className={`home-sanctuary-tab ${activeSanctuaryView === "pastor" ? "active" : ""}`}
+                  className={`border-none text-xs font-bold px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full cursor-pointer transition-all duration-200 ${
+                    activeSanctuaryView === "pastor"
+                      ? "bg-gold-bright text-green-dark shadow-[0_2px_10px_rgba(214,182,107,0.45)]"
+                      : "text-ivory/80 hover:text-white"
+                  }`}
                   onClick={() => setActiveSanctuaryView("pastor")}
                 >
                   🕊️ Pastor Saravanan
@@ -1213,14 +515,18 @@ export default function Home() {
                   type="button"
                   role="tab"
                   aria-selected={activeSanctuaryView === "fellowship"}
-                  className={`home-sanctuary-tab ${activeSanctuaryView === "fellowship" ? "active" : ""}`}
+                  className={`border-none text-xs font-bold px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full cursor-pointer transition-all duration-200 ${
+                    activeSanctuaryView === "fellowship"
+                      ? "bg-gold-bright text-green-dark shadow-[0_2px_10px_rgba(214,182,107,0.45)]"
+                      : "text-ivory/80 hover:text-white"
+                  }`}
                   onClick={() => setActiveSanctuaryView("fellowship")}
                 >
                   🙌 Church Fellowship
                 </button>
               </div>
 
-              <div className="home-sanctuary-img-container">
+              <div className="overflow-hidden h-[270px] md:h-[420px] bg-[#0c2419]">
                 <img
                   src={
                     activeSanctuaryView === "vision"
@@ -1240,13 +546,14 @@ export default function Home() {
                           ? "Christ's Tabernacle congregation gathered in praise"
                           : "Christ's Tabernacle Modern Sanctuary Altar"
                   }
-                  className="home-welcome-img"
-                  style={{ objectFit: activeSanctuaryView === "vision" ? "contain" : "cover", background: activeSanctuaryView === "vision" ? "#FFFFFF" : "transparent" }}
+                  className={`w-full h-full transition-transform duration-500 group-hover:scale-105 ${
+                    activeSanctuaryView === "vision" ? "object-contain bg-white" : "object-cover bg-transparent"
+                  }`}
                 />
               </div>
 
-              <div className="home-welcome-badge">
-                <div style={{ fontFamily: "var(--font-serif)", fontSize: "1.05rem", fontWeight: 700, color: "var(--green-deep)" }}>
+              <div className="absolute bottom-3 md:bottom-5 left-3 md:left-5 bg-white text-green-deep border md:border-[1.5px] border-gold rounded-xl p-2.5 md:p-4 shadow-[0_6px_20px_rgba(18,45,36,0.12)] max-w-[calc(100%-24px)] md:max-w-none">
+                <div className="font-serif text-[0.95rem] md:text-[1.05rem] font-bold text-green-deep">
                   {activeSanctuaryView === "vision"
                     ? "Divine Calling & Apostolic Vision"
                     : activeSanctuaryView === "pastor"
@@ -1255,7 +562,7 @@ export default function Home() {
                         ? "Joyful Praise Fellowship"
                         : "Sacred Altar of Worship"}
                 </div>
-                <div style={{ fontSize: "0.75rem", color: "#6B7280", marginTop: 2 }}>
+                <div className="text-[0.7rem] md:text-[0.75rem] text-gray-500 mt-0.5">
                   {activeSanctuaryView === "vision"
                     ? "Ordained & Sent to Preach the Full Gospel of Jesus Christ"
                     : activeSanctuaryView === "pastor"
@@ -1270,86 +577,99 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 4. Core Mission Strip ── */}
-      <section className="home-mission" aria-labelledby="mission-heading">
-        <div className="ct-container" style={{ maxWidth: 900 }}>
-          <span className="ct-badge">† Our Great Commission †</span>
-          <h2 id="mission-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.8vw, 2.6rem)", color: "var(--green-deep)", margin: "14px 0 16px" }}>
+      {/* ── 5. Core Mission Strip ── */}
+      <section
+        className="py-14 md:py-20 px-4 md:px-6 bg-gradient-to-b from-white to-ivory text-center border-y border-gold/25"
+        aria-labelledby="mission-heading"
+      >
+        <div className="max-w-[900px] mx-auto">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase bg-gold/15 border border-gold/40 text-gold-dark">
+            † Our Great Commission †
+          </span>
+          <h2
+            id="mission-heading"
+            className="font-serif text-[clamp(1.8rem,3.8vw,2.6rem)] text-green-deep my-3.5 md:my-4 font-bold"
+          >
             Bringing Freedom, Healing &amp; Hope in Jesus Christ
           </h2>
-          <p style={{ color: "#374151", fontSize: "1.02rem", lineHeight: 1.8, maxWidth: 740, margin: "0 auto" }}>
+          <p className="text-gray-700 text-[1.02rem] leading-relaxed max-w-[740px] mx-auto">
             To proclaim the Full Gospel of Jesus Christ — bringing people from darkness into His marvelous light, delivering them from spiritual bondage, ministering healing to the brokenhearted, and equipping believers for God's Kingdom.
           </p>
 
-          <div className="home-mission-tags">
-            <span className="home-mission-tag">📢 Preach</span>
-            <span className="home-mission-tag">🔓 Deliver</span>
-            <span className="home-mission-tag">💊 Heal</span>
-            <span className="home-mission-tag">📖 Equip</span>
+          <div className="flex justify-center gap-2 md:gap-3.5 flex-wrap my-6 md:my-9">
+            <span className="bg-white hover:bg-ivory text-green-deep text-[0.72rem] md:text-[0.8rem] font-bold tracking-[0.14em] uppercase px-4 md:px-6 py-2 md:py-2.5 rounded-full border md:border-[1.5px] border-gold/40 hover:border-gold shadow-[0_2px_10px_rgba(18,45,36,0.05)] hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+              📢 Preach
+            </span>
+            <span className="bg-white hover:bg-ivory text-green-deep text-[0.72rem] md:text-[0.8rem] font-bold tracking-[0.14em] uppercase px-4 md:px-6 py-2 md:py-2.5 rounded-full border md:border-[1.5px] border-gold/40 hover:border-gold shadow-[0_2px_10px_rgba(18,45,36,0.05)] hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+              🔓 Deliver
+            </span>
+            <span className="bg-white hover:bg-ivory text-green-deep text-[0.72rem] md:text-[0.8rem] font-bold tracking-[0.14em] uppercase px-4 md:px-6 py-2 md:py-2.5 rounded-full border md:border-[1.5px] border-gold/40 hover:border-gold shadow-[0_2px_10px_rgba(18,45,36,0.05)] hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+              💊 Heal
+            </span>
+            <span className="bg-white hover:bg-ivory text-green-deep text-[0.72rem] md:text-[0.8rem] font-bold tracking-[0.14em] uppercase px-4 md:px-6 py-2 md:py-2.5 rounded-full border md:border-[1.5px] border-gold/40 hover:border-gold shadow-[0_2px_10px_rgba(18,45,36,0.05)] hover:-translate-y-0.5 transition-all duration-200 cursor-default">
+              📖 Equip
+            </span>
           </div>
 
-          <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
-            <Link to="/about/mission" className="ct-btn-gold">
+          <div className="flex justify-center gap-3.5 flex-wrap">
+            <Link
+              to="/about/mission"
+              className="inline-flex items-center justify-center gap-2.5 bg-grad-gold text-text-main font-bold text-[0.88rem] tracking-[0.05em] uppercase px-7 py-3 rounded-full shadow-gold hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(214,182,107,0.45)] transition-all duration-200 cursor-pointer text-center"
+            >
               Our Mission &amp; Vision
             </Link>
-            <Link to="/about/motto" className="ct-btn-outline">
+            <Link
+              to="/about/motto"
+              className="inline-flex items-center justify-center gap-2.5 bg-transparent hover:bg-gradient-to-r hover:from-green hover:to-green-medium text-green hover:text-ivory border-2 border-green font-bold text-[0.88rem] tracking-[0.05em] uppercase px-6 py-2.5 rounded-full hover:-translate-y-0.5 transition-all duration-200 cursor-pointer text-center"
+            >
               Faith · Family · Future
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── 4B. Pastoral Leadership & Divine Vision Spotlight ── */}
-      <section style={{ padding: "64px 20px", background: "linear-gradient(180deg, #F8F5EE 0%, #FAF6EE 50%, #FFFFFF 100%)", borderTop: "1.5px solid rgba(214,182,107,0.3)", borderBottom: "1.5px solid rgba(214,182,107,0.3)" }}>
-        <div className="ct-container" style={{ maxWidth: 1180 }}>
-          <div style={{ textAlign: "center", marginBottom: 36 }}>
-            <span className="ct-badge" style={{ marginBottom: 14 }}>† Pastoral Leadership &amp; Apostolic Calling †</span>
-            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", color: "var(--green-deep)", margin: "12px 0 8px" }}>
+      {/* ── 6. Pastoral Leadership & Divine Vision Spotlight ── */}
+      <section className="py-14 md:py-16 px-4 md:px-5 bg-gradient-to-b from-[#F8F5EE] via-ivory to-white border-y border-gold/30">
+        <div className="max-w-[1180px] mx-auto">
+          <div className="text-center mb-9">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase bg-gold/15 border border-gold/40 text-gold-dark mb-3.5">
+              † Pastoral Leadership &amp; Apostolic Calling †
+            </span>
+            <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.5rem)] text-green-deep my-3 font-bold">
               Sent by the Lord to Heal &amp; Restore
             </h2>
-            <p style={{ color: "#4B5563", fontSize: "0.98rem", maxWidth: 660, margin: "0 auto" }}>
+            <p className="text-gray-600 text-[0.98rem] max-w-[660px] mx-auto">
               "The Spirit of the Lord GOD is upon Me, because the LORD has anointed Me to preach good tidings to the poor..." — Isaiah 61:1
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 28, alignItems: "stretch" }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 items-stretch">
             {/* Card 1: Divine Vision Mandate */}
-            <div style={{
-              background: "#FFFFFF",
-              borderRadius: 18,
-              overflow: "hidden",
-              border: "1.5px solid rgba(214,182,107,0.38)",
-              boxShadow: "0 6px 22px rgba(18, 45, 36, 0.06)",
-              display: "flex",
-              flexDirection: "column"
-            }}>
-              <div style={{ height: 260, overflow: "hidden", background: "#FAF6EE", position: "relative" }}>
+            <div className="bg-white rounded-[18px] overflow-hidden border-[1.5px] border-gold/40 shadow-[0_6px_22px_rgba(18,45,36,0.06)] flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+              <div className="h-[260px] overflow-hidden bg-ivory relative">
                 <img
                   src={jesusSaravananImg}
                   alt="Pastor Saravanan Immanuel receiving the Lord's mandate"
-                  style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                  className="w-full h-full object-contain"
                 />
-                <span style={{
-                  position: "absolute", top: 14, left: 14,
-                  background: "#FFFFFF", color: "var(--green-deep)",
-                  border: "1px solid #D6B66B", fontSize: "0.72rem",
-                  fontWeight: 800, padding: "4px 12px", borderRadius: 20,
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
-                }}>
+                <span className="absolute top-3.5 left-3.5 bg-white text-green-deep border border-gold text-[0.72rem] font-extrabold px-3 py-1 rounded-full shadow-sm">
                   † Divine Vision &amp; Calling
                 </span>
               </div>
-              <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div className="p-6 md:p-6.5 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "var(--green-deep)", margin: "0 0 10px" }}>
+                  <h3 className="font-serif text-[1.3rem] text-green-deep mb-2.5 font-bold">
                     The Apostolic Mandate
                   </h3>
-                  <p style={{ color: "#4B5563", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                  <p className="text-gray-600 text-[0.92rem] leading-relaxed m-0">
                     Pastor Saravanan Immanuel answered the divine calling of our Lord Jesus Christ to lead Christ's Tabernacle as a sanctuary of deliverance, supernatural healing, and relentless prayer for all nations.
                   </p>
                 </div>
-                <div style={{ marginTop: 20 }}>
-                  <Link to="/about/journey" style={{ color: "#A88A42", fontWeight: 800, fontSize: "0.88rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <div className="mt-5">
+                  <Link
+                    to="/about/journey"
+                    className="text-gold-dark font-extrabold text-[0.88rem] hover:underline inline-flex items-center gap-1.5"
+                  >
                     Read Pastoral Journey <span>→</span>
                   </Link>
                 </div>
@@ -1357,45 +677,37 @@ export default function Home() {
             </div>
 
             {/* Card 2: Senior Pastor Saravanan Immanuel */}
-            <div style={{
-              background: "#FFFFFF",
-              borderRadius: 18,
-              overflow: "hidden",
-              border: "1.5px solid rgba(214,182,107,0.38)",
-              boxShadow: "0 6px 22px rgba(18, 45, 36, 0.06)",
-              display: "flex",
-              flexDirection: "column"
-            }}>
-              <div style={{ height: 260, overflow: "hidden", position: "relative" }}>
+            <div className="bg-white rounded-[18px] overflow-hidden border-[1.5px] border-gold/40 shadow-[0_6px_22px_rgba(18,45,36,0.06)] flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+              <div className="h-[260px] overflow-hidden relative">
                 <img
                   src={saravanan3Img}
                   alt="Pastor Saravanan Immanuel preaching at the pulpit"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  className="w-full h-full object-cover"
                 />
-                <span style={{
-                  position: "absolute", top: 14, left: 14,
-                  background: "#FFFFFF", color: "var(--green-deep)",
-                  border: "1px solid rgba(214, 182, 107, 0.5)", fontSize: "0.72rem",
-                  fontWeight: 800, padding: "4px 12px", borderRadius: 20,
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
-                }}>
+                <span className="absolute top-3.5 left-3.5 bg-white text-green-deep border border-gold/50 text-[0.72rem] font-extrabold px-3 py-1 rounded-full shadow-sm">
                   ✝ Senior Pastor
                 </span>
               </div>
-              <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div className="p-6 md:p-6.5 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "var(--green-deep)", margin: "0 0 10px" }}>
+                  <h3 className="font-serif text-[1.3rem] text-green-deep mb-2.5 font-bold">
                     Pastor Saravanan Immanuel
                   </h3>
-                  <p style={{ color: "#4B5563", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                  <p className="text-gray-600 text-[0.92rem] leading-relaxed m-0">
                     Under his faithful ministry, thousands of believers across Chennai and around the world experience the transformative power of God through Sunday expository preaching, fasting prayer vigils, and pastoral counseling.
                   </p>
                 </div>
-                <div style={{ marginTop: 20, display: "flex", gap: 12 }}>
-                  <Link to="/sermons/sunday" className="ct-btn-gold" style={{ padding: "8px 18px", fontSize: "0.82rem" }}>
+                <div className="mt-5 flex gap-3">
+                  <Link
+                    to="/sermons/sunday"
+                    className="inline-flex items-center justify-center gap-2 bg-grad-gold text-text-main font-bold text-xs tracking-wider uppercase px-4 py-2 rounded-full shadow-sm hover:brightness-105 transition-all"
+                  >
                     Listen to Sermons
                   </Link>
-                  <Link to="/contact" className="ct-btn-outline" style={{ padding: "8px 18px", fontSize: "0.82rem" }}>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2 bg-transparent text-green border border-green hover:bg-green hover:text-white font-bold text-xs tracking-wider uppercase px-4 py-2 rounded-full transition-all"
+                  >
                     Request Prayer
                   </Link>
                 </div>
@@ -1403,40 +715,31 @@ export default function Home() {
             </div>
 
             {/* Card 3: 10th Anniversary Milestone */}
-            <div style={{
-              background: "#FFFFFF",
-              borderRadius: 18,
-              overflow: "hidden",
-              border: "1.5px solid rgba(214,182,107,0.38)",
-              boxShadow: "0 6px 22px rgba(18, 45, 36, 0.06)",
-              display: "flex",
-              flexDirection: "column"
-            }}>
-              <div style={{ height: 260, overflow: "hidden", background: "#FAF6EE", position: "relative" }}>
+            <div className="bg-white rounded-[18px] overflow-hidden border-[1.5px] border-gold/40 shadow-[0_6px_22px_rgba(18,45,36,0.06)] flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+              <div className="h-[260px] overflow-hidden bg-ivory relative">
                 <img
                   src={anniversaryPosterImg}
                   alt="Christ's Tabernacle 10th Anniversary Celebration"
-                  style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                  className="w-full h-full object-contain"
                 />
-                <span style={{
-                  position: "absolute", top: 14, left: 14,
-                  background: "#C81D25", color: "#FFFFFF",
-                  fontSize: "0.72rem", fontWeight: 800, padding: "4px 12px", borderRadius: 20
-                }}>
+                <span className="absolute top-3.5 left-3.5 bg-crimson text-white text-[0.72rem] font-extrabold px-3 py-1 rounded-full">
                   🎉 Milestone Jubilee
                 </span>
               </div>
-              <div style={{ padding: "24px 26px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div className="p-6 md:p-6.5 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.3rem", color: "var(--green-deep)", margin: "0 0 10px" }}>
+                  <h3 className="font-serif text-[1.3rem] text-green-deep mb-2.5 font-bold">
                     10th Anniversary Celebration
                   </h3>
-                  <p style={{ color: "#4B5563", fontSize: "0.92rem", lineHeight: 1.7, margin: 0 }}>
+                  <p className="text-gray-600 text-[0.92rem] leading-relaxed m-0">
                     Celebrating a decade of supernatural grace, faithful worship, and community transformation in Christ's Tabernacle. Join in thanksgiving for the great things the Lord has done!
                   </p>
                 </div>
-                <div style={{ marginTop: 20 }}>
-                  <Link to="/media/photos" style={{ color: "#A88A42", fontWeight: 800, fontSize: "0.88rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <div className="mt-5">
+                  <Link
+                    to="/media/photos"
+                    className="text-gold-dark font-extrabold text-[0.88rem] hover:underline inline-flex items-center gap-1.5"
+                  >
                     View Celebration Gallery <span>→</span>
                   </Link>
                 </div>
@@ -1446,28 +749,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 5. Quick Explore Grid ── */}
-      <section className="home-explore" aria-labelledby="explore-heading">
-        <div className="ct-container">
-          <div style={{ textAlign: "center" }}>
-            <h2 id="explore-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--green-dark)", marginTop: 0, marginBottom: 8 }}>
+      {/* ── 7. Quick Explore Grid ── */}
+      <section
+        className="py-14 md:py-20 px-4 md:px-6 bg-gradient-to-b from-ivory to-ivory-warm border-t-2 border-gold/20"
+        aria-labelledby="explore-heading"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center">
+            <h2
+              id="explore-heading"
+              className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] text-green-dark mt-0 mb-2 font-bold"
+            >
               Explore Christ's Tabernacle
             </h2>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.98rem", maxWidth: 600, margin: "0 auto 0" }}>
+            <p className="text-text-muted text-[0.98rem] max-w-[600px] mx-auto">
               Access our sermon archives, worship lyrics, photo galleries, prayer schedules, and testimonies.
             </p>
           </div>
 
-          <div className="home-explore-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 md:mt-11">
             {QUICK_EXPLORE.map((item) => (
-              <Link key={item.title} to={item.path} className="home-explore-card">
-                <div className="home-explore-head">
-                  <span className="home-explore-icon" aria-hidden="true">{item.icon}</span>
-                  <span className="home-explore-tag">{item.tag}</span>
+              <Link
+                key={item.title}
+                to={item.path}
+                className="group bg-white hover:border-gold border-[1.5px] border-gold/20 rounded-2xl p-6 md:p-7 shadow-sm-g hover:shadow-card hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+              >
+                <div className="flex justify-between items-center mb-3.5">
+                  <span className="text-3xl md:text-4xl" aria-hidden="true">{item.icon}</span>
+                  <span className="text-[0.68rem] font-bold tracking-wider uppercase bg-gold-soft text-gold-dark px-2.5 py-1 rounded-full border border-gold/20">
+                    {item.tag}
+                  </span>
                 </div>
-                <h3>{item.title}</h3>
-                <p>{item.desc}</p>
-                <span className="home-explore-arrow">
+                <h3 className="font-serif text-[1.18rem] text-green-dark mb-2.5 font-bold group-hover:text-green-deep transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-[0.88rem] text-text-muted leading-relaxed mb-4 flex-grow">
+                  {item.desc}
+                </p>
+                <span className="text-[0.82rem] font-bold text-gold-dark uppercase tracking-wider inline-flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
                   Explore Now <span>→</span>
                 </span>
               </Link>
@@ -1476,14 +795,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 6. Weekly Promise Banner ── */}
-      <section className="home-promise" aria-label="Weekly Scripture Promise">
-        <div className="home-promise-inner">
-          <span className="ct-badge" style={{ marginBottom: 16 }}>† Scripture Promise of the Week †</span>
-          <blockquote style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(1.2rem, 3vw, 1.8rem)", color: "var(--green-deep)", fontStyle: "italic", margin: "16px 0 12px", lineHeight: 1.5 }}>
+      {/* ── 8. Weekly Promise Banner ── */}
+      <section
+        className="relative overflow-hidden py-12 md:py-16 px-4 md:px-6 bg-gradient-to-br from-white via-ivory to-ivory-warm text-green-deep text-center border-y border-gold/30 before:content-['✝'] before:absolute before:-top-5 before:left-1/2 before:-translate-x-1/2 before:text-[160px] before:text-gold/[0.06] before:font-serif before:pointer-events-none before:leading-none"
+        aria-label="Weekly Scripture Promise"
+      >
+        <div className="max-w-[820px] mx-auto relative z-[1]">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase bg-gold/15 border border-gold/40 text-gold-dark mb-4">
+            † Scripture Promise of the Week †
+          </span>
+          <blockquote className="font-serif text-[clamp(1.2rem,3vw,1.8rem)] text-green-deep italic my-4 leading-relaxed">
             "Call to me and I will answer you, and will tell you great and hidden things that you have not known."
           </blockquote>
-          <cite style={{ fontFamily: "var(--font-sans)", fontSize: "0.9rem", color: "var(--gold-dark)", fontStyle: "normal", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+          <cite className="font-sans text-[0.9rem] text-gold-dark not-italic font-bold tracking-widest uppercase block">
             — Jeremiah 33:3
           </cite>
         </div>

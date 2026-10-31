@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserPlus, FaCheckCircle, FaCross, FaArrowLeft, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaUsers, FaHeart } from "react-icons/fa";
+import { FaUserPlus, FaCheckCircle, FaCross, FaArrowLeft } from "react-icons/fa";
 import { createMember } from "../services/api";
 
 export default function JoinMembership() {
@@ -80,189 +80,81 @@ export default function JoinMembership() {
   // Set page title
   useEffect(() => {
     document.title = "Church Member Registration | Christ's Tabernacle Congregation";
-    return () => { document.title = "Christ's Tabernacle Congregation"; };
+    return () => {
+      document.title = "Christ's Tabernacle Congregation";
+    };
   }, []);
 
+  const labelClass = "block text-xs font-bold text-green mb-1.5 uppercase tracking-wide";
+  const inputClass =
+    "w-full px-3.5 py-2.5 bg-[#F8FAF9] border border-slate-300 rounded-lg text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-green-light/40 focus:border-green transition-all";
+
   return (
-    <div style={{ background: "#F8FAF9", minHeight: "100vh", paddingBottom: 60 }}>
+    <div className="bg-[#F8FAF9] min-h-screen pb-16 font-sans">
       {/* Hero Banner */}
-      <section
-        style={{
-          background: "linear-gradient(135deg, #0B2318 0%, #123727 60%, #1E5641 100%)",
-          color: "#FFFFFF",
-          padding: "70px 20px 60px",
-          textAlign: "center",
-          position: "relative",
-          borderBottom: "3px solid #D6B66B",
-        }}
-      >
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+      <section className="bg-gradient-to-br from-[#0B2318] via-[#123727] to-[#1E5641] text-white py-16 sm:py-20 px-5 text-center relative border-b-4 border-gold">
+        <div className="max-w-[800px] mx-auto">
           {/* Back Button */}
           <button
             onClick={() => navigate(-1)}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              background: "rgba(255,255,255,0.12)",
-              border: "1px solid rgba(255,255,255,0.25)",
-              color: "rgba(255,255,255,0.85)",
-              padding: "6px 14px",
-              borderRadius: 20,
-              fontSize: "0.8rem",
-              cursor: "pointer",
-              marginBottom: 18,
-              fontFamily: "inherit",
-            }}
+            className="inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white/85 px-3.5 py-1.5 rounded-full text-xs cursor-pointer mb-4.5 transition-all"
           >
-            <FaArrowLeft style={{ fontSize: "0.7rem" }} />
+            <FaArrowLeft className="text-[0.7rem]" />
             Back
           </button>
 
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 16px",
-              background: "rgba(214, 182, 107, 0.15)",
-              border: "1px solid rgba(214, 182, 107, 0.35)",
-              borderRadius: 30,
-              color: "#D6B66B",
-              fontSize: "0.82rem",
-              fontWeight: 700,
-              letterSpacing: "1.2px",
-              textTransform: "uppercase",
-              marginBottom: 16,
-            }}
-          >
-            <FaCross />
-            <span>Christ's Tabernacle Congregation</span>
+          <div className="block">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gold/15 border border-gold/35 rounded-full text-gold text-xs font-bold tracking-wider uppercase mb-4">
+              <FaCross />
+              <span>Christ's Tabernacle Congregation</span>
+            </div>
           </div>
 
-          <h1
-            style={{
-              fontFamily: "var(--font-serif, serif)",
-              fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
-              margin: "0 0 14px",
-              color: "#FFFFFF",
-              fontWeight: 700,
-            }}
-          >
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl my-0 mb-3.5 text-white font-bold leading-tight">
             Church Member Registration
           </h1>
 
-          <p
-            style={{
-              fontSize: "1.02rem",
-              color: "rgba(255, 255, 255, 0.85)",
-              maxWidth: 620,
-              margin: "0 auto 20px",
-              lineHeight: 1.6,
-            }}
-          >
+          <p className="text-base sm:text-[1.02rem] text-white/85 max-w-[620px] mx-auto mb-5 leading-relaxed">
             "So then you are no longer strangers and aliens, but you are fellow citizens with the saints and members of the household of God." — Ephesians 2:19
           </p>
         </div>
       </section>
 
       {/* Main Registration Card */}
-      <div style={{ maxWidth: 800, margin: "-30px auto 0", padding: "0 18px", position: "relative", zIndex: 10 }}>
-        <div
-          style={{
-            background: "#FFFFFF",
-            borderRadius: 16,
-            border: "1.5px solid #E2E8F0",
-            padding: "36px 40px",
-            boxShadow: "0 10px 35px rgba(0, 0, 0, 0.06)",
-          }}
-        >
+      <div className="max-w-[800px] mx-auto -mt-8 px-4 relative z-10">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-9 md:p-10 shadow-lg">
           {success ? (
-            <div style={{ textAlign: "center", padding: "40px 10px" }}>
-              <div
-                style={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: "50%",
-                  background: "#DCFCE7",
-                  color: "#16A34A",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "2.4rem",
-                  margin: "0 auto 20px",
-                  boxShadow: "0 6px 18px rgba(22, 163, 74, 0.25)",
-                }}
-              >
+            <div className="text-center py-10 px-2.5">
+              <div className="w-[72px] h-[72px] rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-4xl mx-auto mb-5 shadow-[0_6px_18px_rgba(22,163,74,0.25)]">
                 <FaCheckCircle />
               </div>
 
-              <h2
-                style={{
-                  fontFamily: "var(--font-serif, serif)",
-                  fontSize: "1.85rem",
-                  color: "#122D24",
-                  margin: "0 0 10px",
-                }}
-              >
+              <h2 className="font-serif text-2xl sm:text-3xl text-green-dark mb-2.5 font-bold">
                 Welcome to Christ's Tabernacle!
               </h2>
 
-              <p style={{ color: "#475569", fontSize: "1.02rem", maxWidth: 520, margin: "0 auto 24px", lineHeight: 1.6 }}>
-                Dear <strong style={{ color: "#184332" }}>{formData.name}</strong>, your church membership details have been recorded successfully in the sanctuary registry. Our pastoral and fellowship team looks forward to worshiping with you.
+              <p className="text-slate-600 text-base sm:text-[1.02rem] max-w-[520px] mx-auto mb-6 leading-relaxed">
+                Dear <strong className="text-green">{formData.name}</strong>, your church membership details have been recorded successfully in the sanctuary registry. Our pastoral and fellowship team looks forward to worshiping with you.
               </p>
 
-              <div
-                style={{
-                  background: "#F8FAF9",
-                  border: "1.5px dashed #D6B66B",
-                  borderRadius: 12,
-                  padding: "16px 24px",
-                  color: "#184332",
-                  fontSize: "0.92rem",
-                  fontStyle: "italic",
-                  maxWidth: 540,
-                  margin: "0 auto 32px",
-                }}
-              >
+              <div className="bg-[#F8FAF9] border-[1.5px] border-dashed border-gold rounded-xl px-5 py-4 text-green text-sm sm:text-[0.92rem] italic max-w-[540px] mx-auto mb-8">
                 "The Lord bless you and keep you; the Lord make his face shine upon you and be gracious to you; the Lord lift up his countenance upon you and give you peace." — Numbers 6:24-26
               </div>
 
-              <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+              <div className="flex gap-3.5 justify-center flex-wrap">
                 <button
                   type="button"
                   onClick={() => {
                     setFormData(initialForm);
                     setSuccess(false);
                   }}
-                  style={{
-                    padding: "12px 24px",
-                    background: "#F1F5F9",
-                    border: "1.5px solid #CBD5E1",
-                    color: "#334155",
-                    borderRadius: 8,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    fontSize: "0.92rem",
-                  }}
+                  className="px-6 py-3 bg-slate-100 border border-slate-300 text-slate-700 rounded-lg font-bold cursor-pointer text-sm sm:text-[0.92rem] hover:bg-slate-200 transition-all"
                 >
                   + Add Another Family Member
                 </button>
                 <Link
                   to="/"
-                  style={{
-                    padding: "12px 28px",
-                    background: "linear-gradient(135deg, #184332 0%, #122D24 100%)",
-                    color: "#FFFFFF",
-                    borderRadius: 8,
-                    fontWeight: 700,
-                    textDecoration: "none",
-                    fontSize: "0.92rem",
-                    boxShadow: "0 4px 14px rgba(24, 67, 50, 0.25)",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
+                  className="px-7 py-3 bg-gradient-to-br from-green to-green-dark text-white rounded-lg font-bold text-sm sm:text-[0.92rem] no-underline shadow-[0_4px_14px_rgba(24,67,50,0.25)] hover:opacity-95 transition-all inline-flex items-center gap-2"
                 >
                   Return to Home Sanctuary →
                 </Link>
@@ -270,43 +162,26 @@ export default function JoinMembership() {
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <div style={{ borderBottom: "1px solid #E2E8F0", paddingBottom: 16, marginBottom: 24 }}>
-                <h2
-                  style={{
-                    fontFamily: "var(--font-serif, serif)",
-                    fontSize: "1.5rem",
-                    color: "#122D24",
-                    margin: "0 0 6px",
-                  }}
-                >
+              <div className="border-b border-slate-200 pb-4 mb-6">
+                <h2 className="font-serif text-xl sm:text-2xl text-green-dark mb-1.5 font-bold">
                   Member Information Form
                 </h2>
-                <p style={{ margin: 0, color: "#64748B", fontSize: "0.9rem" }}>
-                  Please complete the following details. Fields marked with <span style={{ color: "#DC2626" }}>*</span> are required.
+                <p className="m-0 text-slate-500 text-sm">
+                  Please complete the following details. Fields marked with <span className="text-red-600">*</span> are required.
                 </p>
               </div>
 
               {error && (
-                <div
-                  style={{
-                    background: "#FEE2E2",
-                    border: "1px solid #FECACA",
-                    color: "#DC2626",
-                    padding: "12px 16px",
-                    borderRadius: 8,
-                    fontSize: "0.9rem",
-                    marginBottom: 20,
-                  }}
-                >
+                <div className="bg-red-100 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm mb-5 font-medium">
                   ⚠️ {error}
                 </div>
               )}
 
               {/* Row 1: Full Name & Gender */}
-              <div className="jm-row jm-row-2" style={{ marginBottom: 18 }}>
-                <div>
-                  <label style={LBL}>
-                    Full Name <span style={{ color: "#DC2626" }}>*</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4.5">
+                <div className="sm:col-span-2">
+                  <label className={labelClass}>
+                    Full Name <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -315,12 +190,12 @@ export default function JoinMembership() {
                     onChange={handleChange}
                     placeholder="Enter your full name"
                     required
-                    style={INP}
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label style={LBL}>Gender</label>
-                  <select name="gender" value={formData.gender} onChange={handleChange} style={INP}>
+                  <label className={labelClass}>Gender</label>
+                  <select name="gender" value={formData.gender} onChange={handleChange} className={inputClass}>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
@@ -329,23 +204,23 @@ export default function JoinMembership() {
               </div>
 
               {/* Row 2: Date of Birth & Age */}
-              <div className="jm-row jm-row-half" style={{ marginBottom: 18 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4.5">
                 <div>
-                  <label style={LBL}>
-                    Date of Birth (DOB) <span style={{ color: "#64748B", fontWeight: 400 }}>(Optional)</span>
+                  <label className={labelClass}>
+                    Date of Birth (DOB) <span className="text-slate-500 font-normal">(Optional)</span>
                   </label>
                   <input
                     type="date"
                     name="dob"
                     value={formData.dob}
                     onChange={handleChange}
-                    style={INP}
+                    className={inputClass}
                     max={new Date().toISOString().split("T")[0]}
                   />
                 </div>
                 <div>
-                  <label style={LBL}>
-                    Age <span style={{ color: "#64748B", fontWeight: 400 }}>(Years)</span>
+                  <label className={labelClass}>
+                    Age <span className="text-slate-500 font-normal">(Years)</span>
                   </label>
                   <input
                     type="number"
@@ -355,16 +230,16 @@ export default function JoinMembership() {
                     placeholder="Calculated automatically or enter"
                     min="1"
                     max="125"
-                    style={INP}
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               {/* Row 3: Mobile & Mail ID */}
-              <div className="jm-row jm-row-half" style={{ marginBottom: 18 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4.5">
                 <div>
-                  <label style={LBL}>
-                    Mobile Number <span style={{ color: "#DC2626" }}>*</span>
+                  <label className={labelClass}>
+                    Mobile Number <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="tel"
@@ -373,12 +248,12 @@ export default function JoinMembership() {
                     onChange={handleChange}
                     placeholder="e.g. +91 98401 23456"
                     required
-                    style={INP}
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label style={LBL}>
-                    Mail ID <span style={{ color: "#16A34A", fontWeight: 600 }}>(Optional)</span>
+                  <label className={labelClass}>
+                    Mail ID <span className="text-green-600 font-semibold">(Optional)</span>
                   </label>
                   <input
                     type="email"
@@ -386,15 +261,15 @@ export default function JoinMembership() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="your.email@example.com"
-                    style={INP}
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               {/* Row 4: Residential Address */}
-              <div style={{ marginBottom: 18 }}>
-                <label style={LBL}>
-                  Residential Address <span style={{ color: "#DC2626" }}>*</span>
+              <div className="mb-4.5">
+                <label className={labelClass}>
+                  Residential Address <span className="text-red-600">*</span>
                 </label>
                 <textarea
                   name="address"
@@ -403,15 +278,15 @@ export default function JoinMembership() {
                   rows={3}
                   placeholder="Street Address, City, Pincode"
                   required
-                  style={{ ...INP, resize: "vertical" }}
+                  className={`${inputClass} resize-y`}
                 />
               </div>
 
               {/* Row 5: Additional Info */}
-              <div className="jm-row jm-row-3" style={{ marginBottom: 18 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4.5">
                 <div>
-                  <label style={LBL}>Blood Group</label>
-                  <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} style={INP}>
+                  <label className={labelClass}>Blood Group</label>
+                  <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className={inputClass}>
                     <option value="">Select</option>
                     <option value="A+">A+</option>
                     <option value="A-">A-</option>
@@ -424,8 +299,13 @@ export default function JoinMembership() {
                   </select>
                 </div>
                 <div>
-                  <label style={LBL}>Marital Status</label>
-                  <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} style={INP}>
+                  <label className={labelClass}>Marital Status</label>
+                  <select
+                    name="maritalStatus"
+                    value={formData.maritalStatus}
+                    onChange={handleChange}
+                    className={inputClass}
+                  >
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
                     <option value="Widowed">Widowed</option>
@@ -433,8 +313,8 @@ export default function JoinMembership() {
                   </select>
                 </div>
                 <div>
-                  <label style={LBL}>Water Baptized?</label>
-                  <select name="baptized" value={formData.baptized} onChange={handleChange} style={INP}>
+                  <label className={labelClass}>Water Baptized?</label>
+                  <select name="baptized" value={formData.baptized} onChange={handleChange} className={inputClass}>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </select>
@@ -442,35 +322,35 @@ export default function JoinMembership() {
               </div>
 
               {/* Row 6: Occupation & Emergency Contact */}
-              <div className="jm-row jm-row-half" style={{ marginBottom: 18 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4.5">
                 <div>
-                  <label style={LBL}>Occupation / Profession</label>
+                  <label className={labelClass}>Occupation / Profession</label>
                   <input
                     type="text"
                     name="occupation"
                     value={formData.occupation}
                     onChange={handleChange}
                     placeholder="e.g. Teacher, Engineer, Student"
-                    style={INP}
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label style={LBL}>Emergency Contact / Guardian</label>
+                  <label className={labelClass}>Emergency Contact / Guardian</label>
                   <input
                     type="text"
                     name="emergencyContact"
                     value={formData.emergencyContact}
                     onChange={handleChange}
                     placeholder="Name and contact number"
-                    style={INP}
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               {/* Row 7: Notes */}
-              <div style={{ marginBottom: 26 }}>
-                <label style={LBL}>
-                  Prayer Requests / Ministry Areas <span style={{ color: "#64748B", fontWeight: 400 }}>(Optional)</span>
+              <div className="mb-6.5">
+                <label className={labelClass}>
+                  Prayer Requests / Ministry Areas <span className="text-slate-500 font-normal">(Optional)</span>
                 </label>
                 <textarea
                   name="notes"
@@ -478,7 +358,7 @@ export default function JoinMembership() {
                   onChange={handleChange}
                   rows={2}
                   placeholder="Share any special prayers or ministries you would like to participate in..."
-                  style={{ ...INP, resize: "vertical" }}
+                  className={`${inputClass} resize-y`}
                 />
               </div>
 
@@ -486,24 +366,7 @@ export default function JoinMembership() {
               <button
                 type="submit"
                 disabled={submitting}
-                style={{
-                  width: "100%",
-                  padding: "14px 28px",
-                  background: "linear-gradient(135deg, #184332 0%, #122D24 100%)",
-                  color: "#FFFFFF",
-                  border: "none",
-                  borderRadius: 10,
-                  fontSize: "1rem",
-                  fontWeight: 700,
-                  cursor: submitting ? "not-allowed" : "pointer",
-                  opacity: submitting ? 0.75 : 1,
-                  boxShadow: "0 4px 16px rgba(24, 67, 50, 0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
-                  transition: "all 0.2s",
-                }}
+                className="w-full py-3.5 px-7 bg-gradient-to-br from-green to-green-dark text-white rounded-xl text-base font-bold cursor-pointer shadow-[0_4px_16px_rgba(24,67,50,0.3)] hover:opacity-95 transition-all flex items-center justify-center gap-2.5 disabled:cursor-not-allowed disabled:opacity-75"
               >
                 <FaUserPlus />
                 <span>{submitting ? "Submitting Registration..." : "Complete Church Membership Registration"}</span>
@@ -512,53 +375,6 @@ export default function JoinMembership() {
           )}
         </div>
       </div>
-
-      <style>{`
-        .jm-row {
-          display: grid;
-          gap: 16px;
-        }
-        .jm-row-2 {
-          grid-template-columns: 2fr 1fr;
-        }
-        .jm-row-half {
-          grid-template-columns: 1fr 1fr;
-        }
-        .jm-row-3 {
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        @media (max-width: 640px) {
-          .jm-row-2,
-          .jm-row-half,
-          .jm-row-3 {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }
-
-const LBL = {
-  display: "block",
-  fontSize: "0.82rem",
-  fontWeight: 700,
-  color: "#184332",
-  marginBottom: 6,
-  textTransform: "uppercase",
-  letterSpacing: "0.3px",
-};
-
-const INP = {
-  width: "100%",
-  padding: "11px 14px",
-  background: "#F8FAF9",
-  border: "1.5px solid #CBD5E1",
-  borderRadius: 10,
-  color: "#0F172A",
-  fontSize: "0.94rem",
-  outline: "none",
-  boxSizing: "border-box",
-  fontFamily: "inherit",
-};

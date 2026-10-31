@@ -40,279 +40,32 @@ const SERVICE_TIMES = [
 export default function Footer() {
   return (
     <>
-      <style>{`
-        /* ── Pre-Footer CTA Banner ── */
-        .ct-footer-cta {
-          background: 
-            radial-gradient(ellipse at 50% 0%, rgba(214, 182, 107, 0.2) 0%, transparent 55%),
-            radial-gradient(ellipse at 85% 100%, rgba(50, 132, 100, 0.32) 0%, transparent 50%),
-            linear-gradient(140deg, #0C2419 0%, #133929 18%, #184332 42%, #1E5540 68%, #276D52 88%, #328464 100%);
-          padding: 68px 24px;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-          font-family: var(--font-sans);
-          border-top: 2px solid var(--border-gold);
-          border-bottom: 2px solid var(--border-gold-subtle);
-        }
-        .ct-footer-cta::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(ellipse at 50% 0%, rgba(214, 182, 107, 0.14) 0%, transparent 55%);
-          pointer-events: none;
-        }
-        .ct-footer-cta::before {
-          content: '✝';
-          position: absolute;
-          top: -30px;
-          left: 50%;
-          transform: translateX(-50%);
-          font-size: 140px;
-          color: rgba(214, 182, 107, 0.06);
-          pointer-events: none;
-          font-family: var(--font-serif);
-        }
-        .ct-footer-cta-eyebrow {
-          font-size: 0.72rem;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: var(--gold-light);
-          margin-bottom: 10px;
-          font-weight: 700;
-        }
-        .ct-footer-cta h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.8rem, 4vw, 2.6rem);
-          color: var(--ivory);
-          margin: 0 0 12px;
-          font-weight: 700;
-          line-height: 1.25;
-        }
-        .ct-footer-cta h2 span { color: var(--gold-bright); }
-        .ct-footer-cta p {
-          color: rgba(250, 246, 238, 0.88);
-          font-size: 0.98rem;
-          margin: 0 auto 30px;
-          max-width: 580px;
-          line-height: 1.7;
-        }
-        .ct-footer-cta-actions {
-          display: flex;
-          justify-content: center;
-          gap: 14px;
-          flex-wrap: wrap;
-        }
-
-        /* ── Main Footer Body ── */
-        .ct-footer-body {
-          background: 
-            radial-gradient(circle at 10% 20%, rgba(42, 110, 84, 0.25) 0%, transparent 40%),
-            radial-gradient(circle at 90% 80%, rgba(214, 182, 107, 0.15) 0%, transparent 45%),
-            linear-gradient(165deg, #0B2217 0%, #113425 25%, #184332 55%, #1F5741 85%, #133929 100%);
-          color: var(--ivory);
-          padding: 70px 24px 40px;
-          font-family: var(--font-sans);
-          border-top: 1px solid rgba(214, 182, 107, 0.3);
-        }
-        .ct-footer-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-          gap: 40px;
-        }
-
-        /* Col 1: About */
-        .ct-footer-brand-logo {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 16px;
-        }
-        .ct-footer-logo-img {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          border: 2px solid var(--gold);
-          box-shadow: 0 0 12px rgba(214, 182, 107, 0.35);
-          object-fit: cover;
-          background: #fff;
-        }
-        .ct-footer-brand-title {
-          font-family: var(--font-serif);
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: var(--ivory);
-          letter-spacing: 0.04em;
-          text-transform: uppercase;
-        }
-        .ct-footer-brand-sub {
-          font-size: 0.64rem;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: var(--gold-light);
-          display: block;
-        }
-        .ct-footer-desc {
-          font-size: 0.88rem;
-          color: rgba(250, 246, 238, 0.7);
-          line-height: 1.75;
-          margin-bottom: 20px;
-        }
-
-        /* Service Times Box */
-        .ct-footer-times-box {
-          background: rgba(11, 34, 23, 0.78);
-          border: 1px solid var(--border-gold-subtle);
-          border-radius: 12px;
-          padding: 16px 18px;
-          margin-top: 18px;
-        }
-        .ct-footer-times-title {
-          font-size: 0.72rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: var(--gold-bright);
-          font-weight: 700;
-          margin-bottom: 10px;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
-        .ct-footer-time-row {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.8rem;
-          padding: 5px 0;
-          border-bottom: 1px dashed rgba(214, 182, 107, 0.2);
-          color: rgba(250, 246, 238, 0.9);
-        }
-        .ct-footer-time-row:last-child { border-bottom: none; }
-        .ct-footer-time-val { color: var(--gold-light); font-weight: 600; }
-
-        /* Col 2 & 3: Lists */
-        .ct-footer-col h3 {
-          font-family: var(--font-serif);
-          font-size: 1.1rem;
-          color: var(--gold-bright);
-          margin: 0 0 18px;
-          letter-spacing: 0.02em;
-          position: relative;
-          display: inline-block;
-        }
-        .ct-footer-col h3::after {
-          content: '';
-          position: absolute;
-          bottom: -6px;
-          left: 0;
-          width: 32px;
-          height: 2px;
-          background: var(--gold);
-        }
-        .ct-footer-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-        .ct-footer-list li {
-          margin-bottom: 10px;
-        }
-        .ct-footer-list a {
-          font-size: 0.86rem;
-          color: rgba(250, 246, 238, 0.8);
-          text-decoration: none;
-          transition: all 0.2s ease;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-        }
-        .ct-footer-list a:hover {
-          color: var(--gold-bright);
-          transform: translateX(4px);
-        }
-
-        /* Col 4: Scripture & Promise */
-        .ct-footer-promise-card {
-          background: rgba(214, 182, 107, 0.09);
-          border: 1px solid var(--border-gold);
-          border-radius: 14px;
-          padding: 20px;
-          margin-top: 16px;
-        }
-        .ct-footer-promise-verse {
-          font-family: var(--font-serif);
-          font-style: italic;
-          font-size: 0.95rem;
-          color: var(--ivory);
-          line-height: 1.65;
-          margin-bottom: 8px;
-        }
-        .ct-footer-promise-ref {
-          font-size: 0.76rem;
-          font-weight: 700;
-          color: var(--gold-light);
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-        }
-
-        /* ── Bottom Bar ── */
-        .ct-footer-bottom {
-          background: linear-gradient(90deg, #091E15 0%, #113626 50%, #091E15 100%);
-          border-top: 1px solid rgba(214, 182, 107, 0.22);
-          padding: 22px 24px;
-          font-size: 0.8rem;
-          color: rgba(250, 246, 238, 0.75);
-        }
-        .ct-footer-bottom-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 16px;
-        }
-        .ct-footer-bottom a {
-          color: rgba(250, 246, 238, 0.7);
-          transition: color 0.2s;
-        }
-        .ct-footer-bottom a:hover {
-          color: var(--gold-light);
-        }
-
-        @media (max-width: 992px) {
-          .ct-footer-inner {
-            grid-template-columns: 1fr 1fr;
-            gap: 36px;
-          }
-        }
-        @media (max-width: 600px) {
-          .ct-footer-inner {
-            grid-template-columns: 1fr;
-          }
-          .ct-footer-bottom-inner {
-            flex-direction: column;
-            text-align: center;
-          }
-        }
-      `}</style>
-
       {/* ── Pre-Footer CTA ── */}
-      <section className="ct-footer-cta" aria-labelledby="footer-cta-heading">
-        <div className="ct-container">
-          <p className="ct-footer-cta-eyebrow">† A House of Prayer for All Nations</p>
-          <h2 id="footer-cta-heading">
-            Experience the <span>Transforming Presence</span> of God
+      <section
+        className="bg-gradient-to-br from-[#0C2419] via-[#184332] to-[#276D52] py-16 px-6 text-center relative overflow-hidden border-t-2 border-[#D6B66B] border-b-2 border-[#D6B66B]/30"
+        aria-labelledby="footer-cta-heading"
+      >
+        <div className="max-w-4xl mx-auto relative z-10">
+          <p className="text-xs uppercase tracking-widest text-[#E8CC8F] font-bold mb-2">
+            † A House of Prayer for All Nations
+          </p>
+          <h2 id="footer-cta-heading" className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#FAF6EE] font-bold mb-3 leading-tight">
+            Experience the <span className="text-[#F5E0B0]">Transforming Presence</span> of God
           </h2>
-          <p>
+          <p className="text-sm md:text-base text-[#FAF6EE]/85 max-w-xl mx-auto mb-8 leading-relaxed">
             Whether you are seeking healing, spiritual restoration, or a welcoming church family to worship with, our sanctuary doors are always open to you.
           </p>
-          <div className="ct-footer-cta-actions">
-            <Link to="/contact" className="ct-btn-gold">
+          <div className="flex justify-center items-center gap-3.5 flex-wrap">
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-[#E0C47A] via-[#D6B66B] to-[#A88A42] text-[#122D24] shadow-md hover:-translate-y-0.5 transition-all"
+            >
               Plan Your Visit
             </Link>
-            <Link to="/prayers/sunday-services" className="ct-btn-outline-gold">
+            <Link
+              to="/prayers/sunday-services"
+              className="inline-flex items-center justify-center px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider border-2 border-[#D6B66B] text-[#F5E0B0] hover:bg-[#D6B66B]/20 transition-all"
+            >
               Service Schedules
             </Link>
           </div>
@@ -320,94 +73,124 @@ export default function Footer() {
       </section>
 
       {/* ── Main Footer ── */}
-      <footer className="ct-footer-body" role="contentinfo">
-        <div className="ct-footer-inner">
+      <footer className="bg-gradient-to-b from-[#0B2217] via-[#184332] to-[#0E291E] text-[#FAF6EE] pt-16 pb-10 px-6 border-t border-[#D6B66B]/30" role="contentinfo">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Col 1: Brand & Service Times */}
           <div>
-            <div className="ct-footer-brand-logo">
+            <div className="flex items-center gap-3 mb-4">
               <img
                 src={logoImg}
                 alt="Christ's Tabernacle Emblem"
-                className="ct-footer-logo-img"
+                className="w-12 h-12 rounded-full border-2 border-[#D6B66B] shadow-md object-cover bg-white"
               />
               <div>
-                <span className="ct-footer-brand-title">Christ's Tabernacle</span>
-                <span className="ct-footer-brand-sub">Prayer &amp; Worship Centre</span>
+                <span className="font-serif text-base font-bold text-[#FAF6EE] tracking-wide uppercase block">
+                  Christ's Tabernacle
+                </span>
+                <span className="text-[10px] tracking-widest uppercase text-[#E8CC8F] block">
+                  Prayer &amp; Worship Centre
+                </span>
               </div>
             </div>
-            <p className="ct-footer-desc">
+            <p className="text-xs text-[#FAF6EE]/70 leading-relaxed mb-5">
               Dedicated to preaching the Full Gospel of Jesus Christ, ministering divine healing, bringing deliverance to the captive, and making disciples of all nations since 1991.
             </p>
 
-            <div className="ct-footer-times-box">
-              <div className="ct-footer-times-title">
-                <FaClock style={{ fontSize: "0.8rem" }} /> Service Schedule
+            <div className="bg-[#0B2217]/80 border border-[#D6B66B]/25 rounded-xl p-4 mt-4">
+              <div className="text-[11px] tracking-wider uppercase text-[#F5E0B0] font-bold mb-2.5 flex items-center gap-1.5">
+                <FaClock className="text-xs" /> Service Schedule
               </div>
               {SERVICE_TIMES.map((st) => (
-                <div key={st.day} className="ct-footer-time-row">
+                <div key={st.day} className="flex justify-between text-xs py-1.5 border-b border-dashed border-[#D6B66B]/20 text-[#FAF6EE]/90 last:border-b-0">
                   <span>{st.day}</span>
-                  <span className="ct-footer-time-val">{st.time}</span>
+                  <span className="text-[#E8CC8F] font-semibold">{st.time}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Col 2: Quick Links */}
-          <div className="ct-footer-col">
-            <h3>Explore</h3>
-            <ul className="ct-footer-list">
+          <div>
+            <h3 className="font-serif text-base font-bold text-[#F5E0B0] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-8 after:h-0.5 after:bg-[#D6B66B]">
+              Explore
+            </h3>
+            <ul className="list-none p-0 m-0 space-y-2.5">
               {QUICK_LINKS.map((item) => (
                 <li key={item.path}>
-                  <Link to={item.path}><FaChevronRight style={{ fontSize: "0.65rem", opacity: 0.6 }} /> {item.label}</Link>
+                  <Link
+                    to={item.path}
+                    className="text-xs text-[#FAF6EE]/80 hover:text-[#F5E0B0] hover:translate-x-1 inline-flex items-center gap-1.5 transition-all"
+                  >
+                    <FaChevronRight className="text-[10px] opacity-60" /> {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Col 3: Ministries */}
-          <div className="ct-footer-col">
-            <h3>Ministries</h3>
-            <ul className="ct-footer-list">
+          <div>
+            <h3 className="font-serif text-base font-bold text-[#F5E0B0] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-8 after:h-0.5 after:bg-[#D6B66B]">
+              Ministries
+            </h3>
+            <ul className="list-none p-0 m-0 space-y-2.5">
               {MINISTRIES.map((item) => (
                 <li key={item.path}>
-                  <Link to={item.path}><FaChevronRight style={{ fontSize: "0.65rem", opacity: 0.6 }} /> {item.label}</Link>
+                  <Link
+                    to={item.path}
+                    className="text-xs text-[#FAF6EE]/80 hover:text-[#F5E0B0] hover:translate-x-1 inline-flex items-center gap-1.5 transition-all"
+                  >
+                    <FaChevronRight className="text-[10px] opacity-60" /> {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Col 4: Resources & Weekly Promise */}
-          <div className="ct-footer-col">
-            <h3>Resources &amp; Media</h3>
-            <ul className="ct-footer-list">
+          <div>
+            <h3 className="font-serif text-base font-bold text-[#F5E0B0] mb-4 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-8 after:h-0.5 after:bg-[#D6B66B]">
+              Resources &amp; Media
+            </h3>
+            <ul className="list-none p-0 m-0 space-y-2.5 mb-5">
               {RESOURCES.map((item) => (
                 <li key={item.path}>
-                  <Link to={item.path}><FaChevronRight style={{ fontSize: "0.65rem", opacity: 0.6 }} /> {item.label}</Link>
+                  <Link
+                    to={item.path}
+                    className="text-xs text-[#FAF6EE]/80 hover:text-[#F5E0B0] hover:translate-x-1 inline-flex items-center gap-1.5 transition-all"
+                  >
+                    <FaChevronRight className="text-[10px] opacity-60" /> {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
 
-            <div className="ct-footer-promise-card">
-              <p className="ct-footer-promise-verse">
+            <div className="bg-[#D6B66B]/10 border border-[#D6B66B]/35 rounded-xl p-4">
+              <p className="font-serif italic text-xs text-[#FAF6EE] leading-relaxed mb-2">
                 "For where two or three gather in my name, there am I with them."
               </p>
-              <span className="ct-footer-promise-ref">— Matthew 18:20</span>
+              <span className="text-[10px] font-bold text-[#E8CC8F] uppercase tracking-wider block">
+                — Matthew 18:20
+              </span>
             </div>
           </div>
         </div>
       </footer>
 
       {/* ── Bottom Copyright ── */}
-      <div className="ct-footer-bottom">
-        <div className="ct-footer-bottom-inner">
+      <div className="bg-[#091E15] border-t border-[#D6B66B]/20 py-5 px-6 text-xs text-[#FAF6EE]/75">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 text-center sm:text-left">
           <div>
             © {CURRENT_YEAR} Christ's Tabernacle — Prayer &amp; Worship Centre. All rights reserved.
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <span style={{ color: "var(--gold-bright)", fontStyle: "italic", fontFamily: "var(--font-serif)" }}>
+          <div className="flex items-center gap-4">
+            <span className="text-[#F5E0B0] italic font-serif">
               "Faith · Family · Future"
             </span>
-            <Link to="/admin" style={{ color: "rgba(214, 182, 107, 0.7)", textDecoration: "none", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: 4 }}>
+            <Link
+              to="/admin"
+              className="text-[#D6B66B]/80 hover:text-[#E8CC8F] text-xs inline-flex items-center gap-1"
+            >
               <span>Admin Portal</span> 🔒
             </Link>
           </div>

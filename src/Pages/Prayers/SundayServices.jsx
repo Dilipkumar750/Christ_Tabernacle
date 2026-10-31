@@ -13,151 +13,54 @@ const SERVICE_ORDER = [
 export default function SundayServices() {
   return (
     <>
-      <style>{`
-        .service-banner {
-          background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
-          border-radius: 20px;
-          border: 1.5px solid var(--border-gold);
-          padding: 40px 36px;
-          color: var(--text-main);
-          margin-bottom: 44px;
-          box-shadow: 0 4px 20px rgba(18, 45, 36, 0.05);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 24px;
-          flex-wrap: wrap;
-        }
-        .service-banner h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.6rem, 3.5vw, 2.3rem);
-          margin: 6px 0;
-          color: var(--green-dark);
-        }
-        .service-banner h2 span { color: var(--gold-dark); }
-
-        .service-order-list {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          margin: 30px 0 44px;
-        }
-        .service-order-item {
-          background: var(--white);
-          border: 1.5px solid var(--border-gold-subtle);
-          border-radius: 14px;
-          padding: 20px 24px;
-          display: flex;
-          gap: 20px;
-          align-items: flex-start;
-          box-shadow: var(--shadow-sm);
-          transition: transform 0.2s, border-color 0.2s;
-        }
-        .service-order-item:hover {
-          transform: translateX(4px);
-          border-color: var(--gold);
-        }
-        .service-step-badge {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          background: var(--grad-sanctuary);
-          color: var(--gold-bright);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 700;
-          font-size: 1rem;
-          flex-shrink: 0;
-          border: 1.5px solid var(--gold);
-        }
-        .service-step-title {
-          font-family: var(--font-serif);
-          font-size: 1.15rem;
-          color: var(--green-dark);
-          margin: 0 0 4px;
-          font-weight: 700;
-        }
-        .service-step-time {
-          font-size: 0.75rem;
-          font-weight: 700;
-          color: var(--gold-dark);
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          margin-bottom: 6px;
-          display: block;
-        }
-        .service-step-desc {
-          font-size: 0.9rem;
-          color: var(--text-muted);
-          line-height: 1.65;
-          margin: 0;
-        }
-
-        .service-expect-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-          margin-top: 24px;
-        }
-        .service-expect-card {
-          background: var(--white);
-          border: 1px solid var(--border-gold-subtle);
-          border-radius: 16px;
-          padding: 28px 24px;
-          box-shadow: var(--shadow-sm);
-        }
-        .service-expect-card h4 {
-          font-family: var(--font-serif);
-          font-size: 1.15rem;
-          color: var(--green);
-          margin: 10px 0 8px;
-        }
-        .service-expect-card p {
-          font-size: 0.88rem;
-          color: var(--text-muted);
-          line-height: 1.7;
-          margin: 0;
-        }
-
-        @media (max-width: 820px) {
-          .service-expect-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
       {/* Main Banner */}
-      <div className="service-banner">
+      <div
+        className="rounded-[20px] border-[1.5px] border-gold/40 p-6 sm:p-9 md:p-10 mb-11 shadow-[0_4px_20px_rgba(18,45,36,0.05)] text-text-main flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+        style={{ background: "linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%)" }}
+      >
         <div>
-          <span className="ct-badge ct-badge-gold">† Weekly Celebration of the Lord †</span>
-          <h2>
-            Sunday Morning <span>Worship &amp; Communion</span>
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-gold/15 text-gold-dark border border-gold/40 mb-2">
+            † Weekly Celebration of the Lord †
+          </span>
+          <h2 className="font-serif text-[clamp(1.6rem,3.5vw,2.3rem)] my-1.5 text-green-dark font-bold leading-tight">
+            Sunday Morning <span className="text-gold-dark">Worship &amp; Communion</span>
           </h2>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.98rem", margin: 0, fontWeight: 500 }}>
+          <p className="text-text-muted text-[0.98rem] m-0 font-medium">
             Every Sunday • 8:15 AM – 11:15 AM IST • Tamil &amp; English Fellowship
           </p>
         </div>
-        <Link to="/contact" className="ct-btn-gold">
+        <Link
+          to="/contact"
+          className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-gold to-gold-dark text-green-deep font-bold px-7 py-3 rounded-full shadow-gold hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wider shrink-0 whitespace-nowrap"
+        >
           Plan Your Visit 🙏
         </Link>
       </div>
 
       {/* Order of Service */}
       <section aria-labelledby="order-heading">
-        <h3 id="order-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "1.6rem", color: "var(--green-dark)" }}>
+        <h3 id="order-heading" className="font-serif text-2xl md:text-[1.6rem] text-green-dark font-bold">
           Order of Sunday Worship Service
         </h3>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
+        <p className="text-text-muted text-[0.95rem] mt-1">
           Our services are reverent, Spirit-led, and centered on Christ's presence and holy fellowship.
         </p>
 
-        <div className="service-order-list">
+        <div className="flex flex-col gap-4 my-7 mb-11">
           {SERVICE_ORDER.map((item) => (
-            <div key={item.step} className="service-order-item">
-              <div className="service-step-badge">{item.step}</div>
+            <div
+              key={item.step}
+              className="bg-white border-[1.5px] border-gold/25 hover:border-gold rounded-[14px] p-5 sm:p-6 flex gap-5 items-start shadow-sm hover:translate-x-1 transition-all duration-200"
+            >
+              <div className="w-11 h-11 rounded-full bg-grad-sanctuary text-gold-bright flex items-center justify-center font-bold text-base shrink-0 border-[1.5px] border-gold shadow-sm">
+                {item.step}
+              </div>
               <div>
-                <span className="service-step-time">⏱️ {item.time}</span>
-                <h4 className="service-step-title">{item.title}</h4>
-                <p className="service-step-desc">{item.desc}</p>
+                <span className="text-[0.75rem] font-bold text-gold-dark tracking-[0.08em] uppercase mb-1.5 block">
+                  ⏱️ {item.time}
+                </span>
+                <h4 className="font-serif text-lg text-green-dark mb-1 font-bold">{item.title}</h4>
+                <p className="text-[0.9rem] text-text-muted leading-[1.65] m-0">{item.desc}</p>
               </div>
             </div>
           ))}
@@ -165,29 +68,29 @@ export default function SundayServices() {
       </section>
 
       {/* What to Expect */}
-      <section aria-labelledby="expect-heading" style={{ marginTop: 50 }}>
-        <h3 id="expect-heading" style={{ fontFamily: "var(--font-serif)", fontSize: "1.5rem", color: "var(--green-dark)" }}>
+      <section aria-labelledby="expect-heading" className="mt-12">
+        <h3 id="expect-heading" className="font-serif text-2xl text-green-dark font-bold mb-6">
           What to Expect as a Visitor
         </h3>
-        <div className="service-expect-grid">
-          <div className="service-expect-card">
-            <span style={{ fontSize: "2rem" }}>🤝</span>
-            <h4>Warm Christian Welcome</h4>
-            <p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white border border-gold/25 rounded-2xl p-7 shadow-sm">
+            <span className="text-3xl sm:text-4xl block mb-2.5">🤝</span>
+            <h4 className="font-serif text-lg text-green font-bold my-2 mb-2">Warm Christian Welcome</h4>
+            <p className="text-[0.88rem] text-text-muted leading-[1.7] m-0">
               From the moment you step through our sanctuary doors, our ushers and hospitality team will welcome you with the love of Christ.
             </p>
           </div>
-          <div className="service-expect-card">
-            <span style={{ fontSize: "2rem" }}>👶</span>
-            <h4>Children &amp; Sunday School</h4>
-            <p>
+          <div className="bg-white border border-gold/25 rounded-2xl p-7 shadow-sm">
+            <span className="text-3xl sm:text-4xl block mb-2.5">👶</span>
+            <h4 className="font-serif text-lg text-green font-bold my-2 mb-2">Children &amp; Sunday School</h4>
+            <p className="text-[0.88rem] text-text-muted leading-[1.7] m-0">
               Age-appropriate Bible lessons and fun spiritual activities during service for toddlers, kids, and adolescents.
             </p>
           </div>
-          <div className="service-expect-card">
-            <span style={{ fontSize: "2rem" }}>🙌</span>
-            <h4>Personal Prayer &amp; Anointing</h4>
-            <p>
+          <div className="bg-white border border-gold/25 rounded-2xl p-7 shadow-sm">
+            <span className="text-3xl sm:text-4xl block mb-2.5">🙌</span>
+            <h4 className="font-serif text-lg text-green font-bold my-2 mb-2">Personal Prayer &amp; Anointing</h4>
+            <p className="text-[0.88rem] text-text-muted leading-[1.7] m-0">
               At the close of each service, Pastor and our intercessors minister individually to all who need healing, counsel, or deliverance.
             </p>
           </div>

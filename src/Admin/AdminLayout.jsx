@@ -37,95 +37,32 @@ export default function AdminLayout() {
   ];
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        minHeight: '100vh',
-        background: '#F8FAF9',
-        color: '#1E293B',
-        fontFamily: 'var(--font-sans, sans-serif)',
-      }}
-    >
+    <div className="flex min-h-screen bg-[#F8FAF9] text-slate-800 font-sans">
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(18, 45, 36, 0.4)',
-            zIndex: 90,
-            backdropFilter: 'blur(3px)',
-          }}
+          className="fixed inset-0 bg-[#122D24]/40 z-[90] backdrop-blur-[3px] lg:hidden"
         />
       )}
 
-      {/* Sidebar (Clean White Background, Deep Green Headings) */}
+      {/* Sidebar */}
       <aside
-        style={{
-          width: 270,
-          background: '#FFFFFF',
-          borderRight: '1px solid #E2E8F0',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'fixed',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          zIndex: 100,
-          transition: 'transform 0.3s ease',
-          boxShadow: '2px 0 12px rgba(0, 0, 0, 0.03)',
-        }}
-        className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}
+        className={`fixed top-0 bottom-0 left-0 w-[270px] bg-white border-r border-slate-200 flex flex-col z-[100] transition-transform duration-300 ease-in-out shadow-[2px_0_12px_rgba(0,0,0,0.03)] ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
       >
         {/* Sidebar Brand Header */}
-        <div
-          style={{
-            padding: '24px 22px 20px',
-            borderBottom: '1px solid #E2E8F0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div
-              style={{
-                width: 42,
-                height: 42,
-                borderRadius: 10,
-                background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
-                color: '#D6B66B',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                boxShadow: '0 4px 10px rgba(24, 67, 50, 0.25)',
-              }}
-            >
+        <div className="p-[24px_22px_20px] border-b border-slate-200 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-[42px] h-[42px] rounded-[10px] bg-gradient-to-br from-green to-green-dark text-gold flex items-center justify-center text-xl shadow-[0_4px_10px_rgba(24,67,50,0.25)] flex-shrink-0">
               <FaCross />
             </div>
             <div>
-              <h2
-                style={{
-                  margin: 0,
-                  fontSize: '1.08rem',
-                  fontWeight: 700,
-                  fontFamily: 'var(--font-serif, serif)',
-                  color: '#122D24',
-                }}
-              >
+              <h2 className="m-0 text-[1.08rem] font-bold font-serif text-green-dark leading-tight">
                 Christ's Tabernacle
               </h2>
-              <span
-                style={{
-                  fontSize: '0.72rem',
-                  color: '#A88A42',
-                  letterSpacing: '1px',
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                }}
-              >
+              <span className="text-[0.72rem] text-gold-dark tracking-wider uppercase font-bold">
                 Admin Sanctuary
               </span>
             </div>
@@ -134,72 +71,30 @@ export default function AdminLayout() {
           {/* Close for mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md-hide-btn"
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#64748B',
-              fontSize: '1.2rem',
-              cursor: 'pointer',
-            }}
+            className="lg:hidden bg-transparent border-0 text-slate-500 text-xl cursor-pointer p-1"
+            aria-label="Close sidebar"
           >
             <FaTimes />
           </button>
         </div>
 
         {/* Server & DB Status Badge */}
-        <div style={{ padding: '16px 20px 8px' }}>
-          <div
-            style={{
-              background: '#F0FDF4',
-              border: '1px solid #BBF7D0',
-              borderRadius: 8,
-              padding: '8px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: '0.78rem',
-            }}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#166534', fontWeight: 600 }}>
-              <FaServer style={{ fontSize: '0.75rem' }} />
+        <div className="px-5 pt-4 pb-2">
+          <div className="bg-[#F0FDF4] border border-[#BBF7D0] rounded-lg px-3 py-2 flex items-center justify-between text-[0.78rem]">
+            <span className="flex items-center gap-1.5 text-[#166534] font-semibold">
+              <FaServer className="text-xs" />
               <span>Backend API</span>
             </span>
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                color: '#15803D',
-                fontWeight: 700,
-              }}
-            >
-              <span
-                style={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: '50%',
-                  background: '#16A34A',
-                  boxShadow: '0 0 6px #16A34A',
-                }}
-              />
+            <span className="inline-flex items-center gap-1.5 text-[#15803D] font-bold">
+              <span className="w-[7px] h-[7px] rounded-full bg-[#16A34A] shadow-[0_0_6px_#16A34A]" />
               Active
             </span>
           </div>
         </div>
 
         {/* Nav Links */}
-        <nav style={{ flex: 1, padding: '14px 12px', overflowY: 'auto' }}>
-          <div
-            style={{
-              fontSize: '0.68rem',
-              letterSpacing: '1.5px',
-              textTransform: 'uppercase',
-              color: '#64748B',
-              padding: '0 12px 10px',
-              fontWeight: 700,
-            }}
-          >
+        <nav className="flex-1 px-3 py-3.5 overflow-y-auto">
+          <div className="text-[0.68rem] tracking-[1.5px] uppercase text-slate-500 px-3 pb-2.5 font-bold">
             DYNAMIC CONTENT SECTIONS
           </div>
           {navItems.map((item) => (
@@ -208,86 +103,39 @@ export default function AdminLayout() {
               to={item.path}
               end={item.exact}
               onClick={() => setSidebarOpen(false)}
-              style={({ isActive }) => ({
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                padding: '11px 14px',
-                borderRadius: 8,
-                marginBottom: 4,
-                textDecoration: 'none',
-                fontSize: '0.92rem',
-                fontWeight: isActive ? 700 : 500,
-                color: isActive ? '#122D24' : '#475569',
-                background: isActive ? '#EAF3EE' : 'transparent',
-                borderLeft: isActive ? '4px solid #184332' : '4px solid transparent',
-                transition: 'all 0.2s ease',
-              })}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3.5 py-2.5 rounded-lg mb-1 no-underline text-[0.92rem] transition-all duration-200 border-l-4 ${
+                  isActive
+                    ? 'font-bold text-green-dark bg-[#EAF3EE] border-green'
+                    : 'font-medium text-slate-600 bg-transparent border-transparent hover:text-green-dark hover:bg-slate-50'
+                }`
+              }
             >
-              <span style={{ fontSize: '1.05rem', color: '#184332' }}>{item.icon}</span>
+              <span className="text-[1.05rem] text-green">{item.icon}</span>
               <span>{item.name}</span>
             </NavLink>
           ))}
         </nav>
 
         {/* User profile & Logout Footer */}
-        <div
-          style={{
-            padding: '16px 18px',
-            borderTop: '1px solid #E2E8F0',
-            background: '#F8FAF9',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  background: '#EAF3EE',
-                  border: '1.5px solid #184332',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#184332',
-                  fontWeight: 700,
-                  fontSize: '0.88rem',
-                }}
-              >
+        <div className="p-[16px_18px] border-t border-slate-200 bg-[#F8FAF9]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-full bg-[#EAF3EE] border-[1.5px] border-green flex items-center justify-center text-green font-bold text-[0.88rem] flex-shrink-0">
                 {admin?.username ? admin.username.charAt(0).toUpperCase() : 'A'}
               </div>
-              <div style={{ overflow: 'hidden' }}>
-                <div
-                  style={{
-                    fontSize: '0.86rem',
-                    fontWeight: 700,
-                    color: '#122D24',
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
+              <div className="overflow-hidden">
+                <div className="text-[0.86rem] font-bold text-green-dark truncate">
                   {admin?.username || 'Administrator'}
                 </div>
-                <div style={{ fontSize: '0.72rem', color: '#64748B' }}>{admin?.role || 'Super Admin'}</div>
+                <div className="text-[0.72rem] text-slate-500">{admin?.role || 'Super Admin'}</div>
               </div>
             </div>
 
             <button
               onClick={handleLogout}
               title="Sign Out"
-              style={{
-                background: '#FEE2E2',
-                border: '1px solid #FECACA',
-                color: '#DC2626',
-                padding: '8px 10px',
-                borderRadius: 8,
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                display: 'flex',
-                alignItems: 'center',
-                transition: 'all 0.2s',
-              }}
+              className="bg-red-100 border border-red-200 text-red-600 p-2 rounded-lg cursor-pointer text-sm flex items-center transition-all hover:bg-red-200"
             >
               <FaSignOutAlt />
             </button>
@@ -295,176 +143,48 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* Main Content Area (White / Light Background) */}
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          minWidth: 0,
-        }}
-        className="admin-main-wrap"
-      >
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-[270px] ml-0">
         {/* Top Navbar */}
-        <header
-          style={{
-          minHeight: 60,
-          background: '#FFFFFF',
-          borderBottom: '1px solid #E2E8F0',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 20px',
-          position: 'sticky',
-          top: 0,
-          zIndex: 80,
-          boxShadow: '0 1px 4px rgba(0, 0, 0, 0.03)',
-          gap: 8,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <header className="min-h-[60px] bg-white border-b border-slate-200 flex items-center justify-between px-5 sticky top-0 z-[80] shadow-[0_1px_4px_rgba(0,0,0,0.03)] gap-2">
+          <div className="flex items-center gap-3.5">
             <button
               onClick={() => setSidebarOpen(true)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#184332',
-                fontSize: '1.25rem',
-                cursor: 'pointer',
-              }}
-              className="mobile-sidebar-toggle"
+              className="lg:hidden bg-transparent border-0 text-green text-xl cursor-pointer p-1"
+              aria-label="Open sidebar"
             >
               <FaBars />
             </button>
-            <span
-              className="admin-header-title"
-              style={{
-                fontSize: '1rem',
-                fontWeight: 700,
-                color: '#122D24',
-                fontFamily: 'var(--font-serif, serif)',
-                letterSpacing: '0.2px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
+            <span className="text-xs sm:text-sm md:text-base font-bold text-green-dark font-serif tracking-[0.2px] truncate max-w-[140px] sm:max-w-[200px] md:max-w-none">
               Christ's Tabernacle Management System
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="flex items-center gap-2.5">
             <Link
               to="/admin/members/new"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '8px 14px',
-                background: 'linear-gradient(135deg, #184332 0%, #122D24 100%)',
-                border: 'none',
-                borderRadius: 8,
-                color: '#FFFFFF',
-                fontSize: '0.84rem',
-                fontWeight: 700,
-                textDecoration: 'none',
-                transition: 'all 0.2s',
-                boxShadow: '0 2px 6px rgba(24, 67, 50, 0.2)',
-              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-br from-green to-green-dark border-0 rounded-lg text-white text-[0.84rem] font-bold no-underline transition-all shadow-[0_2px_6px_rgba(24,67,50,0.2)] hover:opacity-95 whitespace-nowrap"
             >
-              <FaUserPlus style={{ fontSize: '0.78rem' }} />
+              <FaUserPlus className="text-xs" />
               <span>+ Add Member</span>
             </Link>
 
             <Link
               to="/"
               target="_blank"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 7,
-                padding: '8px 16px',
-                background: '#FFFFFF',
-                border: '1.5px solid #184332',
-                borderRadius: 8,
-                color: '#184332',
-                fontSize: '0.84rem',
-                fontWeight: 700,
-                textDecoration: 'none',
-                transition: 'all 0.2s',
-                boxShadow: '0 2px 6px rgba(24, 67, 50, 0.08)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#184332';
-                e.currentTarget.style.color = '#FFFFFF';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#FFFFFF';
-                e.currentTarget.style.color = '#184332';
-              }}
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-white border-[1.5px] border-green rounded-lg text-green hover:bg-green hover:text-white text-[0.84rem] font-bold no-underline transition-all shadow-[0_2px_6px_rgba(24,67,50,0.08)] whitespace-nowrap"
             >
               <span>View Sanctuary Website</span>
-              <FaExternalLinkAlt style={{ fontSize: '0.72rem' }} />
+              <FaExternalLinkAlt className="text-[0.72rem]" />
             </Link>
           </div>
         </header>
 
         {/* Page Content Body */}
-        <main style={{ flex: 1, padding: '28px 32px', background: '#F8FAF9', minWidth: 0 }} className="admin-content-main">
+        <main className="flex-1 p-3 sm:p-5 md:p-7 lg:p-8 bg-[#F8FAF9] min-w-0">
           <Outlet />
         </main>
       </div>
-
-      <style>{`
-        .admin-main-wrap {
-          margin-left: 270px;
-        }
-        .md-hide-btn {
-          display: none;
-        }
-        .mobile-sidebar-toggle {
-          display: none;
-        }
-
-        @media (max-width: 1023px) {
-          .admin-sidebar {
-            transform: translateX(-100%);
-          }
-          .admin-sidebar.open {
-            transform: translateX(0);
-          }
-          .admin-main-wrap {
-            margin-left: 0 !important;
-          }
-          .md-hide-btn {
-            display: block !important;
-          }
-          .mobile-sidebar-toggle {
-            display: block !important;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .admin-content-main {
-            padding: 20px 18px !important;
-          }
-          .admin-header-title {
-            font-size: 0.9rem !important;
-            max-width: 180px;
-            display: inline-block;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .admin-content-main {
-            padding: 16px 12px !important;
-          }
-          .admin-header-title {
-            font-size: 0.82rem !important;
-            max-width: 130px;
-          }
-        }
-      `}</style>
     </div>
   );
 }

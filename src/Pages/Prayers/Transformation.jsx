@@ -70,135 +70,36 @@ export default function Transformation() {
 
   return (
     <>
-      <style>{`
-        .trans-hero {
-          background: linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%);
-          border-radius: 20px;
-          border: 1.5px solid var(--border-gold);
-          padding: 40px 36px;
-          color: var(--text-main);
-          margin-bottom: 40px;
-          box-shadow: 0 4px 20px rgba(18, 45, 36, 0.05);
-        }
-        .trans-hero h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.6rem, 3.5vw, 2.3rem);
-          margin: 8px 0 12px;
-          color: var(--green-dark);
-        }
-        .trans-hero h2 span { color: var(--gold-dark); }
-        .trans-hero p {
-          color: #374151;
-          font-size: 0.98rem;
-          line-height: 1.7;
-          margin: 0;
-        }
-
-        .trans-progress-strip {
-          background: var(--white);
-          border-radius: 14px;
-          border: 1px solid var(--border-gold-subtle);
-          padding: 16px 22px;
-          margin-bottom: 30px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          box-shadow: var(--shadow-sm);
-        }
-
-        .trans-list {
-          display: flex;
-          flex-direction: column;
-          gap: 22px;
-        }
-        .trans-card {
-          background: var(--white);
-          border: 1.5px solid var(--border-gold-subtle);
-          border-radius: 18px;
-          padding: 28px;
-          box-shadow: var(--shadow-sm);
-          transition: all 0.25s ease;
-        }
-        .trans-card.completed {
-          border-color: var(--gold);
-          background: var(--gold-soft);
-        }
-        .trans-card-head {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 12px;
-          gap: 16px;
-        }
-        .trans-card-title {
-          font-family: var(--font-serif);
-          font-size: 1.22rem;
-          color: var(--green-dark);
-          margin: 0;
-          font-weight: 700;
-        }
-        .trans-check-btn {
-          padding: 6px 14px;
-          border-radius: 50px;
-          font-size: 0.78rem;
-          font-weight: 700;
-          border: 1px solid var(--border-gold);
-          background: var(--white);
-          color: var(--green);
-          cursor: pointer;
-          transition: all 0.2s;
-          white-space: nowrap;
-        }
-        .trans-check-btn.checked {
-          background: var(--grad-green-accent);
-          color: var(--gold-bright);
-        }
-        .trans-verse-quote {
-          background: var(--ivory);
-          border-left: 3px solid var(--gold);
-          padding: 12px 16px;
-          border-radius: 0 10px 10px 0;
-          font-family: var(--font-serif);
-          font-style: italic;
-          font-size: 0.92rem;
-          color: var(--green-dark);
-          line-height: 1.6;
-          margin: 10px 0 16px;
-        }
-        .trans-prayer-text {
-          font-size: 0.94rem;
-          color: var(--text-muted);
-          line-height: 1.75;
-          margin: 0;
-          padding-left: 4px;
-        }
-      `}</style>
-
       {/* Hero */}
-      <div className="trans-hero">
-        <span className="ct-badge ct-badge-gold">† Spiritual Renewal &amp; Deliverance †</span>
-        <h2>
-          Transformation Prayer <span>Declarations</span>
+      <div
+        className="rounded-[20px] border-[1.5px] border-gold/40 p-6 sm:p-9 md:p-10 mb-10 shadow-[0_4px_20px_rgba(18,45,36,0.05)] text-text-main"
+        style={{ background: "linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 50%, #F5ECDD 100%)" }}
+      >
+        <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-gold/15 text-gold-dark border border-gold/40 mb-2">
+          † Spiritual Renewal &amp; Deliverance †
+        </span>
+        <h2 className="font-serif text-[clamp(1.6rem,3.5vw,2.3rem)] my-2 md:my-3 text-green-dark font-bold leading-tight">
+          Transformation Prayer <span className="text-gold-dark">Declarations</span>
         </h2>
-        <p>
+        <p className="text-gray-700 text-[0.98rem] leading-[1.7] m-0">
           "Do not be conformed to this world, but be transformed by the renewing of your mind." — Romans 12:2. Pray through these 7 foundational biblical declarations daily to maintain spiritual liberty, victory, and divine power in your personal walk with Christ.
         </p>
       </div>
 
       {/* Progress Strip */}
-      <div className="trans-progress-strip">
+      <div className="bg-white rounded-[14px] border border-gold/25 p-4 sm:px-6 mb-7 flex justify-between items-center shadow-sm">
         <div>
-          <span style={{ fontWeight: 700, color: "var(--green-dark)", fontSize: "0.92rem" }}>
+          <span className="font-bold text-green-dark text-[0.92rem]">
             Today's Prayer Progress:
           </span>{" "}
-          <span style={{ color: "var(--gold-dark)", fontWeight: 700 }}>
+          <span className="text-gold-dark font-bold">
             {checkedIds.length} of {DECLARATIONS.length} Prayed
           </span>
         </div>
         {checkedIds.length > 0 && (
           <button
             onClick={() => setCheckedIds([])}
-            style={{ fontSize: "0.78rem", color: "var(--text-light)", textDecoration: "underline", cursor: "pointer" }}
+            className="text-[0.78rem] text-text-light hover:text-green underline cursor-pointer transition-colors"
           >
             Reset All
           </button>
@@ -206,15 +107,26 @@ export default function Transformation() {
       </div>
 
       {/* Declarations List */}
-      <div className="trans-list">
+      <div className="flex flex-col gap-5 sm:gap-6">
         {DECLARATIONS.map((d) => {
           const isDone = checkedIds.includes(d.id);
           return (
-            <article key={d.id} className={`trans-card${isDone ? " completed" : ""}`}>
-              <div className="trans-card-head">
-                <h3 className="trans-card-title">{d.title}</h3>
+            <article
+              key={d.id}
+              className={`border-[1.5px] rounded-[18px] p-6 sm:p-7 shadow-sm transition-all duration-200 ${
+                isDone ? "border-gold bg-gold-soft" : "border-gold/25 bg-white"
+              }`}
+            >
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-3">
+                <h3 className="font-serif text-lg sm:text-[1.22rem] text-green-dark m-0 font-bold leading-snug">
+                  {d.title}
+                </h3>
                 <button
-                  className={`trans-check-btn${isDone ? " checked" : ""}`}
+                  className={`px-3.5 py-1.5 rounded-full text-[0.78rem] font-bold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                    isDone
+                      ? "bg-gradient-to-r from-green-deep to-green-medium text-gold-bright border-transparent shadow-sm"
+                      : "bg-white text-green border-gold/40 hover:border-gold hover:bg-gold/10"
+                  }`}
                   onClick={() => toggleCheck(d.id)}
                   aria-pressed={isDone}
                 >
@@ -222,15 +134,15 @@ export default function Transformation() {
                 </button>
               </div>
 
-              <div className="trans-verse-quote">
+              <div className="bg-ivory border-l-[3px] border-gold p-3 sm:p-4 rounded-r-[10px] font-serif italic text-[0.92rem] text-green-dark leading-relaxed my-2.5 sm:my-3.5 mb-4">
                 "{d.verseText}"
-                <cite style={{ display: "block", fontStyle: "normal", fontSize: "0.76rem", fontWeight: 700, color: "var(--gold-dark)", marginTop: 4 }}>
+                <cite className="block not-italic text-[0.76rem] font-bold text-gold-dark mt-1">
                   — {d.scripture}
                 </cite>
               </div>
 
-              <p className="trans-prayer-text">
-                <strong style={{ color: "var(--green-dark)" }}>Your Prayer: </strong>
+              <p className="text-[0.94rem] text-text-muted leading-[1.75] m-0 pl-1">
+                <strong className="text-green-dark">Your Prayer: </strong>
                 {d.prayer}
               </p>
             </article>

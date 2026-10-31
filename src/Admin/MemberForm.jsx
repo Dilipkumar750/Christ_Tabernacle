@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMemberById, createMember, updateMember } from "../services/api";
-import { FaArrowLeft, FaSave, FaTimes, FaUserCheck, FaUserPlus } from "react-icons/fa";
+import { FaArrowLeft, FaSave, FaTimes } from "react-icons/fa";
 
 export default function MemberForm() {
   const navigate = useNavigate();
@@ -118,73 +118,57 @@ export default function MemberForm() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: "center", padding: "80px 0", color: "#184332", fontWeight: 600 }}>
+      <div className="text-center py-20 text-green font-semibold text-base">
         Loading church member details...
       </div>
     );
   }
 
+  const labelClass = "block text-xs font-bold text-green mb-1.5 uppercase tracking-wide";
+  const inputClass =
+    "w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-lg text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-green-light/40 focus:border-green transition-all";
+
   return (
-    <div style={{ maxWidth: 840, margin: "0 auto" }}>
+    <div className="max-w-[840px] mx-auto">
       {/* Top Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 24 }}>
+      <div className="flex items-center gap-4 mb-6">
         <button
           onClick={() => navigate("/admin/members")}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "9px 16px",
-            background: "#F1F5F9",
-            border: "1.5px solid #CBD5E1",
-            color: "#475569",
-            borderRadius: 8,
-            cursor: "pointer",
-            fontWeight: 700,
-            fontSize: "0.88rem",
-          }}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 border border-slate-300 text-slate-600 rounded-lg cursor-pointer font-bold text-sm hover:bg-slate-200 transition-all"
         >
           <FaArrowLeft /> Back to Members
         </button>
         <div>
-          <div style={{ color: "#A88A42", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
+          <div className="text-gold-dark text-xs font-bold tracking-wider uppercase">
             CONGREGATION REGISTRATION
           </div>
-          <h1 style={{ fontFamily: "var(--font-serif, serif)", fontSize: "1.8rem", color: "#122D24", margin: "2px 0 0", fontWeight: 700 }}>
+          <h1 className="font-serif text-2xl sm:text-3xl text-green-dark mt-0.5 mb-0 font-bold">
             {isEdit ? "Edit Member Profile" : "Enroll New Church Member"}
           </h1>
         </div>
       </div>
 
       {error && (
-        <div style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", color: "#B91C1C", padding: "12px 16px", borderRadius: 10, marginBottom: 20 }}>
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-5 font-medium text-sm">
           {error}
         </div>
       )}
 
       {/* Form Card */}
-      <div
-        style={{
-          background: "#FFFFFF",
-          border: "1.5px solid #E2E8F0",
-          borderRadius: 16,
-          padding: "32px 36px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
-        }}
-      >
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 md:p-9 shadow-sm">
         <form onSubmit={handleSubmit}>
           {/* Section 1: Personal Details */}
-          <div style={{ marginBottom: 20, borderBottom: "1px solid #E2E8F0", paddingBottom: 10 }}>
-            <h3 style={{ margin: "0 0 4px", fontSize: "1.05rem", color: "#184332", fontFamily: "var(--font-serif, serif)" }}>
+          <div className="mb-5 border-b border-slate-200 pb-2.5">
+            <h3 className="m-0 mb-1 text-base sm:text-[1.05rem] text-green font-serif font-bold">
               1. Personal Identity
             </h3>
-            <span style={{ fontSize: "0.78rem", color: "#64748B" }}>Basic membership profile and age</span>
+            <span className="text-xs text-slate-500">Basic membership profile and age</span>
           </div>
 
-          <div className="mf-row mf-row-2" style={{ marginBottom: 18 }}>
-            <div>
-              <label style={LBL}>
-                Full Name <span style={{ color: "#DC2626" }}>*</span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4.5">
+            <div className="sm:col-span-2">
+              <label className={labelClass}>
+                Full Name <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -193,12 +177,12 @@ export default function MemberForm() {
                 onChange={handleChange}
                 placeholder="e.g. Sister Hannah D. / Bro. David"
                 required
-                style={INP}
+                className={inputClass}
               />
             </div>
             <div>
-              <label style={LBL}>Gender</label>
-              <select name="gender" value={formData.gender} onChange={handleChange} style={INP}>
+              <label className={labelClass}>Gender</label>
+              <select name="gender" value={formData.gender} onChange={handleChange} className={inputClass}>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Other">Other</option>
@@ -206,20 +190,20 @@ export default function MemberForm() {
             </div>
           </div>
 
-          <div className="mf-row mf-row-3" style={{ marginBottom: 18 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4.5">
             <div>
-              <label style={LBL}>Date of Birth (DOB)</label>
+              <label className={labelClass}>Date of Birth (DOB)</label>
               <input
                 type="date"
                 name="dob"
                 value={formData.dob}
                 onChange={handleChange}
-                style={INP}
+                className={inputClass}
                 max={new Date().toISOString().split("T")[0]}
               />
             </div>
             <div>
-              <label style={LBL}>Age (Years)</label>
+              <label className={labelClass}>Age (Years)</label>
               <input
                 type="number"
                 name="age"
@@ -228,12 +212,17 @@ export default function MemberForm() {
                 placeholder="Auto or enter"
                 min="1"
                 max="125"
-                style={INP}
+                className={inputClass}
               />
             </div>
             <div>
-              <label style={LBL}>Marital Status</label>
-              <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} style={INP}>
+              <label className={labelClass}>Marital Status</label>
+              <select
+                name="maritalStatus"
+                value={formData.maritalStatus}
+                onChange={handleChange}
+                className={inputClass}
+              >
                 <option value="Single">Single</option>
                 <option value="Married">Married</option>
                 <option value="Widowed">Widowed</option>
@@ -243,17 +232,19 @@ export default function MemberForm() {
           </div>
 
           {/* Section 2: Contact Details */}
-          <div style={{ marginTop: 28, marginBottom: 20, borderBottom: "1px solid #E2E8F0", paddingBottom: 10 }}>
-            <h3 style={{ margin: "0 0 4px", fontSize: "1.05rem", color: "#184332", fontFamily: "var(--font-serif, serif)" }}>
+          <div className="mt-7 mb-5 border-b border-slate-200 pb-2.5">
+            <h3 className="m-0 mb-1 text-base sm:text-[1.05rem] text-green font-serif font-bold">
               2. Communication &amp; Residence
             </h3>
-            <span style={{ fontSize: "0.78rem", color: "#64748B" }}>Mobile phone, mail ID (optional), and residential address</span>
+            <span className="text-xs text-slate-500">
+              Mobile phone, mail ID (optional), and residential address
+            </span>
           </div>
 
-          <div className="mf-row mf-row-half" style={{ marginBottom: 18 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4.5">
             <div>
-              <label style={LBL}>
-                Mobile Number <span style={{ color: "#DC2626" }}>*</span>
+              <label className={labelClass}>
+                Mobile Number <span className="text-red-600">*</span>
               </label>
               <input
                 type="tel"
@@ -262,12 +253,12 @@ export default function MemberForm() {
                 onChange={handleChange}
                 placeholder="e.g. +91 98401 23456"
                 required
-                style={INP}
+                className={inputClass}
               />
             </div>
             <div>
-              <label style={LBL}>
-                Mail ID <span style={{ color: "#16A34A", fontWeight: 600 }}>(Optional)</span>
+              <label className={labelClass}>
+                Mail ID <span className="text-green-600 font-semibold">(Optional)</span>
               </label>
               <input
                 type="email"
@@ -275,14 +266,14 @@ export default function MemberForm() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="member@example.com"
-                style={INP}
+                className={inputClass}
               />
             </div>
           </div>
 
-          <div style={{ marginBottom: 18 }}>
-            <label style={LBL}>
-              Residential Address <span style={{ color: "#DC2626" }}>*</span>
+          <div className="mb-4.5">
+            <label className={labelClass}>
+              Residential Address <span className="text-red-600">*</span>
             </label>
             <textarea
               name="address"
@@ -291,29 +282,31 @@ export default function MemberForm() {
               rows={2}
               placeholder="Door number, street name, locality, city, pincode"
               required
-              style={{ ...INP, resize: "vertical" }}
+              className={`${inputClass} resize-y`}
             />
           </div>
 
           {/* Section 3: Church & Fellowship Details */}
-          <div style={{ marginTop: 28, marginBottom: 20, borderBottom: "1px solid #E2E8F0", paddingBottom: 10 }}>
-            <h3 style={{ margin: "0 0 4px", fontSize: "1.05rem", color: "#184332", fontFamily: "var(--font-serif, serif)" }}>
+          <div className="mt-7 mb-5 border-b border-slate-200 pb-2.5">
+            <h3 className="m-0 mb-1 text-base sm:text-[1.05rem] text-green font-serif font-bold">
               3. Spiritual &amp; Fellowship Status
             </h3>
-            <span style={{ fontSize: "0.78rem", color: "#64748B" }}>Baptism status, membership status, and medical info</span>
+            <span className="text-xs text-slate-500">
+              Baptism status, membership status, and medical info
+            </span>
           </div>
 
-          <div className="mf-row mf-row-3" style={{ marginBottom: 18 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4.5">
             <div>
-              <label style={LBL}>Water Baptism</label>
-              <select name="baptized" value={formData.baptized} onChange={handleChange} style={INP}>
+              <label className={labelClass}>Water Baptism</label>
+              <select name="baptized" value={formData.baptized} onChange={handleChange} className={inputClass}>
                 <option value="Yes">Yes (Baptized)</option>
                 <option value="No">No (Not Yet)</option>
               </select>
             </div>
             <div>
-              <label style={LBL}>Blood Group</label>
-              <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} style={INP}>
+              <label className={labelClass}>Blood Group</label>
+              <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className={inputClass}>
                 <option value="">Select</option>
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
@@ -326,148 +319,70 @@ export default function MemberForm() {
               </select>
             </div>
             <div>
-              <label style={LBL}>Membership Status</label>
-              <select name="status" value={formData.status} onChange={handleChange} style={INP}>
+              <label className={labelClass}>Membership Status</label>
+              <select name="status" value={formData.status} onChange={handleChange} className={inputClass}>
                 <option value="Active">Active Believer</option>
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
           </div>
 
-          <div className="mf-row mf-row-half" style={{ marginBottom: 18 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4.5">
             <div>
-              <label style={LBL}>Occupation / Profession</label>
+              <label className={labelClass}>Occupation / Profession</label>
               <input
                 type="text"
                 name="occupation"
                 value={formData.occupation}
                 onChange={handleChange}
                 placeholder="e.g. Teacher, Engineer, Homemaker"
-                style={INP}
+                className={inputClass}
               />
             </div>
             <div>
-              <label style={LBL}>Emergency Contact / Guardian</label>
+              <label className={labelClass}>Emergency Contact / Guardian</label>
               <input
                 type="text"
                 name="emergencyContact"
                 value={formData.emergencyContact}
                 onChange={handleChange}
                 placeholder="e.g. Spouse / Relative Phone"
-                style={INP}
+                className={inputClass}
               />
             </div>
           </div>
 
-          <div style={{ marginBottom: 28 }}>
-            <label style={LBL}>Ministry Roles / Remarks / Prayer Needs</label>
+          <div className="mb-7">
+            <label className={labelClass}>Ministry Roles / Remarks / Prayer Needs</label>
             <textarea
               name="notes"
               value={formData.notes}
               onChange={handleChange}
               rows={2}
               placeholder="e.g. Choir member, Sunday School teacher, fasting prayer group..."
-              style={{ ...INP, resize: "vertical" }}
+              className={`${inputClass} resize-y`}
             />
           </div>
 
           {/* Form Actions */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: 12,
-              paddingTop: 20,
-              borderTop: "1px solid #E2E8F0",
-            }}
-          >
+          <div className="flex justify-end gap-3 pt-5 border-t border-slate-200">
             <button
               type="button"
               onClick={() => navigate("/admin/members")}
-              style={{
-                padding: "11px 22px",
-                background: "#F1F5F9",
-                border: "1px solid #CBD5E1",
-                color: "#475569",
-                borderRadius: 8,
-                cursor: "pointer",
-                fontWeight: 700,
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-              }}
+              className="px-5 py-2.5 bg-slate-100 border border-slate-300 text-slate-600 rounded-lg cursor-pointer font-bold text-sm flex items-center gap-2 hover:bg-slate-200 transition-all"
             >
               <FaTimes /> Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              style={{
-                padding: "11px 28px",
-                background: "linear-gradient(135deg, #184332 0%, #122D24 100%)",
-                color: "#FFFFFF",
-                border: "none",
-                borderRadius: 8,
-                cursor: saving ? "not-allowed" : "pointer",
-                fontWeight: 700,
-                boxShadow: "0 4px 14px rgba(24, 67, 50, 0.25)",
-                opacity: saving ? 0.75 : 1,
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-              }}
+              className="px-7 py-2.5 bg-gradient-to-br from-green to-green-dark text-white rounded-lg font-bold text-sm flex items-center gap-2 shadow-[0_4px_14px_rgba(24,67,50,0.25)] hover:opacity-95 transition-all disabled:cursor-not-allowed disabled:opacity-75"
             >
               <FaSave /> {saving ? "Saving..." : isEdit ? "Save Changes" : "Enroll Church Member"}
             </button>
           </div>
         </form>
       </div>
-
-      <style>{`
-        .mf-row {
-          display: grid;
-          gap: 16px;
-        }
-        .mf-row-2 {
-          grid-template-columns: 2fr 1fr;
-        }
-        .mf-row-half {
-          grid-template-columns: 1fr 1fr;
-        }
-        .mf-row-3 {
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        @media (max-width: 640px) {
-          .mf-row-2,
-          .mf-row-half,
-          .mf-row-3 {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }
-
-const LBL = {
-  display: "block",
-  fontSize: "0.82rem",
-  color: "#184332",
-  fontWeight: 700,
-  marginBottom: 6,
-  textTransform: "uppercase",
-  letterSpacing: "0.3px",
-};
-
-const INP = {
-  width: "100%",
-  padding: "11px 14px",
-  background: "#FFFFFF",
-  border: "1.5px solid #CBD5E1",
-  borderRadius: 10,
-  color: "#0F172A",
-  fontSize: "0.94rem",
-  outline: "none",
-  boxSizing: "border-box",
-};
