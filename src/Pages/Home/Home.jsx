@@ -682,7 +682,7 @@ export default function Home() {
                 <img
                   src={saravanan3Img}
                   alt="Pastor Saravanan Immanuel preaching at the pulpit"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-fit"
                 />
                 <span className="absolute top-3.5 left-3.5 bg-white text-green-deep border border-gold/50 text-[0.72rem] font-extrabold px-3 py-1 rounded-full shadow-sm">
                   ✝ Senior Pastor
