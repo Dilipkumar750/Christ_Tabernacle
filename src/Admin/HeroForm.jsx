@@ -195,7 +195,7 @@ export default function HeroForm() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
             <div>
               <label style={LS}>Badge Tag</label>
-              <input type="text" value={formData.tag} onChange={(e) => setFormData({ ...formData, tag: e.target.value })} placeholder="e.g. Established 1991" style={IS} />
+              <input type="text" value={formData.tag} onChange={(e) => setFormData({ ...formData, tag: e.target.value })} placeholder="e.g. Established 2026" style={IS} />
             </div>
             <div>
               <label style={LS}>Scripture Verse Reference</label>

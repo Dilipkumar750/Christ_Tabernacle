@@ -93,7 +93,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-xs text-[#FAF6EE]/70 leading-relaxed mb-5">
-              Dedicated to preaching the Full Gospel of Jesus Christ, ministering divine healing, bringing deliverance to the captive, and making disciples of all nations since 1991.
+              Dedicated to preaching the Full Gospel of Jesus Christ, ministering divine healing, bringing deliverance to the captive, and making disciples of all nations since 2026.
             </p>
 
             <div className="bg-[#0B2217]/80 border border-[#D6B66B]/25 rounded-xl p-4 mt-4">

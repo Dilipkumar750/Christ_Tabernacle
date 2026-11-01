@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import logoImg from "../assets/logo.jpeg";
 import { FaCross, FaUserPlus } from "react-icons/fa";
+import MemberLoginModal from "./MemberLoginModal";
 
 /* ── Navigation Structure ── */
 const NAV = [
@@ -247,6 +248,16 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [tickerIdx, setTickerIdx] = useState(0);
   const [tickerFade, setTickerFade] = useState(true);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+
+  const handleAddMemberClick = () => {
+    const isAuth = !!localStorage.getItem("ct_admin_token");
+    if (isAuth) {
+      navigate("/join-membership");
+    } else {
+      setLoginModalOpen(true);
+    }
+  };
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -316,7 +327,7 @@ export default function Header() {
                 Christ's Tabernacle
               </span>
               <span className="text-[9px] md:text-[10px] tracking-widest uppercase text-[#A88A42] font-bold block mt-0.5 max-sm:hidden">
-                Prayer &amp; Worship Centre • Est. 1991
+                Prayer &amp; Worship Centre • EST. 2026
               </span>
             </div>
           </Link>
@@ -334,8 +345,8 @@ export default function Header() {
           <div className="flex items-center gap-2.5 shrink-0">
             {/* Add Member Button */}
             <button
-              onClick={() => navigate('/join-membership')}
-              className="inline-flex items-center gap-1.5 bg-gradient-to-br from-[#184332] to-[#122D24] text-[#D6B66B] text-xs font-bold uppercase tracking-wider px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-[#D6B66B] whitespace-nowrap shrink-0 shadow-md hover:-translate-y-0.5 hover:bg-[#D6B66B] hover:text-[#122D24] transition-all cursor-pointer"
+              onClick={handleAddMemberClick}
+              className="inline-flex items-center gap-1.5 bg-gradient-to-br from-[#184332] to-[#122D24] text-[#D6B66B] text-xs font-bold uppercase tracking-wider px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-[#D6B66B] whitespace-nowrap shrink-0 shadow-md hover:-translate-y-0.5 hover:bg-[#D6B66B] hover:text-[#D6B66B] transition-all cursor-pointer"
               aria-label="Add Church Member"
               id="header-add-member-btn"
             >
@@ -405,7 +416,7 @@ export default function Header() {
             type="button"
             onClick={() => {
               closeMenu();
-              navigate('/join-membership');
+              handleAddMemberClick();
             }}
             className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#184332] text-[#D6B66B] border border-[#D6B66B] cursor-pointer shadow-md"
           >
@@ -414,6 +425,12 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+      {/* ── Authorization Login Modal (Redirects to full page /join-membership upon login) ── */}
+      <MemberLoginModal
+        isOpen={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+      />
     </>
   );
 }

@@ -8,7 +8,7 @@ import {
   FaDesktop, FaHeart, FaRegHeart,
   FaExpand
 } from "react-icons/fa";
-
+import banner from "../../assets/songs_banner.png";
 /* ═══════════════════════════════════════════════════════════════
    THEME — Sacred Sanctuary Green & Divine Gold Palette
    Primary Sanctuary Green: #184332 | Deep Forest: #0C2219 | Medium: #1E5440
@@ -351,9 +351,9 @@ function SanctuaryPresenterModal({ song, onClose }) {
         flex: 1, display: "flex", flexDirection: "column",
         justifyContent: "center", alignItems: "center",
         padding: "24px 20px", textAlign: "center",
-        background: `radial-gradient(circle at 50% 50%, rgba(138, 37, 82, 0.28) 0%, rgba(15, 2, 8, 0.98) 85%)`
+        background: `radial-gradient(circle at 50% 50%, rgba(24, 67, 50, 0.4) 0%, rgba(12, 34, 25, 0.98) 85%)`
       }}>
-        <div style={{ maxWidth: 1050 }}>
+        <div className="max-w-[1050px] mx-auto w-full">
           <div style={{ color: T.gold, fontSize: "1.8rem", marginBottom: 16, opacity: 0.85 }}>✝</div>
           {currentLines.map((line, idx) => (
             <div key={idx} style={{
@@ -443,7 +443,7 @@ function StanzaLyricsView({ lyricsText, fontSizeMultiplier = 1, onCopy, title })
   };
 
   return (
-    <div className="ct-lyrics-box">
+    <div className="bg-white border border-[#EDE5D8] rounded-2xl p-5 sm:p-7 lg:p-10 shadow-sm relative">
       {/* Box Header */}
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -508,7 +508,7 @@ function PPTDeckPreview({ song, onPresenterClick, onDownloadClick }) {
     <div style={{
       background: `linear-gradient(145deg, ${T.primaryDk} 0%, ${T.primary} 60%, ${T.primaryDk} 100%)`,
       borderRadius: 16, border: `1.5px solid ${T.borderGold}`,
-      overflow: "hidden", boxShadow: `0 10px 30px rgba(138, 37, 82, 0.2)`
+      overflow: "hidden", boxShadow: `0 10px 30px rgba(18, 45, 36, 0.08)`
     }}>
       <div style={{
         aspectRatio: "16/9", padding: "18px 20px",
@@ -635,13 +635,13 @@ function SongDetailView({
   const subTitle = titleMatch ? titleMatch[2] : null;
 
   return (
-    <div style={{ maxWidth: 1380, margin: "0 auto", padding: "0 16px 60px" }}>
+    <div className="max-w-[1380px] mx-auto w-full px-4 sm:px-6 pb-16">
       {showPresenter && <SanctuaryPresenterModal song={song} onClose={() => setShowPresenter(false)}/>}
 
       {/* Floating Toast Notification */}
       {toastMsg && (
         <div style={{
-          position: "fixed", bottom: 28, right: 28, zIndex: 9999,
+          position: "fixed", bottom: 16, right: 8, left: 8, zIndex: 9999, maxWidth: 360, margin: "0 auto",
           background: T.primaryDk, color: "#fff",
           padding: "12px 22px", borderRadius: 10,
           border: `1.5px solid ${T.gold}`,
@@ -654,7 +654,7 @@ function SongDetailView({
       )}
 
       {/* Top A-Z Alphabet Navigation Bar */}
-      <div className="ct-az-bar" style={{
+      <div className="flex flex-wrap gap-1 justify-center" style={{
         background: T.primaryDk, borderRadius: 12, padding: "8px 12px",
         margin: "18px 0 24px",
         boxShadow: `0 4px 16px rgba(12, 34, 25, 0.2)`
@@ -697,17 +697,13 @@ function SongDetailView({
       </div>
 
       {/* Two-Column Responsive Layout: Left Song Details & Lyrics | Right Sidebar */}
-      <div className="ct-songs-grid-layout">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_340px] gap-6 lg:gap-8 items-start">
 
         {/* ── LEFT COLUMN ── */}
         <div>
           {/* Action Row */}
-          <div className="ct-detail-actions" style={{
-            background: T.bgCard, borderRadius: 14, padding: "12px 18px",
-            border: `1.5px solid ${T.border}`, marginBottom: 20,
-            boxShadow: "0 2px 10px rgba(0,0,0,0.03)"
-          }}>
-            <div className="ct-detail-actions-group" style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+          <div className="bg-white rounded-2xl border border-[#EDE5D8] p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-2 shadow-sm mb-5">
+            <div className="flex flex-wrap gap-2 items-center w-full sm:w-auto">
               {/* Full Screen Button */}
               <button onClick={() => setShowPresenter(true)} style={{
                 display: "inline-flex", alignItems: "center", gap: 6,
@@ -935,7 +931,7 @@ function SongDetailView({
         </div>
 
         {/* ── RIGHT SIDEBAR ── */}
-        <div className="ct-songs-sidebar">
+        <div className="flex flex-col gap-5">
 
           {/* Slide Deck Preview */}
           <PPTDeckPreview
@@ -996,7 +992,7 @@ function SongDetailView({
               <FaGuitar size={13} color={T.primary}/> Chords A–Z
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 5 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(34px, 1fr))", gap: 5 }}>
               {CHORDS_KEYS_GRID.map(ch => (
                 <button key={ch} onClick={() => onChordSelect(ch)} style={{
                   padding: "6px 2px", borderRadius: 6,
@@ -1089,9 +1085,9 @@ function SongCard({ song, onOpen, onShare, isFavorite, onToggleFavorite }) {
   const snippet = (song.lyrics || song.englishLyrics || "").replace(/\[.*?\]/g, "").replace(/\n+/g, " ").trim().slice(0, 135);
 
   return (
-    <div onClick={() => onOpen(song)} className="ct-song-card-item">
+    <div onClick={() => onOpen(song)} className="bg-white rounded-2xl border border-[#EDE5D8] p-4 flex flex-col sm:flex-row gap-4 sm:gap-5 items-start sm:items-center cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D6B66B] hover:shadow-lg">
       {/* Thumbnail */}
-      <div className="ct-song-card-thumb" style={{
+      <div className="w-full sm:w-[88px] h-[140px] sm:h-[88px] rounded-xl object-cover flex-shrink-0 bg-[#EAF2EE] flex items-center justify-center" style={{
         width: 130, height: 80, borderRadius: 10,
         overflow: "hidden", flexShrink: 0, background: T.primaryDk,
         position: "relative", border: `1px solid rgba(212, 175, 55, 0.3)`
@@ -1189,7 +1185,7 @@ function SongCard({ song, onOpen, onShare, isFavorite, onToggleFavorite }) {
       </div>
 
       {/* Actions */}
-      <div className="ct-song-card-actions" style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+      <div className="flex items-center gap-2 flex-shrink-0 sm:flex-shrink-0">
         <button onClick={e => { e.stopPropagation(); onToggleFavorite(song._id || song.id); }} style={{
           padding: "8px 10px", borderRadius: 8,
           background: isFavorite ? "#FEE2E2" : T.bg,
@@ -1214,7 +1210,7 @@ function SongCard({ song, onOpen, onShare, isFavorite, onToggleFavorite }) {
           background: T.primary, color: T.goldLt,
           fontWeight: 900, fontSize: "0.82rem", cursor: "pointer",
           display: "flex", alignItems: "center", gap: 6,
-          boxShadow: `0 2px 8px rgba(138, 37, 82, 0.25)`
+          boxShadow: `0 2px 8px rgba(18, 45, 36, 0.08)`
         }}>
           View <FaChevronRight size={10}/>
         </button>
@@ -1319,116 +1315,22 @@ export default function Lyrics() {
   const favSongs = songs.filter(s => favorites.includes(s._id || s.id));
 
   return (
-    <>
+    <div className="w-full overflow-x-hidden">
+      {/* ── Songs / Lyrics Banner ── */}
+      <section
+        className="relative w-full h-[160px] sm:h-[220px] md:h-[300px] lg:h-[380px] xl:h-[440px] p-0 m-0 leading-none bg-[#FAF8F5] border-b-2 border-[#D6B66B]/35 overflow-hidden shadow-sm"
+        aria-label="Songs & Lyrics Banner"
+      >
+        <img
+          src={banner}
+          alt="Christ's Tabernacle Songs & Lyrics Banner"
+          className="block w-full min-w-full h-full object-fill object-center"
+          loading="eager"
+        />
+      </section>
+
       {/* ── RESPONSIVE STYLE SHEET ── */}
-      <style>{`
-        .ct-songs-grid-layout {
-          display: grid;
-          grid-template-columns: 1fr 340px;
-          gap: 30px;
-          align-items: start;
-        }
-        .ct-songs-sidebar {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-        }
-        .ct-song-card-item {
-          background: #FFFFFF;
-          border-radius: 16px;
-          border: 1.5px solid ${T.border};
-          padding: 16px 20px;
-          display: flex;
-          gap: 18px;
-          align-items: center;
-          cursor: pointer;
-          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-          box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        }
-        .ct-song-card-item:hover {
-          border-color: ${T.gold};
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(138, 37, 82, 0.1);
-        }
-        .ct-lyrics-box {
-          background: #FFFFFF;
-          border: 1.5px solid ${T.border};
-          border-radius: 18px;
-          padding: 34px 40px;
-          box-shadow: 0 8px 30px rgba(138, 37, 82, 0.06);
-          position: relative;
-        }
-        .ct-detail-actions {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 10px;
-        }
-        .ct-az-bar {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 4px;
-          justify-content: center;
-        }
-
-        /* ── Tablet & Small Laptops (<= 992px) ── */
-        @media (max-width: 992px) {
-          .ct-songs-grid-layout {
-            grid-template-columns: 1fr !important;
-            gap: 24px !important;
-          }
-          .ct-songs-sidebar {
-            position: static !important;
-          }
-        }
-
-        /* ── Phones & Handhelds (<= 640px) ── */
-        @media (max-width: 640px) {
-          .ct-song-card-item {
-            flex-direction: column !important;
-            align-items: stretch !important;
-            padding: 14px 16px !important;
-            gap: 12px !important;
-          }
-          .ct-song-card-thumb {
-            width: 100% !important;
-            height: 150px !important;
-          }
-          .ct-song-card-actions {
-            width: 100% !important;
-            justify-content: space-between !important;
-            padding-top: 8px !important;
-            border-top: 1px dashed ${T.border} !important;
-          }
-          .ct-lyrics-box {
-            padding: 20px 16px !important;
-            border-radius: 14px !important;
-          }
-          .ct-detail-actions {
-            flex-direction: column !important;
-            align-items: stretch !important;
-          }
-          .ct-detail-actions-group {
-            width: 100% !important;
-          }
-          .ct-detail-actions-group > button {
-            flex: 1 1 45% !important;
-            justify-content: center !important;
-            padding: 8px 10px !important;
-          }
-          .ct-az-bar {
-            gap: 3px !important;
-            padding: 8px 6px !important;
-          }
-          .ct-az-btn {
-            padding: 5px 7px !important;
-            font-size: 0.74rem !important;
-            min-width: 26px !important;
-          }
-        }
-      `}</style>
-
+      
       {/* ── 1. DETAIL VIEW (/songs/lyrics/:id) ── */}
       {id ? (
         loading ? (
@@ -1469,59 +1371,27 @@ export default function Lyrics() {
         )
       ) : (
         /* ── 2. REPERTOIRE LISTING VIEW ── */
-        <div style={{ maxWidth: 1380, margin: "0 auto", padding: "0 16px 60px" }}>
+        <div className="max-w-[1380px] mx-auto w-full px-4 sm:px-6 pb-16">
 
-          {/* Hero Header with Search */}
-          <div style={{
-            background: `linear-gradient(135deg, ${T.primaryDk} 0%, #133929 40%, ${T.primary} 100%)`,
-            borderRadius: 22, padding: "34px 28px 28px", marginBottom: 22,
-            color: "#FAF6EE", border: `1.5px solid ${T.borderGold}`,
-            boxShadow: `0 12px 36px rgba(12, 34, 25, 0.2)`
-          }}>
-            <div style={{ maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
-              <div style={{
-                color: T.goldLt, fontSize: "0.82rem", fontWeight: 800,
-                letterSpacing: 2.2, textTransform: "uppercase", marginBottom: 8
-              }}>
-                ✝ Christ's Tabernacle Sacred Hymnal ✝
-              </div>
-              <h1 style={{
-                fontSize: "clamp(1.5rem, 2.8vw, 2.3rem)", fontWeight: 800,
-                margin: "0 0 10px", fontFamily: "'Playfair Display', serif"
-              }}>
-                Worship Songs &amp; Chords Repertoire
-              </h1>
-              <p style={{ color: "rgba(250, 246, 238, 0.9)", fontSize: "0.92rem", lineHeight: 1.6, margin: "0 0 22px" }}>
-                Browse Tamil &amp; English worship songs alphabetically, chords A–Z, lyrics sheets, and projection slide decks.
-              </p>
-
-              <div style={{
-                display: "flex", alignItems: "center", gap: 12,
-                background: "#fff", borderRadius: 40, padding: "8px 20px",
-                boxShadow: "0 8px 30px rgba(0,0,0,0.3)", border: `2px solid ${T.gold}`
-              }}>
-                <FaSearch color={T.primary} size={16}/>
-                <input
-                  type="text"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  placeholder="Search title, Tamil lyrics, composer, or chord..."
-                  style={{
-                    flex: 1, border: "none", outline: "none", fontSize: "0.96rem",
-                    color: T.primary, background: "transparent", fontWeight: 600, minWidth: 0
-                  }}
-                />
-                {search && (
-                  <button onClick={() => setSearch("")} style={{ background: "none", border: "none", cursor: "pointer", color: T.textMuted, display: "flex" }}>
-                    <FaTimes size={14}/>
-                  </button>
-                )}
-              </div>
-            </div>
+          {/* ── Search Bar ── */}
+          <div className="flex items-center gap-3 bg-white rounded-full px-4 sm:px-5 py-2.5 shadow-md border-2 border-[#D6B66B] mb-5">
+            <FaSearch color="#184332" size={16} className="flex-shrink-0" />
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search title, Tamil lyrics, composer, or chord..."
+              className="flex-1 border-none outline-none text-sm sm:text-base text-[#112218] bg-transparent font-semibold min-w-0"
+            />
+            {search && (
+              <button onClick={() => setSearch("")} className="text-[#7A9288] flex">
+                <FaTimes size={14} />
+              </button>
+            )}
           </div>
 
           {/* A-Z Letter Nav Bar */}
-          <div className="ct-az-bar" style={{
+          <div className="flex flex-wrap gap-1 justify-center" style={{
             background: T.primaryDk, borderRadius: 12, padding: "10px 14px",
             marginBottom: 24,
             boxShadow: `0 4px 18px rgba(12, 34, 25, 0.2)`
@@ -1544,7 +1414,7 @@ export default function Lyrics() {
           </div>
 
           {/* Two-Column Responsive Layout */}
-          <div className="ct-songs-grid-layout">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_340px] gap-6 lg:gap-8 items-start">
 
             {/* ── LEFT: Filter Sub-bar & Songs List ── */}
             <div>
@@ -1670,7 +1540,7 @@ export default function Lyrics() {
             </div>
 
             {/* ── RIGHT SIDEBAR ── */}
-            <div className="ct-songs-sidebar">
+            <div className="flex flex-col gap-5">
 
               {/* YOUR FAVOURITES Card (Reference: tamilchristiansongs.in) */}
               <div style={{
@@ -1724,7 +1594,7 @@ export default function Lyrics() {
                   <FaGuitar size={13} color={T.primary}/> Chords A–Z
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 5 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(34px, 1fr))", gap: 5 }}>
                   {CHORDS_KEYS_GRID.map(ch => (
                     <button key={ch} onClick={() => handleChordSelect(ch)} style={{
                       padding: "6px 2px", borderRadius: 6,
@@ -1799,6 +1669,6 @@ export default function Lyrics() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

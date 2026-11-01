@@ -77,159 +77,180 @@ export default function Audio() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-9 items-start">
-      {/* Player Card */}
-      <section
-        className="bg-grad-sanctuary rounded-[20px] border-2 border-gold p-6 sm:p-[36px_30px] text-ivory shadow-lg-g relative overflow-hidden"
-        aria-label="Audio Worship Player"
-      >
-        <span
-          className="absolute -top-7 -right-5 text-[160px] text-gold/[0.05] pointer-events-none font-serif leading-none select-none"
-          aria-hidden="true"
+    <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-9 items-start">
+        {/* Player Card */}
+        <section
+          className="bg-grad-sanctuary rounded-[16px] sm:rounded-[20px] border-2 border-gold p-4 sm:p-5 md:p-6 lg:p-[36px_30px] text-ivory shadow-lg-g relative overflow-hidden"
+          aria-label="Audio Worship Player"
         >
-          ✝
-        </span>
-
-        {/* Art Wrap */}
-        <div className="relative h-[220px] rounded-[14px] overflow-hidden mb-6 border-[1.5px] border-gold shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
-          <img src={worshipImg} alt="Worship Recording" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#091c13]/85 to-transparent flex items-end p-4">
-            {isPlaying && (
-              <div className="flex items-end gap-1 h-7" aria-hidden="true">
-                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-4" />
-                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-6" style={{ animationDelay: "0.2s" }} />
-                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-7" style={{ animationDelay: "0.4s" }} />
-                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-5" style={{ animationDelay: "0.1s" }} />
-                <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-3" style={{ animationDelay: "0.5s" }} />
-              </div>
-            )}
-          </div>
-        </div>
-
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#0C2219]/80 text-gold-bright border border-gold/30 mb-2.5">
-          {track.category}
-        </span>
-        <h2 className="font-serif text-[1.35rem] text-ivory font-bold mb-1 leading-snug">
-          {track.title}
-        </h2>
-        <p className="text-[0.86rem] text-gold-bright mb-[18px] font-semibold">
-          {track.artist}
-        </p>
-
-        {/* Progress Bar */}
-        <div className="mb-5">
-          <div
-            className="w-full h-1.5 bg-white/15 rounded-full overflow-hidden cursor-pointer"
-            onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const pos = (e.clientX - rect.left) / rect.width;
-              setCurrentTime(Math.floor(pos * track.seconds));
-            }}
+          <span
+            className="absolute -top-7 -right-5 text-[100px] sm:text-[120px] md:text-[140px] lg:text-[160px] text-gold/[0.05] pointer-events-none font-serif leading-none select-none"
+            aria-hidden="true"
           >
-            <div
-              className="h-full bg-grad-gold rounded-full transition-all duration-300 ease-linear"
-              style={{ width: `${(currentTime / track.seconds) * 100}%` }}
+            ✝
+          </span>
+
+          {/* Art Wrap */}
+          <div className="relative h-[180px] sm:h-[200px] md:h-[220px] rounded-[12px] sm:rounded-[14px] overflow-hidden mb-4 sm:mb-5 md:mb-6 border-[1.5px] border-gold shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+            <img
+              src={worshipImg}
+              alt="Worship Recording"
+              className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#091c13]/85 to-transparent flex items-end p-3 sm:p-4">
+              {isPlaying && (
+                <div className="flex items-end gap-1 h-7" aria-hidden="true">
+                  <span className="w-1 bg-gold-bright rounded-sm animate-pulse h-4" />
+                  <span
+                    className="w-1 bg-gold-bright rounded-sm animate-pulse h-6"
+                    style={{ animationDelay: "0.2s" }}
+                  />
+                  <span
+                    className="w-1 bg-gold-bright rounded-sm animate-pulse h-7"
+                    style={{ animationDelay: "0.4s" }}
+                  />
+                  <span
+                    className="w-1 bg-gold-bright rounded-sm animate-pulse h-5"
+                    style={{ animationDelay: "0.1s" }}
+                  />
+                  <span
+                    className="w-1 bg-gold-bright rounded-sm animate-pulse h-3"
+                    style={{ animationDelay: "0.5s" }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex justify-between text-[0.74rem] text-ivory/70 mt-1.5 font-medium">
-            <span>{formatTime(currentTime)}</span>
-            <span>{track.duration}</span>
-          </div>
-        </div>
 
-        {/* Controls */}
-        <div className="flex items-center justify-center gap-5 mb-5">
-          <button
-            className="bg-transparent border-none text-ivory text-2xl hover:text-gold-bright hover:scale-110 transition-all duration-200 cursor-pointer p-1"
-            onClick={handlePrev}
-            aria-label="Previous track"
-          >
-            ⏮
-          </button>
-          <button
-            className="w-[58px] h-[58px] rounded-full bg-grad-gold text-green-dark flex items-center justify-center text-2xl shadow-[0_6px_25px_rgba(214,182,107,0.4)] hover:scale-105 transition-transform duration-200 cursor-pointer font-bold"
-            onClick={() => setIsPlaying(!isPlaying)}
-            aria-label={isPlaying ? "Pause track" : "Play track"}
-          >
-            {isPlaying ? "⏸" : "▶"}
-          </button>
-          <button
-            className="bg-transparent border-none text-ivory text-2xl hover:text-gold-bright hover:scale-110 transition-all duration-200 cursor-pointer p-1"
-            onClick={handleNext}
-            aria-label="Next track"
-          >
-            ⏭
-          </button>
-        </div>
+          <span className="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-[#0C2219]/80 text-gold-bright border border-gold/30 mb-2 sm:mb-2.5">
+            {track.category}
+          </span>
+          <h2 className="font-serif text-[1.1rem] sm:text-[1.2rem] md:text-[1.35rem] text-ivory font-bold mb-1 leading-snug">
+            {track.title}
+          </h2>
+          <p className="text-[0.78rem] sm:text-[0.82rem] md:text-[0.86rem] text-gold-bright mb-3 sm:mb-4 md:mb-[18px] font-semibold">
+            {track.artist}
+          </p>
 
-        {/* Volume Control */}
-        <div className="flex items-center justify-center gap-2.5 mb-[18px] text-[0.82rem] text-gold-bright">
-          <span>🔊</span>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={volume}
-            onChange={(e) => setVolume(Number(e.target.value))}
-            className="w-[110px] accent-gold cursor-pointer"
-            aria-label="Volume slider"
-          />
-          <span className="text-[0.74rem] min-w-[32px]">{volume}%</span>
-        </div>
-
-        <p className="text-[0.85rem] text-ivory/75 leading-relaxed text-center m-0">
-          {track.description}
-        </p>
-      </section>
-
-      {/* Playlist Card */}
-      <aside
-        className="bg-white rounded-[20px] border-[1.5px] border-gold/30 p-6 md:p-7 shadow-sm-g"
-        aria-label="Worship Playlist"
-      >
-        <h3 className="font-serif text-xl font-bold text-green-dark mb-4">
-          Worship Tracks &amp; Recordings
-        </h3>
-        <ul className="list-none p-0 m-0 flex flex-col gap-3">
-          {PLAYLIST.map((p, idx) => (
-            <li
-              key={p.id}
-              className={`flex items-center gap-3.5 p-3.5 rounded-xl border cursor-pointer transition-all duration-200 ${
-                currentTrackIdx === idx
-                  ? "border-gold bg-gold-soft shadow-sm"
-                  : "border-slate-200 bg-ivory hover:border-gold hover:bg-white"
-              }`}
-              onClick={() => {
-                setCurrentTrackIdx(idx);
-                setCurrentTime(0);
-                setIsPlaying(true);
+          {/* Progress Bar */}
+          <div className="mb-4 sm:mb-5">
+            <div
+              className="w-full h-1.5 bg-white/15 rounded-full overflow-hidden cursor-pointer"
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                setCurrentTime(Math.floor(pos * track.seconds));
               }}
             >
-              <span className="font-serif font-bold text-green text-[0.95rem] w-6 shrink-0">
-                {idx + 1}
-              </span>
-              <div className="flex-grow">
-                <span className="font-bold text-[0.9rem] text-green-dark mb-0.5 block leading-tight">
-                  {p.title}
-                </span>
-                <span className="text-[0.74rem] text-text-light block">
-                  {p.artist}
-                </span>
-              </div>
-              <span className="text-[0.8rem] font-bold text-gold-dark shrink-0">
-                {p.duration}
-              </span>
-            </li>
-          ))}
-        </ul>
+              <div
+                className="h-full bg-grad-gold rounded-full transition-all duration-300 ease-linear"
+                style={{ width: `${(currentTime / track.seconds) * 100}%` }}
+              />
+            </div>
+            <div className="flex justify-between text-[0.7rem] sm:text-[0.74rem] text-ivory/70 mt-1.5 font-medium">
+              <span>{formatTime(currentTime)}</span>
+              <span>{track.duration}</span>
+            </div>
+          </div>
 
-        <div className="bg-gold-soft border-l-4 border-gold rounded-r-[14px] p-5 font-serif italic text-[0.95rem] text-green-dark leading-relaxed relative mt-6">
-          "Speaking to one another with psalms, hymns, and songs from the Spirit. Sing and make music from your heart to the Lord."
-          <cite className="block font-sans not-italic text-[0.78rem] font-bold tracking-wider uppercase text-gold-dark mt-2">
-            — Ephesians 5:19
-          </cite>
-        </div>
-      </aside>
+          {/* Controls */}
+          <div className="flex items-center justify-center gap-4 sm:gap-5 mb-4 sm:mb-5">
+            <button
+              className="bg-transparent border-none text-ivory text-xl sm:text-2xl hover:text-gold-bright hover:scale-110 transition-all duration-200 cursor-pointer p-1 touch-manipulation"
+              onClick={handlePrev}
+              aria-label="Previous track"
+            >
+              ⏮
+            </button>
+            <button
+              className="w-[48px] h-[48px] sm:w-[54px] sm:h-[54px] md:w-[58px] md:h-[58px] rounded-full bg-grad-gold text-green-dark flex items-center justify-center text-xl sm:text-2xl shadow-[0_6px_25px_rgba(214,182,107,0.4)] hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer font-bold touch-manipulation"
+              onClick={() => setIsPlaying(!isPlaying)}
+              aria-label={isPlaying ? "Pause track" : "Play track"}
+            >
+              {isPlaying ? "⏸" : "▶"}
+            </button>
+            <button
+              className="bg-transparent border-none text-ivory text-xl sm:text-2xl hover:text-gold-bright hover:scale-110 transition-all duration-200 cursor-pointer p-1 touch-manipulation"
+              onClick={handleNext}
+              aria-label="Next track"
+            >
+              ⏭
+            </button>
+          </div>
+
+          {/* Volume Control */}
+          <div className="flex items-center justify-center gap-2 sm:gap-2.5 mb-3 sm:mb-[18px] text-[0.75rem] sm:text-[0.82rem] text-gold-bright">
+            <span>🔊</span>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={volume}
+              onChange={(e) => setVolume(Number(e.target.value))}
+              className="w-[90px] sm:w-[110px] accent-gold cursor-pointer touch-manipulation"
+              aria-label="Volume slider"
+            />
+            <span className="text-[0.68rem] sm:text-[0.74rem] min-w-[28px] sm:min-w-[32px]">
+              {volume}%
+            </span>
+          </div>
+
+          <p className="text-[0.78rem] sm:text-[0.82rem] md:text-[0.85rem] text-ivory/75 leading-relaxed text-center m-0">
+            {track.description}
+          </p>
+        </section>
+
+        {/* Playlist Card */}
+        <aside
+          className="bg-white rounded-[16px] sm:rounded-[20px] border-[1.5px] border-gold/30 p-4 sm:p-5 md:p-6 lg:p-7 shadow-sm-g"
+          aria-label="Worship Playlist"
+        >
+          <h3 className="font-serif text-lg sm:text-xl font-bold text-green-dark mb-3 sm:mb-4">
+            Worship Tracks &amp; Recordings
+          </h3>
+          <ul className="list-none p-0 m-0 flex flex-col gap-2.5 sm:gap-3">
+            {PLAYLIST.map((p, idx) => (
+              <li
+                key={p.id}
+                className={`flex items-center gap-2.5 sm:gap-3 md:gap-3.5 p-2.5 sm:p-3 md:p-3.5 rounded-lg sm:rounded-xl border cursor-pointer transition-all duration-200 touch-manipulation ${
+                  currentTrackIdx === idx
+                    ? "border-gold bg-gold-soft shadow-sm"
+                    : "border-slate-200 bg-ivory hover:border-gold hover:bg-white active:bg-gold-soft/50"
+                }`}
+                onClick={() => {
+                  setCurrentTrackIdx(idx);
+                  setCurrentTime(0);
+                  setIsPlaying(true);
+                }}
+              >
+                <span className="font-serif font-bold text-green text-[0.85rem] sm:text-[0.95rem] w-5 sm:w-6 shrink-0">
+                  {idx + 1}
+                </span>
+                <div className="flex-grow min-w-0">
+                  <span className="font-bold text-[0.8rem] sm:text-[0.85rem] md:text-[0.9rem] text-green-dark mb-0.5 block leading-tight truncate">
+                    {p.title}
+                  </span>
+                  <span className="text-[0.68rem] sm:text-[0.72rem] md:text-[0.74rem] text-text-light block truncate">
+                    {p.artist}
+                  </span>
+                </div>
+                <span className="text-[0.72rem] sm:text-[0.76rem] md:text-[0.8rem] font-bold text-gold-dark shrink-0 ml-1">
+                  {p.duration}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="bg-gold-soft border-l-4 border-gold rounded-r-[10px] sm:rounded-r-[14px] p-3.5 sm:p-4 md:p-5 font-serif italic text-[0.82rem] sm:text-[0.88rem] md:text-[0.95rem] text-green-dark leading-relaxed relative mt-4 sm:mt-5 md:mt-6">
+            "Speaking to one another with psalms, hymns, and songs from the
+            Spirit. Sing and make music from your heart to the Lord."
+            <cite className="block font-sans not-italic text-[0.7rem] sm:text-[0.74rem] md:text-[0.78rem] font-bold tracking-wider uppercase text-gold-dark mt-2">
+              — Ephesians 5:19
+            </cite>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

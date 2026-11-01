@@ -800,7 +800,14 @@ export default function MemberManager() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 16 }}>
                 <div>
                   <div style={detailLabel}>Water Baptism</div>
-                  <div style={detailVal}>{selectedMember.baptized === "Yes" ? "✓ Baptized" : "No"}</div>
+                  <div style={detailVal}>
+                    {selectedMember.baptized === "Yes" ? "✓ Baptized" : "No"}
+                    {selectedMember.baptized === "Yes" && selectedMember.baptizedDate && (
+                      <span style={{ display: "block", fontSize: "0.78rem", color: "#64748B", marginTop: 2 }}>
+                        Date: {typeof selectedMember.baptizedDate === "string" ? selectedMember.baptizedDate.split("T")[0] : selectedMember.baptizedDate}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <div style={detailLabel}>Blood Group</div>
@@ -812,25 +819,12 @@ export default function MemberManager() {
                 </div>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 16 }}>
+              <div style={{ marginBottom: 16 }}>
                 <div>
                   <div style={detailLabel}>Occupation</div>
                   <div style={detailVal}>{selectedMember.occupation || "—"}</div>
                 </div>
-                <div>
-                  <div style={detailLabel}>Emergency Contact</div>
-                  <div style={detailVal}>{selectedMember.emergencyContact || "—"}</div>
-                </div>
               </div>
-
-              {selectedMember.notes && (
-                <div style={{ marginTop: 14, background: "#F8FAF9", padding: "12px 16px", borderRadius: 8 }}>
-                  <div style={detailLabel}>Ministry / Prayer Notes</div>
-                  <div style={{ fontSize: "0.88rem", color: "#475569", lineHeight: 1.5 }}>
-                    {selectedMember.notes}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Modal Actions */}

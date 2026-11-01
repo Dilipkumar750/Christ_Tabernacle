@@ -24,10 +24,9 @@ export default function MemberForm() {
     bloodGroup: "",
     maritalStatus: "Single",
     baptized: "Yes",
-    emergencyContact: "",
+    baptizedDate: "",
     membershipDate: new Date().toISOString().split("T")[0],
     status: "Active",
-    notes: "",
   });
 
   // Calculate age automatically from DOB
@@ -65,10 +64,9 @@ export default function MemberForm() {
               bloodGroup: member.bloodGroup || "",
               maritalStatus: member.maritalStatus || "Single",
               baptized: member.baptized || "Yes",
-              emergencyContact: member.emergencyContact || "",
+              baptizedDate: member.baptizedDate ? (typeof member.baptizedDate === "string" ? member.baptizedDate.split("T")[0] : "") : "",
               membershipDate: member.membershipDate || new Date().toISOString().split("T")[0],
               status: member.status || "Active",
-              notes: member.notes || "",
             });
           } else {
             setError("Member record not found.");
@@ -304,6 +302,19 @@ export default function MemberForm() {
                 <option value="No">No (Not Yet)</option>
               </select>
             </div>
+            {formData.baptized === "Yes" && (
+              <div>
+                <label className={labelClass}>Baptism Date</label>
+                <input
+                  type="date"
+                  name="baptizedDate"
+                  value={formData.baptizedDate || ""}
+                  onChange={handleChange}
+                  className={inputClass}
+                  max={new Date().toISOString().split("T")[0]}
+                />
+              </div>
+            )}
             <div>
               <label className={labelClass}>Blood Group</label>
               <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className={inputClass}>
@@ -327,40 +338,15 @@ export default function MemberForm() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4.5">
-            <div>
-              <label className={labelClass}>Occupation / Profession</label>
-              <input
-                type="text"
-                name="occupation"
-                value={formData.occupation}
-                onChange={handleChange}
-                placeholder="e.g. Teacher, Engineer, Homemaker"
-                className={inputClass}
-              />
-            </div>
-            <div>
-              <label className={labelClass}>Emergency Contact / Guardian</label>
-              <input
-                type="text"
-                name="emergencyContact"
-                value={formData.emergencyContact}
-                onChange={handleChange}
-                placeholder="e.g. Spouse / Relative Phone"
-                className={inputClass}
-              />
-            </div>
-          </div>
-
           <div className="mb-7">
-            <label className={labelClass}>Ministry Roles / Remarks / Prayer Needs</label>
-            <textarea
-              name="notes"
-              value={formData.notes}
+            <label className={labelClass}>Occupation / Profession</label>
+            <input
+              type="text"
+              name="occupation"
+              value={formData.occupation}
               onChange={handleChange}
-              rows={2}
-              placeholder="e.g. Choir member, Sunday School teacher, fasting prayer group..."
-              className={`${inputClass} resize-y`}
+              placeholder="e.g. Teacher, Engineer, Homemaker"
+              className={inputClass}
             />
           </div>
 

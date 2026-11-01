@@ -16,7 +16,7 @@ const BANNER_SLIDES = [
     id: 1,
     image: heroBanner1,
     alt: "Christ's Tabernacle - Prayer & Worship Centre with Holy Bible and Cross at Sunrise",
-    tag: "Established 1991",
+    tag: "Established 2026",
     title: "Christ's Tabernacle Prayer & Worship Centre",
     subtitle: "A House of Prayer • A Place of Deliverance • A Centre of Divine Healing",
     verse: "Isaiah 56:7",
@@ -320,7 +320,7 @@ export default function Home() {
 
         <div className="inline-flex items-center gap-2 bg-green/10 border border-gold/40 rounded-full px-3.5 md:px-5 py-1.5 md:py-2 text-[0.65rem] md:text-[0.74rem] tracking-[0.2em] uppercase text-green font-bold mb-5 md:mb-6">
           <span>✝</span>
-          <span>Prayer &amp; Worship Centre • Est. 1991</span>
+          <span>Prayer &amp; Worship Centre • Est. 2026</span>
           <span>✝</span>
         </div>
 
@@ -443,7 +443,7 @@ export default function Home() {
                 <span className="bg-grad-gold bg-clip-text text-transparent">Sustained by Prayer</span>
               </h2>
               <p className="text-gray-700 text-[1.02rem] leading-relaxed mb-4">
-                In 1991, Eva. Glory Devapiriyam answered God's divine calling to minister the Gospel with 15 faithful believers in a humble house. Over decades of miraculous healing, fervent prayer, and unshakeable dedication, the ministry flourished into Christ's Tabernacle Church under Pastor Saravanan Immanuel.
+                In 2026, Eva. Glory Devapiriyam answered God's divine calling to minister the Gospel with 15 faithful believers in a humble house. Over decades of miraculous healing, fervent prayer, and unshakeable dedication, the ministry flourished into Christ's Tabernacle Church under Pastor Saravanan Immanuel.
               </p>
               <p className="text-gray-600 text-[0.96rem] leading-relaxed mb-7">
                 Today, Christ's Tabernacle stands as an oasis of spiritual renewal in Chennai and beyond — where the broken find healing, captives receive deliverance, and worshippers glorify the King of Kings.
@@ -569,7 +569,7 @@ export default function Home() {
                       ? "Senior Pastor & Founder • Christ's Tabernacle"
                       : activeSanctuaryView === "fellowship"
                         ? "United in Worship, Fasting & Kingdom Prayer"
-                        : "Serving Christ & Healing Generations Since 1991"}
+                        : "Serving Christ & Healing Generations Since 2026"}
                 </div>
               </div>
             </div>

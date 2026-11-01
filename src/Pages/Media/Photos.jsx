@@ -361,7 +361,7 @@ export default function Photos() {
     <div className="w-full min-h-screen bg-[#FAF8F5] overflow-x-hidden">
       {/* ── Gallery Banner ── */}
       <section
-        className="relative w-full h-[400px] md:h-[200px] max-sm:h-[130px] p-0 m-0 leading-none bg-[#FAF8F5] border-b-2 border-[#D6B66B]/35 overflow-hidden"
+        className="relative w-full h-[160px] sm:h-[180px] md:h-[280px] lg:h-[260px] xl:h-[420px] p-0 m-0 leading-none bg-[#FAF8F5] border-b-2 border-[#D6B66B]/35 overflow-hidden shadow-sm"
         aria-label="Gallery Banner"
       >
         <img
