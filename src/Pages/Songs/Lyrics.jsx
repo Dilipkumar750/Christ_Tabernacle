@@ -8,7 +8,7 @@ import {
   FaDesktop, FaHeart, FaRegHeart,
   FaExpand
 } from "react-icons/fa";
-import banner from "../../assets/songs_banner.png";
+import banner from "../../assets/songs_banner2.jpeg";
 /* ═══════════════════════════════════════════════════════════════
    THEME — Sacred Sanctuary Green & Divine Gold Palette
    Primary Sanctuary Green: #184332 | Deep Forest: #0C2219 | Medium: #1E5440
