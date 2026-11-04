@@ -67,7 +67,7 @@ export default function About() {
 
           <p className="text-sm md:text-base text-ivory/85 max-w-[600px] mx-auto mb-7 leading-relaxed">
             Rooted in prayer, established in faith, and called to declare the transformative
-            power, divine healing, and deliverance of Jesus Christ since 2026.
+            power, divine healing, and deliverance of Jesus Christ since 2016.
           </p>
 
           <div className="inline-flex flex-row flex-wrap justify-center border-[1.5px] border-gold/30 rounded-xl overflow-hidden bg-green-deep/70 shadow-card">
@@ -89,7 +89,7 @@ export default function About() {
             </div>
             <div className="px-4.5 py-2.5 sm:px-7 sm:py-3.5">
               <span className="font-serif text-xl sm:text-[1.6rem] text-gold-bright font-bold leading-none block">
-                2026
+                2016
               </span>
               <span className="text-[0.68rem] tracking-[0.14em] uppercase text-ivory/70 block mt-1">
                 Founded in Faith

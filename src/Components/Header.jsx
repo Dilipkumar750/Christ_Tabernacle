@@ -327,7 +327,7 @@ export default function Header() {
                 Christ's Tabernacle
               </span>
               <span className="text-[9px] md:text-[10px] tracking-widest uppercase text-[#A88A42] font-bold block mt-0.5 max-sm:hidden">
-                Prayer &amp; Worship Centre • EST. 2026
+                Prayer &amp; Worship Centre • EST. 2016
               </span>
             </div>
           </Link>

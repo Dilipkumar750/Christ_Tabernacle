@@ -6,7 +6,7 @@ import outdoorFellowshipImg from "../../assets/image1.jpeg";
 
 const MILESTONES = [
   {
-    year: "2026",
+    year: "2016",
     icon: "🌱",
     badge: "The Beginning",
     title: "A Divine Calling Is Born",
@@ -95,7 +95,7 @@ export default function Journey() {
         <p className="text-[1.02rem] text-gray-700 leading-relaxed max-w-[720px] m-0">
           The ministry of Christ's Tabernacle was not built on worldly strength or human wisdom,
           but born out of prayer, sustained through intercession, and established upon the
-          uncompromised Word of God. From 15 saints in 2026 to a vibrant church family today —
+          uncompromised Word of God. From 15 saints in 2016 to a vibrant church family today —
           every step marked by divine deliverance, supernatural healing, and transformed hearts.
         </p>
       </div>

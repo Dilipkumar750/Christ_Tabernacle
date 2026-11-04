@@ -80,7 +80,7 @@ export default function Vision() {
             and the Gospel of the Kingdom shines as an unquenchable beacon of salvation."
           </blockquote>
           <span className="inline-flex items-center gap-2 text-[0.78rem] font-bold tracking-[0.14em] uppercase text-green-deep bg-gold/15 border border-gold/35 py-2 px-4.5 rounded-full">
-            ✝ Christ's Tabernacle · Est. 2026
+            ✝ Christ's Tabernacle · Est. 2016
           </span>
         </div>
       </div>
